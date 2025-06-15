@@ -9,3 +9,8 @@ registerBtn.addEventListener('click', () => {
 loginBtn.addEventListener('click', () => {
   container.classList.remove('active');
 });
+
+document.querySelector('.login form').addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent actual form submission
+  window.location.href = 'general.html'; // Change to your target page
+});
