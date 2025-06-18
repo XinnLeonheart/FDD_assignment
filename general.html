@@ -5,56 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../css/general.css">     
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <body>
-  <div class="container">
+  <nav class="topbar">
+    <div class="logo">APCommunity</div>
+    <ul>
+      <li><a href="general.html">General</a></li>
+      <li><a href="academic.html">Academic & Educational</a></li>
+      <li><a href="culture.html">Cultural & International</a></li>
+      <li><a href="art.html">Art and Recreation</a></li>
+      <li><a href="sport.html">Sports</a></li>
+    </ul>
+  </nav>
+
+  <div class="layout">
     <!-- Left Sidebar -->
-    <aside class="sidebar">
-      <nav>
-        <ul>
-          <li>Home</li>
-          <li>Search</li>
-          <li>Create Post</li>
-          <li>Notifications</li>
-          <li>Profile</li>
-          <li>Settings</li>
-        </ul>
-      </nav>
+      <div class="sidebar">
+          <a class="menu-item active">
+              <span><i class="uil uil-home"></i></span>
+              <h3>Home</h3>   
+          </a>
+          <a class="menu-item">
+              <span><i class="uil uil-compass"></i></span>
+              <h3>Explore</h3>
+          </a>
+          <a class="menu-item"  id="notifications">
+              <span><i class="uil uil-bell"><small class="notification-count">9+</small></i></span>
+              <h3>Notification</h3>
+          <a class="menu-item" id="messages-notifications">
+            <span><i class="uil uil-envelope-alt"><small class="notification-count">6</small></i></span>
+            <h3>Messages</h3>
+          </a>
+          <a class="menu-item">
+              <span><i class="uil uil-bookmark"></i></span>
+              <h3>Bookmarks</h3>
+          </a>
+          <a class="menu-item">
+              <span><i class="uil uil-chart-line"></i></span>
+              <h3>Analytics</h3>
+          </a>
+          <a class="menu-item" id="theme">
+              <span><i class="uil uil-palette"></i></span>
+              <h3>Theme</h3>
+          </a>
+          <a class="menu-item">
+              <span><i class="uil uil-setting"></i></span>
+              <h3>Setting</h3>
+          </a>
+      </div>
+</ul>
+      </ul>
+      <div class="footer">
+        <img src="images/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="APU" />
+        <p>Asia Pacific University</p>
+      </div>
     </aside>
 
-    <!-- Main Section -->
-    <main>
-      <header class="topbar">
-        <button>General</button>
-        <button>Academic & Educational</button>
-        <button>Cultural & International</button>
-        <button>Art & Recreation</button>
-        <button>Sports</button>
-      </header>
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="post-feed">
+        <!-- Post Card 1 -->
+        <div class="post-card">
+          <div class="post-img">
+            <img src="https://i.imgur.com/qZmOPyR.png" alt="announcement" />
+          </div>
+          <div class="post-content">
+            <h4>Asia Pacific University · <span class="badge">official</span></h4>
+            <p>The Government had earlier this week, issued announcements regarding the schedule of road closures planned between 23–28 May for the ASEAN SUMMIT...</p>
+            <a class="file-download" href="#">📎 announcement.pdf</a>
+            <div class="post-actions">
+              <span>💬</span>
+              <span>🤍</span>
+              <span>🔗</span>
+              <a class="read-more" href="#">see more</a>
+            </div>
+          </div>
+        </div>
 
-      <section class="posts">
+        <!-- Post Card 2 -->
         <div class="post-card">
-          <h3>Student Union Meeting</h3>
-          <p>Join us for the next campus-wide meeting this Friday in Hall A.</p>
+          <div class="placeholder"></div>
         </div>
-        <div class="post-card">
-          <h3>Intramural Soccer Tournament</h3>
-          <p>Registrations open for the Spring Tournament! ⚽</p>
-        </div>
-      </section>
+      </div>
     </main>
 
     <!-- Right Sidebar -->
-    <aside class="suggestions">
-      <h4>Suggested Accounts</h4>
-      <ul>
-        <li>@eng_club</li>
-        <li>@campus_radio</li>
-        <li>@art_society</li>
+    <aside class="right-sidebar">
+      <button class="msg-btn">💬 Messages</button>
+      <h4>Suggested for you</h4>
+      <ul class="suggestions">
+        <li><span></span> User_1 <a href="#">Follow</a></li>
+        <li><span></span> User_2 <a href="#">Follow</a></li>
+        <li><span></span> User_3 <a href="#">Follow</a></li>
+        <li><span></span> User_4 <a href="#">Follow</a></li>
+        <li><span></span> User_5 <a href="#">Follow</a></li>
       </ul>
     </aside>
+    
   </div>
-
-  <script src="scripts/app.js"></script>
+  <script src="../js/general.js"></script>
 </body>
 </html>
