@@ -54,6 +54,13 @@
               <span><i class="uil uil-setting"></i></span>
               <h3>Setting</h3>
           </a>
+          <button id="logoutBtn">Log Out</button>
+          <script>
+          document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.setItem('isLoggedIn', 'false');
+            window.location.href = 'register_login.html';
+          });
+</script>
       </div>
 </ul>
       </ul>
