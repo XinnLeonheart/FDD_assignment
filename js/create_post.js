@@ -66,3 +66,46 @@ document.addEventListener('DOMContentLoaded', () => {
     form.reset();
   });
 });
+
+// After Firebase config loaded
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const text = document.getElementById('postText').value.trim();
+  const category = document.getElementById('postCategory').value;
+  const imageFile = document.getElementById('postImage').files[0];
+  const pdfFile = document.getElementById('postPDF').files[0];
+
+  const postData = {
+    user: 'You',
+    category,
+    text,
+    imageURL: '',
+    pdfURL: '',
+    pdfName: '',
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  // Upload image if exists
+  if (imageFile) {
+    const imgRef = storage.ref(`images/${Date.now()}_${imageFile.name}`);
+    await imgRef.put(imageFile);
+    postData.imageURL = await imgRef.getDownloadURL();
+  }
+
+  // Upload PDF if exists
+  if (pdfFile) {
+    const pdfRef = storage.ref(`pdfs/${Date.now()}_${pdfFile.name}`);
+    await pdfRef.put(pdfFile);
+    postData.pdfURL = await pdfRef.getDownloadURL();
+    postData.pdfName = pdfFile.name;
+  }
+
+  // Save post to Firestore
+  await db.collection("posts").add(postData);
+
+  // Redirect to previous feed page
+  const lastPage = localStorage.getItem('lastVisitedPage') || 'general.html';
+  window.location.href = lastPage;
+});

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Academic Posts</title>
+  <link rel="stylesheet" href="../css/post.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="../js/firebase-config.js"></script> <!-- Your Firebase config -->
+</head>
+
+<body data-category="sport">
+  <nav class="topbar">
+    <div class="logo">APCommunity</div>
+    <ul>
+      <li><a href="general.html">General</a></li>
+      <li><a href="academic.html" class="active">Academic</a></li>
+      <li><a href="culture.html">Cultural</a></li>
+      <li><a href="art.html">Art</a></li>
+      <li><a href="sport.html">Sports</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <!-- Sidebar Left -->
+    <aside class="sidebar-left">
+      <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
+      <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
+      <div class="menu-item"><i class="uil uil-bell"></i> Notifications</div>
+      <div class="menu-item"><i class="uil uil-envelope-alt"></i> Messages</div>
+      <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
+      <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
+    </aside>
+
+    <!-- Post Feed -->
+    <main class="main-feed" id="postFeed">
+      <!-- Firebase posts will be rendered here -->
+    </main>
+
+    <!-- Sidebar Right -->
+    <aside class="sidebar-right">
+      <h4>Suggested for you</h4>
+      <ul class="suggestions">
+        <li>User_1 <a href="#">Follow</a></li>
+        <li>User_2 <a href="#">Follow</a></li>
+        <li>User_3 <a href="#">Follow</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <script src="../js/post.js"></script> <!-- Shared loader -->
+</body>
+</html>
