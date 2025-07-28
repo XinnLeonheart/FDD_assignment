@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Post</title>
+  <link rel="stylesheet" href="../css/posting.css" />
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">APCommunity</div>
+      <ul class="menu">
+        <li><a href="#"><i class='bx bx-home'></i> Home</a></li>
+        <li><a href="#"><i class='bx bx-search'></i> Search</a></li>
+        <li class="active"><a href="#"><i class='bx bx-plus-circle'></i> Create Post</a></li>
+        <li><a href="#"><i class='bx bx-bell'></i> Notification</a></li>
+        <li><a href="#"><i class='bx bx-user'></i> Profile</a></li>
+        <li><a href="#"><i class='bx bx-cog'></i> Setting</a></li>
+      </ul>
+      <div class="footer-logo">
+        <img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" class="footer-logo-img" alt="APU Logo" />
+        <span>Asia Pacific University</span>
+      </div>
+    </aside>
+
+    <!-- Post Section -->
+    <main class="post-section">
+      <div class="post-wrapper">
+        <form class="post-form" action="#" method="post" enctype="multipart/form-data">
+          
+          <!-- Row: logo + textarea -->
+          <div class="post-input-area">
+            <img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" class="apuLogo" alt="APU Logo" />
+            <textarea placeholder="Write something ..." name="postContent" required></textarea>
+          </div>
+
+          <!-- Attachments -->
+          <div class="attachments">
+            <label id="imageLabel">
+              <i class='bx bx-image'></i> <span class="label-text">Add Image</span>
+              <input type="file" id="attachImage" name="image" accept="image/*" hidden multiple>
+            </label>
+          
+            <label id="videoLabel">
+              <i class='bx bx-video'></i> <span class="label-text">Add Video</span>
+              <input type="file" id="attachVideo" name="video" accept="video/*" hidden multiple>
+            </label>
+          
+            <label id="fileLabel">
+              <i class='bx bx-paperclip'></i> <span class="label-text">Add File</span>
+              <input type="file" id="attachFile" name="file" hidden multiple>
+            </label>
+          </div>
+          <!-- Previews -->
+          <div id="previewImages" class="file-preview-container"></div>
+          <div id="previewVideos" class="file-preview-container"></div>
+          <div id="previewFiles" class="file-preview-container"></div>
+
+          <!-- Post Button -->
+          <button type="submit" class="post-btn">Post</button>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script src="../js/posting.js"></script>
+</body>
+</html>

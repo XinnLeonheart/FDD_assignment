@@ -1,0 +1,228 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Layout */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #E6E5D3;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #ddd;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 30px;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.menu {
+  list-style: none;
+}
+
+.menu li {
+  margin-bottom: 40px;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #555;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.menu li a i {
+  font-size: 30px;
+  margin-right: 20px;
+}
+
+.menu li.active a,
+.menu li a:hover {
+  color: #007acc;
+  font-weight: bold;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #1a1a1a;
+  margin-top: 40px;
+  text-align: center;
+  gap: 10px; 
+}
+
+.footer-logo-img {
+  width: 30px;   
+  height: auto;
+}
+
+
+/* Posting Section */
+.post-section {
+  flex: 1;
+  padding: 40px;
+  background-color: #EEEFDF;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Centered wrapper box */
+.post-wrapper {
+  width: 100%;     
+  max-width: 1200px;
+  height: 100%; 
+  max-height: 1200px;
+  padding: 40px;
+  margin: 0 auto;  
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Group logo and textarea side by side */
+.post-input-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.apuLogo {
+  width: 80px;
+  height: auto;
+  max-height: 100px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.post-input-area textarea {
+  flex: 1;
+  height: 80px;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  resize: none;
+}
+
+/* Post Form */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-left: 100px;
+}
+
+.attachments label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  color: #333;
+}
+
+.attachments label i {
+  font-size: 20px;
+  margin-right: 8px;
+  color: #666;
+}
+
+.attachments label:hover {
+  text-decoration: underline;
+}
+
+.attachments input[type="file"] {
+  display: none;
+}
+
+.file-preview-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 100px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  background: #f4f4f4;
+  padding: 8px 12px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.file-item img,
+.file-item video {
+  max-width: 200px;
+  border-radius: 8px;
+}
+
+.file-name {
+  font-weight: 500;
+}
+
+.remove-file {
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+}
+
+/* Post Button */
+.post-btn {
+  width: 150px;
+  padding: 12px;
+  margin-left: 100px;
+  background-color: transparent;
+  border: 1px solid #007acc;
+  color: #007acc;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s;
+  align-self: flex-start;
+  margin-top: 50px;
+}
+
+.post-btn:hover {
+  background-color: #007acc;
+  color: #fff;
+}
