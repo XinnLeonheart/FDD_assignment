@@ -106,6 +106,7 @@ body {
   cursor: pointer;
   color: #555;
   transition: all 0.3s;
+  text-decoration: none;
 }
 
 .sidebar-left .menu-item i {
