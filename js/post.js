@@ -147,3 +147,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Image modal logic
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.post-img img').forEach(img => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', function() {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = this.src;
+      modal.classList.add('show');
+    });
+  });
+
+  document.querySelector('.close-modal').addEventListener('click', function() {
+    document.getElementById('imageModal').classList.remove('show');
+  });
+
+  document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('show');
+    }
+  });
+});
