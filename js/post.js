@@ -129,5 +129,21 @@ function bindPostInteractions() {
   });
 }
 
+const user = {
+  username: "Asia Pacific University",
+  desc: "APU",
+  profileImage: "image/profile.jpg"
+};
 
-
+window.addEventListener('DOMContentLoaded', () => {
+  const logoutLink = document.querySelector('.logout-link');
+  if (logoutLink) {
+    logoutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('Are you sure you want to log out?')) {
+        localStorage.setItem('isLoggedIn', 'false'); // <-- Add this line
+        window.location.href = 'register_login.html';
+      }
+    });
+  }
+});

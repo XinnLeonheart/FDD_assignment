@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Check login state on page load
   if (localStorage.getItem('isLoggedIn') === 'true') {
-    window.location.href = 'home.html'; // Redirect to home if already logged in
+    window.location.href = 'general.html'; // Redirect to home if already logged in
   }
 
   // Register
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('isLoggedIn', 'true');
 
     alert('Registration successful! You are now logged in.');
-    window.location.href = 'home.html'; // Redirect after registration
+    window.location.href = 'general.html'; // Redirect after registration
   });
 
   // Log In
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ) {
       localStorage.setItem('isLoggedIn', 'true');
       alert('Login successful!');
-      window.location.href = 'home.html'; // Redirect after login
+      window.location.href = 'general.html'; // Redirect after login
     } else {
       alert('Invalid credentials or account does not exist. Please register first.');
     }
