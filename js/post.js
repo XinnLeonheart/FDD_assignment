@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ✅ Interaction logic for all posts
 function bindPostInteractions() {
   // Like button
-  document.querySelectorAll('.like-icon').forEach(icon => {
+    document.querySelectorAll('.like-icon').forEach(icon => {
     icon.addEventListener('click', () => {
       const isLiked = icon.getAttribute('type') === 'solid';
       icon.setAttribute('type', isLiked ? 'regular' : 'solid');
@@ -111,23 +111,22 @@ function bindPostInteractions() {
 
   // Comment toggle
   document.querySelectorAll('.comment-icon').forEach(icon => {
-    icon.addEventListener('click', () => {
-      const commentBox = icon.closest('.post-content').querySelector('.comment-box');
-      if (commentBox) {
-        commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
-      }
-    });
+  icon.addEventListener('click', () => {
+    const commentBox = icon.closest('.post-content').querySelector('.comment-box');
+    if (commentBox) {
+      commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+    }
   });
+});
 
   // Share link
-  document.querySelectorAll('.share-icon').forEach(icon => {
-    icon.addEventListener('click', () => {
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => alert('Post link copied!'))
-        .catch(() => alert('Copy failed.'));
-    });
+document.querySelectorAll('.share-icon').forEach(icon => {
+  icon.addEventListener('click', () => {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => alert('Post link copied!'))
+      .catch(() => alert('Copy failed.'));
   });
-}
+});
 
 const user = {
   username: "Asia Pacific University",
