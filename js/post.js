@@ -72,24 +72,32 @@ document.addEventListener('DOMContentLoaded', () => {
           card.dataset.postId = doc.id; // Store post ID for interactions
 
           card.innerHTML = `
-            <div class="post-img">
-              ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ''}
-            </div>
-            <div class="post-content">
-              <h4>${post.user} ${post.user === "Asia Pacific University" ? '<span class="badge">· official</span>' : ''}</h4>
-              <p>${post.text}</p>
-              ${post.pdfURL ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}">📎 ${post.pdfName}</a>` : ''}
-              <div class="post-actions">
-                <box-icon name="heart" class="like-icon" type="regular" color="#333"></box-icon>
-                <box-icon name="comment" class="comment-icon" type="regular" color="#333"></box-icon>
-                <box-icon name="share" class="share-icon" type="regular" color="#333"></box-icon>
+            <div class="post-body">
+              <div class="post-img">
+                ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ''}
+              </div>
+              <div class="post-content">
+                <h4>${post.user} ${post.user === "Asia Pacific University" ? '<span class="badge">· official</span>' : ''}</h4>
+                <p>${post.text}</p>
+                ${post.pdfURL ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}">📎 ${post.pdfName}</a>` : ''}
+                <div class="post-actions">
+                  <box-icon name="heart" class="like-icon" type="regular" color="#333"></box-icon>
+                  <box-icon name="comment" class="comment-icon" type="regular" color="#333"></box-icon>
+                  <box-icon name="share" class="share-icon" type="regular" color="#333"></box-icon>
+                </div>
+                <div class="comments-container">
+                  ${post.comments?.map(c => `
+                    <div class="comment"><strong>${c.user}</strong> ${c.text}</div>
+                  `).join('') || ''}
+                </div>
               </div>
             </div>
             <div class="comment-box" style="display: none;">
-              <input type="text" class="comment-input" placeholder="Write a comment...">
-              <button class="submit-comment">Post</button>
+              <input type="text" class="comment-input" placeholder="Add a comment...">
+              <button class="submit-comment" disabled>Post</button>
             </div>
           `;
+
 
 
           postFeed.appendChild(card);
@@ -146,38 +154,17 @@ document.querySelectorAll('.comment-icon').forEach(icon => {
   icon.addEventListener('click', () => {
     const postCard = icon.closest('.post-card');
     const commentBox = postCard.querySelector('.comment-box');
-    if (commentBox) {
-      commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+    const commentsContainer = postCard.querySelector('.comments-container');
+
+    if (commentBox && commentsContainer) {
+      const isVisible = commentBox.style.display === 'block';
+      commentBox.style.display = isVisible ? 'none' : 'block';
+      commentsContainer.style.display = isVisible ? 'none' : 'flex';
     }
   });
 });
 
 
-document.querySelectorAll('.submit-comment').forEach((btn, index) => {
-  btn.addEventListener('click', async () => {
-    const input = btn.previousElementSibling;
-    const commentText = input.value.trim();
-    if (!commentText) return;
-
-    const postCard = btn.closest('.post-card');
-    const postId = postCard.dataset.postId;
-
-    try {
-      const postRef = db.collection("posts").doc(postId);
-      await postRef.update({
-        comments: firebase.firestore.FieldValue.arrayUnion({
-          user: user.username,
-          text: commentText
-        })
-      });
-
-      input.value = '';
-      alert("Comment posted!");
-    } catch (err) {
-      console.error("Failed to post comment:", err);
-    }
-  });
-});
 
   // Share link
 document.querySelectorAll('.share-icon').forEach(icon => {
@@ -234,3 +221,69 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+document.querySelectorAll('.submit-comment').forEach((btn, index) => {
+  const input = btn.previousElementSibling;
+
+  // Enable/disable logic
+  input.addEventListener('input', () => {
+    btn.disabled = input.value.trim() === '';
+  });
+
+  btn.addEventListener('click', async () => {
+    const commentText = input.value.trim();
+    if (!commentText) return;
+
+    const postCard = btn.closest('.post-card');
+    const postId = postCard.dataset.postId;
+
+    const commentObj = {
+      user: user.username,
+      text: commentText
+    };
+
+    try {
+      const postRef = db.collection("posts").doc(postId);
+      await postRef.update({
+        comments: firebase.firestore.FieldValue.arrayUnion(commentObj)
+      });
+
+      // Append comment to DOM
+      const commentContainer = postCard.querySelector('.comments-container');
+      const newComment = document.createElement('div');
+      newComment.classList.add('comment');
+      newComment.innerHTML = `<strong>${commentObj.user}</strong> ${commentObj.text}`;
+      commentContainer.appendChild(newComment);
+
+      input.value = '';
+      btn.disabled = true;
+    } catch (err) {
+      console.error("Failed to post comment:", err);
+    }
+  });
+});
+
+document.querySelectorAll('.comment-box').forEach(box => {
+  const input = box.querySelector('.comment-input');
+  const btn = box.querySelector('.submit-comment');
+  const postCard = box.closest('.post-card');
+  const commentsContainer = postCard.querySelector('.comments-container');
+
+  input.addEventListener('input', () => {
+    btn.disabled = input.value.trim() === '';
+  });
+
+  btn.addEventListener('click', () => {
+    const text = input.value.trim();
+    if (!text) return;
+
+    const comment = document.createElement('div');
+    comment.className = 'comment';
+    comment.innerHTML = `<strong>You</strong> ${text}`;
+    commentsContainer.appendChild(comment);
+
+    input.value = '';
+    btn.disabled = true;
+  });
+});
+

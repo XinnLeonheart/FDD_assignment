@@ -46,35 +46,36 @@
   <!-- Main Feed -->
   <main class="main-feed" id="postFeed">
     <!-- Your existing post cards will go here -->
-    <div class="post-card" data-category="general">
+    <div class="post-card">
       <div class="post-body">
         <div class="post-img">
           <img src="image/announcement.jpeg" alt="announcement" />
         </div>
         <div class="post-content">
-          <h4>Asia Pacific University<span class="badge"> · official</span></h4>
+          <h4>Asia Pacific University <span class="badge">· official</span></h4>
           <p>The Government had earlier this week issued announcements...</p>
-
           <a class="file-download" href="#">announcement.pdf</a>
 
           <div class="post-actions">
             <box-icon name="heart" class="like-icon" type="solid"></box-icon>
             <box-icon name="comment" class="comment-icon" type="solid"></box-icon>
             <box-icon name='share-alt' class="share-icon" type="solid"></box-icon>
-            <a class="read-more" href="#">see more</a>
           </div>
         </div>
       </div>
 
-      <!-- ✅ GOOD: comment-box is now outside post-content -->
-      <div class="comment-box" style="display: none;">
-        <input type="text" class="comment-input" placeholder="Write a comment...">
-        <button class="submit-comment">Post</button>
+      <!-- ✅ Comments now OUTSIDE of post-body -->
+      <div class="comments-container">
+        <div class="comment"><strong>JohnDoe</strong> Thanks for sharing!</div>
+        <div class="comment"><strong>JaneSmith</strong> Very helpful!</div>
+      </div>
+
+      <!-- ✅ Comment box under comments -->
+      <div class="comment-box">
+        <input type="text" class="comment-input" placeholder="Add a comment...">
+        <button class="submit-comment" disabled>Post</button>
       </div>
     </div>
-
-
-    <!-- Add more posts here dynamically -->
   </main>
 
   <!-- Right Sidebar -->
