@@ -1,38 +1,41 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.container');
   const registerBtn = document.querySelector('.register-btn');
   const loginBtn = document.querySelector('.login-btn');
   const loginForm = document.querySelector('.form-box.login form');
   const registerForm = document.querySelector('.form-box.register form');
 
-  // Toggle panels
+  // Switch between forms
   registerBtn.addEventListener('click', () => container.classList.add('active'));
   loginBtn.addEventListener('click', () => container.classList.remove('active'));
 
-  // Check login state on page load
+  // Auto-redirect if already logged in
   if (localStorage.getItem('isLoggedIn') === 'true') {
-    window.location.href = 'general.html'; // Redirect to home if already logged in
+    window.location.href = 'general.html';
   }
 
-  // Register
-  registerForm.addEventListener('submit', function(e) {
+  // Register new account
+  registerForm.addEventListener('submit', e => {
     e.preventDefault();
     const email = registerForm.querySelector('input[placeholder="Email"]').value;
     const username = registerForm.querySelector('input[placeholder="Username"]').value;
     const password = registerForm.querySelector('input[placeholder="Password"]').value;
 
-    // Save credentials (for demo only; not secure for real apps)
+    // Save account info (demo only)
     localStorage.setItem('userEmail', email);
     localStorage.setItem('userUsername', username);
     localStorage.setItem('userPassword', password);
+
+    // Mark login session
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUser', username); // store username for per-user posts
 
     alert('Registration successful! You are now logged in.');
-    window.location.href = 'general.html'; // Redirect after registration
+    window.location.href = 'general.html';
   });
 
-  // Log In
-  loginForm.addEventListener('submit', function(e) {
+  // Log into existing account
+  loginForm.addEventListener('submit', e => {
     e.preventDefault();
     const emailOrUsername = loginForm.querySelector('input[placeholder="Email/Username"]').value;
     const password = loginForm.querySelector('input[placeholder="Password"]').value;
@@ -46,11 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
       password === savedPassword
     ) {
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUser', savedUsername);
       alert('Login successful!');
-      window.location.href = 'general.html'; // Redirect after login
+      window.location.href = 'general.html';
     } else {
       alert('Invalid credentials or account does not exist. Please register first.');
     }
   });
 });
-

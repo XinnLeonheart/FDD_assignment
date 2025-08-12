@@ -357,10 +357,6 @@ body {
   cursor: pointer;
 }
 
-.submit-comment:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
 
 .comments-container {
   display: none;
