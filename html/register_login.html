@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register and Log In</title>
-    <link rel="stylesheet" href="./css/register_login.css">
+    <link rel="stylesheet" href="../css/register_login.css">
+	
 </head>
 
 <body>
@@ -13,10 +14,14 @@
       <form action = "">
         <h1>Log In</h1>
         <div class = "input-box">
-            <input type="text" placeholder="Email/Username" required>
+	        <label>
+		        <input type="text" placeholder="Email/Username" required>
+	        </label>
         </div>
         <div class = "input-box">
-            <input type="password" placeholder="Password" required>
+	        <label>
+		        <input type="password" placeholder="Password" required>
+	        </label>
         </div>
         <div class = "forgot-link">
             <a href="#">Forgot Password?</a>
@@ -29,22 +34,28 @@
       <form action = "">
         <h1>Register</h1>
         <div class = "input-box">
-            <input type="text" placeholder="Email" required>
+	        <label>
+		        <input type="text" placeholder="Email" required>
+	        </label>
         </div> 
 
         <div class = "input-box">
-            <input type="text" placeholder="Username" required>
+	        <label>
+		        <input type="text" placeholder="Username" required>
+	        </label>
         </div>
 
         <div class = "input-box">
-            <input type="password" placeholder="Password" required>
+	        <label>
+		        <input type="password" placeholder="Password" required>
+	        </label>
         </div>
 
         <div class = "forgot-link">
             <a href="#">Forgot Password?</a>
         </div>
         
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn" >Register</button>
       </form>
     </div>
     
@@ -61,8 +72,9 @@
       </div>
     </div>
   </div>
-
-  <script src="js/register_login.js"></script>
-
+  
+  <script type="module" src="../js/indexedDb.js"></script>
+  <script type="module" src="../js/register_login.js"></script>
+  
 </body>
 </html>

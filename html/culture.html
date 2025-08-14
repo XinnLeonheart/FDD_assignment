@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>Academic Posts</title>
-  <link rel="stylesheet" href="../css/post.css" />
+  <link rel="stylesheet" href="../css/post.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-  <script src="../js/firebase-config.js"></script> <!-- Your Firebase config -->
+<!--  <script src="../js/firebase-config.js"></script> &lt;!&ndash; Your Firebase config &ndash;&gt;-->
 </head>
 
-<body data-category="art">
+<body data-category="culture">
   <nav class="topbar">
     <div class="logo">APCommunity</div>
     <ul>
@@ -23,19 +23,18 @@
       <li><a href="sport.html">Sports</a></li>
     </ul>
   </nav>
-
-  <div class="container">
-    <!-- Sidebar Left -->
-    <aside class="sidebar-left">
-      <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
-      <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
-      <div class="menu-item"><i class="uil uil-bell"></i> Notifications</div>
-      <a href="posting.html" class="menu-item tab-link" data-category="posting">
-        <i class="uil uil-envelope-alt"></i> Add a Post
-      </a>
-      <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
-      <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
-    </aside>
+<div class="container">
+  <!-- Sidebar Left -->
+  <aside class="sidebar-left">
+    <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
+    <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
+    <div class="menu-item"><i class="uil uil-bell"></i> Notifications</div>
+    <a href="posting.html" class="menu-item tab-link" data-category="posting">
+      <i class="uil uil-envelope-alt"></i> Add a Post
+    </a>
+    <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
+    <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
+  </aside>
 
     <!-- Post Feed -->
     <main class="main-feed" id="postFeed">

@@ -1,3 +1,6 @@
+
+
+// DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   const postFeed = document.getElementById('postFeed');
   const currentCategory = document.body.dataset.category;
@@ -9,8 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Save last visited page for this user
+
+  // Save the last visited page for this user
   localStorage.setItem(`lastVisitedPage_${currentUser}`, window.location.pathname);
+
 
   // Default posts for new users
   const defaultPosts = [
@@ -41,10 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+
   // Load posts for this user
   let posts = JSON.parse(localStorage.getItem(`posts_${currentUser}`)) || defaultPosts;
 
-  // Render only posts in the current category
+
+  // Render-only posts in the current category
   posts.forEach(post => {
     if (post.category === currentCategory) {
       const card = document.createElement('div');
@@ -72,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="comment-box" style="display: none;">
           <input type="text" class="comment-input" placeholder="Add a comment...">
-          <button class="submit-comment" disabled>Post</button>
+          <button class="submit-comment" >Post</button>
         </div>
       `;
       postFeed.appendChild(card);
@@ -83,6 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupPostInteractions(posts, currentUser);
 });
 
+
+// Image modal
 function enableImageModalPreview() {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImg");
@@ -102,6 +111,8 @@ function enableImageModalPreview() {
   });
 }
 
+
+// Post interactions
 function setupPostInteractions(posts, currentUser) {
   // Likes with persistence
   document.querySelectorAll('.like-icon').forEach((icon) => {
@@ -118,7 +129,8 @@ function setupPostInteractions(posts, currentUser) {
     });
   });
 
-  // Show comment box
+
+  // Show the comment box
   document.querySelectorAll(".comment-icon").forEach((icon) => {
     icon.addEventListener("click", () => {
       const postCard = icon.closest(".post-card");
@@ -130,6 +142,7 @@ function setupPostInteractions(posts, currentUser) {
       if (!isVisible) commentBox.querySelector(".comment-input").focus();
     });
   });
+
 
   // Share
   document.querySelectorAll(".share-icon").forEach((icon) => {
@@ -143,6 +156,7 @@ function setupPostInteractions(posts, currentUser) {
         .catch(() => alert("Copy failed."));
     });
   });
+
 
   // Comment posting
   document.querySelectorAll('.comment-input').forEach((input) => {
@@ -160,6 +174,8 @@ function setupPostInteractions(posts, currentUser) {
   });
 }
 
+
+// Post comment
 function postComment(input, button, posts, currentUser) {
   const commentText = input.value.trim();
   if (!commentText) return;
@@ -168,6 +184,7 @@ function postComment(input, button, posts, currentUser) {
   const postId = postCard.dataset.postId;
   const commentsContainer = postCard.querySelector('.comments-container');
 
+
   // DOM update
   commentsContainer.style.display = 'flex';
   const newComment = document.createElement('div');
@@ -175,12 +192,14 @@ function postComment(input, button, posts, currentUser) {
   newComment.innerHTML = `<strong>${currentUser}</strong> ${commentText}`;
   commentsContainer.appendChild(newComment);
 
-  // Save to posts data for this user
+
+  // Save to post data for this user
   const postIndex = posts.findIndex(p => p.id === postId);
   if (postIndex > -1) {
     posts[postIndex].comments.push({ user: currentUser, text: commentText });
     localStorage.setItem(`posts_${currentUser}`, JSON.stringify(posts));
   }
+
 
   // Reset input
   input.value = '';
@@ -189,16 +208,22 @@ function postComment(input, button, posts, currentUser) {
   newComment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+
+// abandoned
 // Logout
-window.addEventListener("DOMContentLoaded", () => {
-  const logoutLink = document.querySelector(".logout-link");
-  if (logoutLink) {
-    logoutLink.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (confirm("Are you sure you want to log out?")) {
-        localStorage.setItem("isLoggedIn", "false");
-        window.location.href = "register_login.html";
-      }
-    });
-  }
-});
+// window.addEventListener("DOMContentLoaded", () => {
+//   const logoutLink = document.getElementsByClassName(".logout-link");
+//   if (logoutLink) {
+//     logoutLink.addEventListener("click", function (e) {
+//       e.preventDefault();
+//       if (confirm("Are you sure you want to log out?"))
+//       {
+//         localStorage.setItem("isLoggedIn", "false");
+//         deleteUserData("currentUserIndex").then(r => {
+//             console.log(r);
+//             window.location.href = "register_login.html";
+//         });
+//       }
+//     });
+//   }
+// });

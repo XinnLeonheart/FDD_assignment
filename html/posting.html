@@ -6,25 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add a Post</title>
     <link rel="stylesheet" href="../css/posting.css">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../css/post.css">
+	<link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
 </head>
 
 <body>
-    <nav class="topbar">
-        <div class="logo">APCommunity</div>
-    </nav>
+<nav class="topbar">
+	<div class="logo">APCommunity</div>
+	<ul>
+		<li><a href="general.html" class="tab-link active" data-category="general">General</a></li>
+		<li><a href="academic.html" class="tab-link" data-category="academic">Academic</a></li>
+		<li><a href="culture.html" class="tab-link" data-category="culture">Cultural</a></li>
+		<li><a href="art.html" class="tab-link" data-category="art">Art</a></li>
+		<li><a href="sport.html" class="tab-link" data-category="sport">Sport</a></li>
+	</ul>
+	<div class="profile-info" id="profileInfo">
+		<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+		<div class="profile-details">
+			<span class="profile-username">Asia Pacific University</span>
+			<span class="profile-desc">APU</span>
+		</div>
+		<a href="register_login.html" class="logout-link">Log out</a>
+	</div>
+</nav>
 
     <div class="container">
-        <aside class="sidebar-left">
-            <a href="general.html" class="menu-item tab-link" data-category="general">
-                <i class="uil uil-home"></i> Home
-            </a>
-            <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
-            <div class="menu-item"><i class="uil uil-bell"></i> Notifications</div>
-            <div class="menu-item active"><i class="uil uil-envelope-alt"></i> Add a Post</div>
-            <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
-            <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
-        </aside>
+	    <aside class="sidebar-left">
+		    <!-- Put your sidebar content here -->
+		    <a href="general.html" class="menu-item tab-link" data-category="general">
+			    <i class="uil uil-envelope-alt"></i> Home
+		    </a>
+		    <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
+		    <a href="notification.html" class="menu-item tab-link" data-category="notification">
+			    <i class="uil uil-envelope-alt"></i> Notification
+		    </a>
+		    <div class="menu-item active"><i class="uil uil--envelope-alt"></i> Add a post</div>
+		    <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmark</div>
+		    <a href="profile.html" class="menu-item tab-link" data-category="profile">
+			    <i class="uil uil-envelope-alt"></i> Profile
+		    </a>
+		    <a href="setting.html" class="menu-item tab-link" data-category="setting">
+			    <i class="uil uil-envelope-alt"></i> Setting
+		    </a>
+	    </aside>
+    
 
         <!-- Post Section -->
         <main class="post-section">
@@ -35,7 +60,9 @@
                     <div class="post-input-area">
                         <img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" class="apuLogo"
                             alt="APU Logo" />
-                        <textarea placeholder="Write something ..." name="postContent" required></textarea>
+	                    <label>
+		                    <textarea placeholder="Write something ..." name="postContent" required></textarea>
+	                    </label>
                     </div>
 
                     <!-- Attachments -->
@@ -66,6 +93,7 @@
             </div>
         </main>
         <script src="../js/posting.js"></script>
+    </div>
 </body>
 
 </html>

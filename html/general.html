@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General</title>
+    <link rel="stylesheet" href="../css/post.css">     
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body data-category="general">
+
+<!-- navigate -->
+  <nav class="topbar">
+    <div class="logo">APCommunity</div>
+    <ul>
+      <li><a href="general.html" class="tab-link active" data-category="general">General</a></li>
+      <li><a href="academic.html" class="tab-link" data-category="academic">Academic</a></li>
+      <li><a href="culture.html" class="tab-link" data-category="culture">Cultural</a></li>
+      <li><a href="art.html" class="tab-link" data-category="art">Art</a></li>
+      <li><a href="sport.html" class="tab-link" data-category="sport">Sport</a></li>
+    </ul>
+    <div class="profile-info" id="profileInfo">
+    <img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+    <div class="profile-details">
+      <span class="profile-username">Asia Pacific University</span>
+      <span class="profile-desc">APU</span>
+    </div>
+    <a class="logout-link" onclick="logout()">Log out</a>
+	    <script>
+		    function logout()
+		    {
+			    if (confirm("Are you sure you want to log out?")) {
+				    localStorage.setItem("isLoggedIn", "false");
+				    deleteUserData("currentUserIndex").then(r => {
+					    console.log(r);
+					    window.location.href = "register_login.html";
+				    });
+			    }
+			}
+	    </script>
+  </div>
+  </nav>
+
+  <div class="container">
+  <!-- Left Sidebar -->
+	  <aside class="sidebar-left">
+		  <!-- Put your sidebar content here -->
+		  <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
+		  <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
+		  <a href="notification.html" class="menu-item tab-link" data-category="notification">
+			  <i class="uil uil-envelope-alt"></i> Notification
+		  </a>
+		  <a href="posting.html" class="menu-item tab-link" data-category="posting">
+			  <i class="uil uil-envelope-alt"></i> Add a Post
+		  </a>
+		  <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmark</div>
+		  <a href="profile.html" class="menu-item tab-link" data-category="profile">
+			  <i class="uil uil-envelope-alt"></i> Profile
+		  </a>
+		  <a href="setting.html" class="menu-item tab-link" data-category="setting">
+			  <i class="uil uil-envelope-alt"></i> Setting
+		  </a>
+	  </aside>
+	  
+	  <!-- Main Feed -->
+	  <main class="main-feed" id="postFeed">
+		  <!-- Your existing post-cards will go here -->
+		  <div class="post-card">
+			  <div class="post-body">
+				  <div class="post-img">
+					  <img src="../image/announcement.jpeg" alt="announcement" />
+				  </div>
+				  <div class="post-content">
+					  <h4>Asia Pacific University <span class="badge">· official</span></h4>
+					  <p>The Government had earlier this week issued announcements...</p>
+					  <a class="file-download" href="#">announcement.pdf</a>
+					  
+					  <div class="post-actions">
+						  <box-icon name="heart" class="like-icon"></box-icon>
+						  <box-icon name="comment" class="comment-icon" type="solid"></box-icon>
+						  <box-icon name='share-alt' class="share-icon" type="solid"></box-icon>
+					  </div>
+				  </div>
+			  </div>
+			  
+			  
+			  <div class="comments-container">
+				  <div class="comment"><strong>JohnDoe</strong> Thanks for sharing!</div>
+				  <div class="comment"><strong>JaneSmith</strong> Very helpful!</div>
+			  </div>
+			  
+			  
+			  <div class="comment-box">
+				  <input type="text" class="comment-input" placeholder="Add a comment...">
+				  <button class="submit-comment" >Post</button>
+			  </div>
+		  </div>
+	  </main>
+	  
+	  <!-- Right Sidebar -->
+	  <aside class="sidebar-right">
+		  <h4>Suggested for you</h4>
+		  <ul class="suggestions">
+			  <li>User_1 <button class="follow-btn">Follow</button></li>
+			  <li>User_2 <button class="follow-btn">Follow</button></li>
+			  <li>User_3 <button class="follow-btn">Follow</button></li>
+		  </ul>
+	  </aside>
+	  
+	  <div id="imageModal" class="image-modal" style="display:none;">
+		  <span class="close-modal">&times;</span>
+		  <img class="modal-content" id="modalImg" src="" alt="Full View">
+	  </div>
+  </div>
+  
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <script type="module" src="../js/post.js"></script>
+  <script type="module">
+	  import { getDataByIndex } from "../js/indexedDb.js";
+	  const profileUsername = document.querySelector(".profile-username");
+	  const currentUsername = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
+	  console.log(currentUsername[0].currentUser);
+	  profileUsername.textContent = currentUsername[0].currentUser;
+  </script>
+
+</body>
+</html>

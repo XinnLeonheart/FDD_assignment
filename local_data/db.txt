@@ -1,0 +1,15 @@
+userDB =
+{
+                const userStore = db.createObjectStore('userObjectStore', { keyPath: 'id', autoIncrement: true });
+                userStore.createIndex('usernameIndex', 'username', { unique: false });
+                userStore.createIndex('emailIndex', 'email', { unique: true });
+                userStore.createIndex('passwordIndex', 'password', { unique: false });
+                userStore.createIndex('currentUserIndex', 'currentUser', { unique: false });
+                userStore.createIndex('nameIndex', 'name', { unique: false });
+                userStore.createIndex('genderIndex', 'gender', { unique: false });
+                userStore.createIndex('ageIndex', 'age', { unique: false });
+                userStore.createIndex('addressIndex', 'address', { unique: false });
+                userStore.createIndex('majorIndex', 'major', { unique: false });
+                userStore.createIndex('phoneIndex', 'phone', { unique: false });
+                userStore.createIndex('statusIndex', 'status', { unique: false });
+}
