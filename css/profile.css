@@ -1,1 +1,198 @@
 @import url('https://fonts.cdnfonts.com/css/ghibli');
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body
+{
+    font-family: 'Ghibli', sans-serif;
+    background-color: #F7F7F1;
+    color: #333;
+    line-height: 1.6;
+}
+
+.profile-body {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.profile-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: all 0.3s;
+    min-height: 300px;
+    position: absolute;
+    width: 60%;
+    height: 88%;
+}
+
+.profile-content {
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-user-info
+{
+    display: flex;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    justify-content: center;
+    background: #d9d9d9;
+}
+
+.profile-edit-button
+{
+    margin-top: -20px;
+}
+
+#profile-edit-button
+{
+    width: 100%;
+    height: 50px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-family: 'Ghibli', sans-serif;
+}
+
+#profile-edit-button:hover
+{
+    background: #d9d9d9;
+}
+
+.profile-user-info img
+{
+    position: relative;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+}
+
+.profile-detail
+{
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.quick-access-card {
+    top: 460px;
+    left: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: all 0.3s;
+    position: absolute;
+    width: 96%;
+    height: 40%;
+}
+
+.quick-access-info
+{
+    display: flex;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    justify-content: center;
+    background: #d0d590;
+}
+
+.quick-access-content {
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.quick-access-content-button{
+
+}
+
+.quick-access-content-button img{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    width: 24%;
+    height: 24%;
+}
+
+.quick-access-content-button:hover{
+    background-color: #d9d9d9;
+}
+
+.card-selection {
+    width: 100%;
+    background-color: #fff;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    height: fit-content;
+    position: sticky;
+    top: 120px;
+    list-style: none;
+}
+
+.card-selection li p{
+    display: flex;
+    font-size: 25px;
+    font-weight: 600;
+    margin-left: 40px;
+    margin-right: 60px;
+}
+
+.card-selection li input#NameText{
+    position: relative;
+    height: 30px;
+    right: -70px;
+}
+
+.card-selection li input#GenderText{
+    position: relative;
+    height: 30px;
+    right: -50px;
+}
+
+.card-selection li input#AddressText{
+    position: relative;
+    height: 30px;
+    right: -40px;
+}
+
+.card-selection li input#PhoneText{
+    position: relative;
+    height: 30px;
+    right: -65px;
+}
+
+.card-selection li {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+
+}
+
+.card-selection li:last-child {
+    border-bottom: none;
+}
+

@@ -9,17 +9,16 @@ async function openDb() {
             {
                 console.log('userDB firstly created or upgraded.');
                 const userStore = db.createObjectStore('userObjectStore', { keyPath: 'id', autoIncrement: true });
-                userStore.createIndex('usernameIndex', 'username', { unique: false });
+                userStore.createIndex('usernameIndex', 'username', { unique: true });
                 userStore.createIndex('emailIndex', 'email', { unique: true });
                 userStore.createIndex('passwordIndex', 'password', { unique: false });
-                userStore.createIndex('currentUserIndex', 'currentUser', { unique: false });
+                userStore.createIndex('securityQuestionIndex', 'securityQuestion', { unique: false });
+                userStore.createIndex('answerIndex', 'answer', { unique: false });
+                userStore.createIndex('currentUserIndex', 'currentUser', { unique: true });
                 userStore.createIndex('nameIndex', 'name', { unique: false });
                 userStore.createIndex('genderIndex', 'gender', { unique: false });
-                userStore.createIndex('ageIndex', 'age', { unique: false });
                 userStore.createIndex('addressIndex', 'address', { unique: false });
-                userStore.createIndex('majorIndex', 'major', { unique: false });
                 userStore.createIndex('phoneIndex', 'phone', { unique: false });
-                userStore.createIndex('statusIndex', 'status', { unique: false });
                 console.log('ObjectStore "userObjectStore" and index has been created.');
             }
         });
@@ -53,33 +52,19 @@ async function addUserAccountData(Username, Email, Password) {
     const data = {
         username: Username,
         email: Email,
-        password: Password
+        password: Password,
+        securityQuestion: null,
+        answer: null,
+        currentUser: null,
+        name: null,
+        address: null,
+        phone: null,
+        gender: null,
     };
     const db = await openDb();
     const tx = db.transaction('userObjectStore', 'readwrite');
     const store = tx.objectStore('userObjectStore');
     await store.add(data);
-    await tx.done;
-    console.log('Data added successfully!');
-}
-
-
-// add user private data
- /*
- * @param string name
- * @param string gender
- * @param string age
- * @param string address
- * @param string major
- * @param string phone
- * @param string status
- */
-async function addUserPrivateData(name, gender, age, address, major, phone, status)
-{
-    const db = await openDb();
-    const tx = db.transaction('userObjectStore', 'readwrite');
-    const store = tx.objectStore('userObjectStore');
-    await store.add({ name: name, gender: gender, age: age, address: address, major: major, phone: phone, status: status, timestamp: new Date() });
     await tx.done;
     console.log('Data added successfully!');
 }
@@ -105,20 +90,40 @@ async function deleteUserData(indexName)
 
 // update data
 /*
+* @param string currentUser
 * @param string name
 * @param string gender
-* @param string age
 * @param string address
-* @param string major
 * @param string phone
-* @param string status
  */
-async function updateUserPrivateData(name, gender, age, address, major, phone, status)
+async function updateUserPrivateData(currentUser, name, gender, address, phone)
 {
     const db = await openDb();
     const tx = db.transaction('userObjectStore', 'readwrite');
     const store = tx.objectStore('userObjectStore');
-    await store.put({ name: name, gender: gender, age: age, address: address, major: major, phone: phone, status: status, timestamp: new Date() });
+    const index = store.index('usernameIndex');
+    const user = await index.get(currentUser);
+    user.name = name;
+    user.gender = gender;
+    user.address = address;
+    user.phone = phone;
+    await store.put(user);
+    await tx.done;
+    console.log('Data updated successfully!');
+    db.close();
+}
+
+async function updateUserPassword(currentUser, password, securityQuestion, answer)
+{
+    const db = await openDb();
+    const tx = db.transaction('userObjectStore', 'readwrite');
+    const store = tx.objectStore('userObjectStore');
+    const index = store.index('usernameIndex');
+    const passwordAndSecurityQuestion = await index.get(currentUser);
+    passwordAndSecurityQuestion.password = password;
+    passwordAndSecurityQuestion.securityQuestion = securityQuestion;
+    passwordAndSecurityQuestion.answer = answer;
+    await store.put(passwordAndSecurityQuestion);
     await tx.done;
     console.log('Data updated successfully!');
     db.close();
@@ -134,7 +139,7 @@ async function updateCurrentUser(currentUser)
     const db = await openDb();
     const tx = db.transaction('userObjectStore', 'readwrite');
     const store = tx.objectStore('userObjectStore');
-    await store.add({ currentUser: currentUser});
+    await store.put({currentUser: currentUser});
     await tx.done;
     console.log('Data updated successfully!');
     db.close();
@@ -147,6 +152,7 @@ async function updateCurrentUser(currentUser)
  * @param string storeName
  * @param string indexName
  * @param string indexValue
+ * @return Promise<any>
   */
 async function getMatchingDataByIndex(dbName, storeName, indexName, indexValue)
 {
@@ -162,7 +168,6 @@ async function getMatchingDataByIndex(dbName, storeName, indexName, indexValue)
     const matchingData = await index.get(indexValue);
 
     await tx.done;
-    console.log(matchingData);
     db.close();
     return matchingData;
 }
@@ -184,9 +189,7 @@ async function getDataByIndex(dbName, storeName, indexName)
 
     const index = store.index(indexName);
     const indexData = await index.getAll();
-
     await tx.done;
-    console.log(indexData);
     db.close();
     return indexData;
 }
@@ -218,7 +221,7 @@ async function check(emailOrUsername)
     let savedPassword;
 
     // get user data from indexedDB
-    const savedEmailObject = await searchUserData("userDB", "userObjectStore", "emailIndex", emailOrUsername);
+    const savedEmailObject = await searchUserData("userDB", "userObjectStore", "usernameIndex", emailOrUsername);
     if (savedEmailObject !=  null)
     {
         savedEmail = savedEmailObject.email;
@@ -235,7 +238,7 @@ async function check(emailOrUsername)
     }
     else
     {
-        const savedUsernameObject = await searchUserData("userDB", "userObjectStore", "usernameIndex", emailOrUsername);
+        const savedUsernameObject = await searchUserData("userDB", "userObjectStore", "emailIndex", emailOrUsername);
         if (savedUsernameObject != null)
         {
             savedEmail = savedUsernameObject.email;
@@ -258,7 +261,6 @@ async function check(emailOrUsername)
 export
 {
     addUserAccountData,
-    addUserPrivateData,
     deleteUserData,
     updateUserPrivateData,
     searchUserData,
@@ -267,12 +269,12 @@ export
     getDataByIndex,
     check,
     updateCurrentUser,
-    getMatchingDataByIndex
+    getMatchingDataByIndex,
+    updateUserPassword
 }
 
 // window.export
 window.addUserAccountData = addUserAccountData;
-window.addUserPrivateData = addUserPrivateData;
 window.deleteUserData = deleteUserData;
 window.updateUserPrivateData = updateUserPrivateData;
 window.searchUserData = searchUserData;
@@ -282,6 +284,7 @@ window.getDataByIndex = getDataByIndex;
 window.check = check;
 window.updateCurrentUser = updateCurrentUser;
 window.getMatchingDataByIndex = getMatchingDataByIndex;
+window.updateUserPassword = updateUserPassword;
 
 // open database
 document.addEventListener('DOMContentLoaded', openDb);

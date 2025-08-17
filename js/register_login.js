@@ -1,12 +1,18 @@
 import "./indexedDb.js"
 import {updateCurrentUser} from "./indexedDb.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () =>
+{
   const container = document.querySelector('.container');
   const registerBtn = document.querySelector('.register-btn');
   const loginBtn = document.querySelector('.login-btn');
   const loginForm = document.querySelector('.form-box.login form');
   const registerForm = document.querySelector('.form-box.register form');
+
+  localStorage.setItem("isLoggedIn", "false");
+  deleteUserData("currentUserIndex").then(r => {
+      console.log(r);
+  });
 
   // Switch between forms
   registerBtn.addEventListener('click', () => container.classList.add('active'));

@@ -3,13 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Setting</title>
+	<title>Profile</title>
 	<link rel="stylesheet" href="../css/post.css">
-	<link rel="stylesheet" href="../css/profile.css">
+	<link rel="stylesheet" href="../css/setting.css">
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body data-category="Setting">
+<body data-category="Profile">
 
 <nav class="topbar">
 	<div class="logo">APCommunity</div>
@@ -26,7 +26,19 @@
 			<span class="profile-username">Asia Pacific University</span>
 			<span class="profile-desc">APU</span>
 		</div>
-		<a href="register_login.html" class="logout-link">Log out</a>
+		<a class="logout-link" onclick="logout()">Log out</a>
+		<script>
+			function logout()
+			{
+				if (confirm("Are you sure you want to log out?")) {
+					localStorage.setItem("isLoggedIn", "false");
+					deleteUserData("currentUserIndex").then(r => {
+						console.log(r);
+						window.location.href = "register_login.html";
+					});
+				}
+			}
+		</script>
 	</div>
 </nav>
 
@@ -46,33 +58,56 @@
 			<i class="uil uil-envelope-alt"></i> Add a Post
 		</a>
 		<div class="menu-item"><i class="uil uil-bookmark"></i> Bookmark</div>
-		<a href="profile.html" class="menu-item tab-link" data-category="profile">
+		<a href="profile.html" class="menu-item tab-link" data-category="posting">
 			<i class="uil uil-envelope-alt"></i> Profile
 		</a>
-		<div class="menu-item active"><i class="uil uil-setting"></i> Setting</div>
+		<div class="menu-item active"><i class="uil uil-home"></i> Setting</div>
 	</aside>
 	
 	
 	<!-- Main Feed -->
 	<main class="main-feed" id="postFeed">
-		<!-- Your existing post-cards will go here -->
-		<div class="post-card">
-			<div class="post-body">
-				<!--				<div class="post-img">-->
-				<!--					<img src="../image/announcement.jpeg" alt="announcement" />-->
-				<!--				</div>-->
-				<!--				<div class="post-content">-->
-				<!--					<h4>Asia Pacific University <span class="badge">· official</span></h4>-->
-				<!--					<p>The Government had earlier this week issued announcements...</p>-->
-				<!--					<a class="file-download" href="#">announcement.pdf</a>-->
-				<!--					-->
-				<!--					<div class="post-actions">-->
-				<!--						<box-icon name="heart" class="like-icon"></box-icon>-->
-				<!--						<box-icon name="comment" class="comment-icon" type="solid"></box-icon>-->
-				<!--						<box-icon name='share-alt' class="share-icon" type="solid"></box-icon>-->
-				<!--					</div>-->
-				<!--				</div>-->
+		<!--display profile card-->
+		<div class="profile-card">
+			<div class="profile-body">
+				<div class="profile-content">
+					<div class="profile-user-info">
+						<h1>Change Password or Security Question</h1>
+					</div>
+					<div class="profile-detail">
+						<ul class="card-selection">
+							<li>
+								<p id="OldPassword">Old Password:</p>
+								<label>
+									<input type="text" id="OldPasswordText" size="50" placeholder="OldPassword">
+								</label>
+							</li>
+							<li>
+								<p id="NewPassword">New Password:</p>
+								<label>
+									<input type="text" id="NewPasswordText" size="50" placeholder="NewPassword" >
+								</label>
+							</li>
+							<li>
+								<p id="SecurityQuestion">Security Question:</p>
+								<label>
+									<input type="text" id="SecurityQuestionText" size="50" placeholder="SecurityQuestion">
+								</label>
+							</li>
+							<li>
+								<p id="Answer">Answer:</p>
+								<label>
+									<input type="text" id="AnswerText" size="50" placeholder="Answer">
+								</label>
+							</li>
+						</ul>
+					</div>
+					<div class="setting-button">
+						<button id="setting-button" onclick=confirmButton()>Confirm</button>
+					</div>
+				</div>
 			</div>
+			
 		</div>
 	</main>
 	
@@ -81,9 +116,23 @@
 	<aside class="sidebar-right">
 		<h4>Suggested for you</h4>
 		<ul class="suggestions">
-			<li>User_1 <button class="follow-btn">Follow</button></li>
-			<li>User_2 <button class="follow-btn">Follow</button></li>
-			<li>User_3 <button class="follow-btn">Follow</button></li>
+			<li>User_1 <button class="follow-btn" id="follow-btn_1" onclick=Follow_1()>Follow</button></li>
+			<li>User_2 <button class="follow-btn" id="follow-btn_2" onclick=Follow_2()>Follow</button></li>
+			<li>User_3 <button class="follow-btn" id="follow-btn_3" onclick=Follow_3()>Follow</button></li>
+			<script>
+				function Follow_1() {
+					const button = document.querySelector('#follow-btn_1');
+					button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				}
+				function Follow_2() {
+					const button = document.querySelector('#follow-btn_2');
+					button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				}
+				function Follow_3() {
+					const button = document.querySelector('#follow-btn_3');
+					button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				}
+			</script>
 		</ul>
 	</aside>
 
@@ -96,7 +145,14 @@
 
 
 <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-
+<script type="module" src="../js/setting.js"></script>
+<script type="module">
+	import { getDataByIndex } from "../js/indexedDb.js";
+	const profileUsername = document.querySelector(".profile-username");
+	const currentUsername = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
+	console.log(currentUsername[0].currentUser);
+	profileUsername.textContent = currentUsername[0].currentUser;
+</script>
 
 </body>
 </html>

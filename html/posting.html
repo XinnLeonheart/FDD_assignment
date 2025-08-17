@@ -26,7 +26,19 @@
 			<span class="profile-username">Asia Pacific University</span>
 			<span class="profile-desc">APU</span>
 		</div>
-		<a href="register_login.html" class="logout-link">Log out</a>
+		<a class="logout-link" onclick="logout()">Log out</a>
+		<script>
+			function logout()
+			{
+				if (confirm("Are you sure you want to log out?")) {
+					localStorage.setItem("isLoggedIn", "false");
+					deleteUserData("currentUserIndex").then(r => {
+						console.log(r);
+						window.location.href = "register_login.html";
+					});
+				}
+			}
+		</script>
 	</div>
 </nav>
 
@@ -93,6 +105,13 @@
             </div>
         </main>
         <script src="../js/posting.js"></script>
+	    <script type="module">
+		    import { getDataByIndex } from "../js/indexedDb.js";
+		    const profileUsername = document.querySelector(".profile-username");
+		    const currentUsername = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
+		    console.log(currentUsername[0].currentUser);
+		    profileUsername.textContent = currentUsername[0].currentUser;
+	    </script>
     </div>
 </body>
 

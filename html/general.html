@@ -77,7 +77,19 @@
 					  <a class="file-download" href="#">announcement.pdf</a>
 					  
 					  <div class="post-actions">
-						  <box-icon name="heart" class="like-icon"></box-icon>
+						  <box-icon name="heart" class="like-icon" onclick=liked()></box-icon>
+						  <script>
+							  function like()
+							  {
+								  const liked_ = document.querySelector(".like-icon");
+								  liked_.outerHTML = `<box-icon name="heart" class="like-icon" color="#333" onclick="liked()"></box-icon>`
+							  }
+							  function liked()
+							  {
+								  const like_ = document.querySelector(".like-icon");
+								  like_.outerHTML = `<box-icon name="heart" class="like-icon" color="#ed4956" onclick=like()></box-icon>`
+							  }
+						  </script>
 						  <box-icon name="comment" class="comment-icon" type="solid"></box-icon>
 						  <box-icon name='share-alt' class="share-icon" type="solid"></box-icon>
 					  </div>
@@ -102,9 +114,23 @@
 	  <aside class="sidebar-right">
 		  <h4>Suggested for you</h4>
 		  <ul class="suggestions">
-			  <li>User_1 <button class="follow-btn">Follow</button></li>
-			  <li>User_2 <button class="follow-btn">Follow</button></li>
-			  <li>User_3 <button class="follow-btn">Follow</button></li>
+			  <li>User_1 <button class="follow-btn" id="follow-btn_1" onclick=Follow_1()>Follow</button></li>
+			  <li>User_2 <button class="follow-btn" id="follow-btn_2" onclick=Follow_2()>Follow</button></li>
+			  <li>User_3 <button class="follow-btn" id="follow-btn_3" onclick=Follow_3()>Follow</button></li>
+			  <script>
+				  function Follow_1() {
+					  const button = document.querySelector('#follow-btn_1');
+					  button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				  }
+				  function Follow_2() {
+					  const button = document.querySelector('#follow-btn_2');
+					  button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				  }
+				  function Follow_3() {
+					  const button = document.querySelector('#follow-btn_3');
+					  button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				  }
+			  </script>
 		  </ul>
 	  </aside>
 	  
@@ -115,7 +141,7 @@
   </div>
   
   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-  <script type="module" src="../js/post.js"></script>
+  <script src="../js/post.js"></script>
   <script type="module">
 	  import { getDataByIndex } from "../js/indexedDb.js";
 	  const profileUsername = document.querySelector(".profile-username");

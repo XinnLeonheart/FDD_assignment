@@ -26,7 +26,19 @@
 			<span class="profile-username">Asia Pacific University</span>
 			<span class="profile-desc">APU</span>
 		</div>
-		<a href="register_login.html" class="logout-link">Log out</a>
+		<a class="logout-link" onclick="logout()">Log out</a>
+		<script>
+			function logout()
+			{
+				if (confirm("Are you sure you want to log out?")) {
+					localStorage.setItem("isLoggedIn", "false");
+					deleteUserData("currentUserIndex").then(r => {
+						console.log(r);
+						window.location.href = "register_login.html";
+					});
+				}
+			}
+		</script>
 	</div>
 </nav>
 
@@ -55,23 +67,79 @@
 	
 	<!-- Main Feed -->
 	<main class="main-feed" id="postFeed">
-		<!-- Your existing post-cards will go here -->
-		<div class="post-card">
-			<div class="post-body">
-<!--				<div class="post-img">-->
-<!--					<img src="../image/announcement.jpeg" alt="announcement" />-->
-<!--				</div>-->
-<!--				<div class="post-content">-->
-<!--					<h4>Asia Pacific University <span class="badge">· official</span></h4>-->
-<!--					<p>The Government had earlier this week issued announcements...</p>-->
-<!--					<a class="file-download" href="#">announcement.pdf</a>-->
-<!--					-->
-<!--					<div class="post-actions">-->
-<!--						<box-icon name="heart" class="like-icon"></box-icon>-->
-<!--						<box-icon name="comment" class="comment-icon" type="solid"></box-icon>-->
-<!--						<box-icon name='share-alt' class="share-icon" type="solid"></box-icon>-->
-<!--					</div>-->
-<!--				</div>-->
+		<!--display profile card-->
+		<div class="profile-card">
+			<div class="profile-body">
+				<div class="profile-content">
+					<div class="profile-user-info">
+						<h1 id="username"><img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="userProfile">User_0</h1>
+					</div>
+					<div class="profile-detail">
+						<ul class="card-selection">
+							<li>
+								<p id="Name">Name:</p>
+								<label>
+									<input type="text" id="NameText" size="50" disabled placeholder="Name">
+								</label>
+							</li>
+							<li>
+								<p id="Gender">Gender:</p>
+								<label>
+									<input type="text" id="GenderText" size="50" disabled placeholder="Gender" >
+								</label>
+							</li>
+							<li>
+								<p id="Address">Address:</p>
+								<label>
+									<input type="text" id="AddressText" size="50" disabled placeholder="Address">
+								</label>
+							</li>
+							<li>
+								<p id="Phone">Phone:</p>
+								<label>
+									<input type="text" id="PhoneText" size="50" disabled placeholder="Phone">
+								</label>
+							</li>
+						</ul>
+					</div>
+					<div class="profile-edit-button">
+						<button id="profile-edit-button" onclick=edit()>Edit Details</button>
+					</div>
+				</div>
+			</div>
+			
+			<!--display quick-access-card-->
+			<div class="quick-access-card">
+				<div class="quick-access-content">
+					<div class="quick-access-info">
+						<h1>Quick Access</h1>
+					</div>
+					<div class="profile-detail">
+						<div class="quick-access-content-button" onclick=APSpace()>
+							<img src="../image/APSpace.png" alt="">
+						</div>
+						<div class="quick-access-content-button" onclick=Moodle()>
+							<img src="../image/Moodle-logo.png" alt="">
+						</div>
+						<div class="quick-access-content-button" onclick=Favorite()>
+							<img src="../image/favorite.png" alt="">
+						</div>
+						<script>
+							function APSpace()
+							{
+								window.location.href = "https://apspace.apu.edu.my/";
+							}
+							function Moodle()
+							{
+								window.location.href = "https://lms2.apiit.edu.my/";
+							}
+							function Favorite()
+							{
+								window.location.href = "./Favorite.html";
+							}
+						</script>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -81,9 +149,23 @@
 	<aside class="sidebar-right">
 		<h4>Suggested for you</h4>
 		<ul class="suggestions">
-			<li>User_1 <button class="follow-btn">Follow</button></li>
-			<li>User_2 <button class="follow-btn">Follow</button></li>
-			<li>User_3 <button class="follow-btn">Follow</button></li>
+			<li>User_1 <button class="follow-btn" id="follow-btn_1" onclick=Follow_1()>Follow</button></li>
+			<li>User_2 <button class="follow-btn" id="follow-btn_2" onclick=Follow_2()>Follow</button></li>
+			<li>User_3 <button class="follow-btn" id="follow-btn_3" onclick=Follow_3()>Follow</button></li>
+			<script>
+				function Follow_1() {
+					const button = document.querySelector('#follow-btn_1');
+					button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				}
+				function Follow_2() {
+					const button = document.querySelector('#follow-btn_2');
+					button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				}
+				function Follow_3() {
+					const button = document.querySelector('#follow-btn_3');
+					button.innerHTML = button.innerHTML === 'Follow' ? 'Following' : 'Follow';
+				}
+			</script>
 		</ul>
 	</aside>
 
@@ -96,7 +178,16 @@
 
 
 <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-
+<script type="module" src="../js/profile.js"></script>
+<script type="module">
+	import { getDataByIndex } from "../js/indexedDb.js";
+	const profileUsername = document.querySelector(".profile-username");
+	const username = document.querySelector("#username");
+	const currentUsername = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
+	console.log(currentUsername[0].currentUser);
+	profileUsername.textContent = currentUsername[0].currentUser;
+	username.innerHTML = `<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="userProfile">${currentUsername[0].currentUser}'s Details`;
+</script>
 
 </body>
 </html>
