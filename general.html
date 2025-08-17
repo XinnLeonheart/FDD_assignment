@@ -48,7 +48,7 @@
   <!-- Main Feed -->
   <main class="main-feed" id="postFeed">
     <!-- Your existing post cards will go here -->
-    <div class="post-card">
+    <div class="post-card" data-post-id="1">
       <div class="post-body">
         <div class="post-img">
           <img src="image/announcement.jpeg" alt="announcement" />
@@ -57,25 +57,20 @@
           <h4>Asia Pacific University <span class="badge">· official</span></h4>
           <p>The Government had earlier this week issued announcements...</p>
           <a class="file-download" href="#">announcement.pdf</a>
-  
+
           <div class="post-actions">
             <box-icon name="heart" class="like-icon"></box-icon>
             <box-icon name="comment" class="comment-icon" type="solid"></box-icon>
             <box-icon name='share-alt' class="share-icon" type="solid"></box-icon>
           </div>
+
+          <!-- Comments area will be generated dynamically -->
+          <div class="comments-container" style="display:none;"></div>
+          <div class="comment-box" style="display:none;">
+            <input type="text" class="comment-input" placeholder="Add a comment...">
+            <button class="submit-comment" disabled>Post</button>
+          </div>
         </div>
-      </div>
-  
-  
-      <div class="comments-container">
-        <div class="comment"><strong>JohnDoe</strong> Thanks for sharing!</div>
-        <div class="comment"><strong>JaneSmith</strong> Very helpful!</div>
-      </div>
-  
-      
-      <div class="comment-box">
-        <input type="text" class="comment-input" placeholder="Add a comment...">
-        <button class="submit-comment" >Post</button>
       </div>
     </div>
   </main>

@@ -14,6 +14,33 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'general.html';
   }
 
+  // Default posts template for new users
+  const defaultPosts = [
+    {
+      id: "1",
+      user: "Asia Pacific University",
+      category: "news",
+      text: "Welcome to the new semester!",
+      imageURL: "image/sample1.jpg",
+      pdfURL: "",
+      pdfName: "",
+      comments: [
+        { user: "John", text: "Excited!" },
+        { user: "Mary", text: "Can't wait!" }
+      ]
+    },
+    {
+      id: "2",
+      user: "Student Council",
+      category: "events",
+      text: "Join us for the annual sports day!",
+      imageURL: "",
+      pdfURL: "files/sports-day.pdf",
+      pdfName: "Sports Day Info.pdf",
+      comments: []
+    }
+  ];
+
   // Register new account
   registerForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -26,9 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('userUsername', username);
     localStorage.setItem('userPassword', password);
 
+    // Create a personal posts list for this new user
+    localStorage.setItem(`posts_${username}`, JSON.stringify(defaultPosts));
+
     // Mark login session
     localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('currentUser', username); // store username for per-user posts
+    localStorage.setItem('currentUser', username);
 
     alert('Registration successful! You are now logged in.');
     window.location.href = 'general.html';
@@ -50,6 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ) {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('currentUser', savedUsername);
+
+      // If user has no personal posts yet, give them the default ones
+      if (!localStorage.getItem(`posts_${savedUsername}`)) {
+        localStorage.setItem(`posts_${savedUsername}`, JSON.stringify(defaultPosts));
+      }
+
       alert('Login successful!');
       window.location.href = 'general.html';
     } else {
