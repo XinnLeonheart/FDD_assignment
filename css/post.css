@@ -585,3 +585,27 @@ body {
   color: white;
   cursor: pointer;
 }
+/* 添加到post.css底部 */
+/* Bookmark Button Styles (匹配现有action按钮样式) */
+.post-actions .bookmark-action {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: #777;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.post-actions .bookmark-action:hover {
+  color: #00A2C8;
+}
+
+.post-actions .bookmark-action.active {
+  color: #FFD166; /* 使用金色表示已收藏 */
+}
+
+.post-actions .bookmark-action i {
+  font-size: 20px;
+  transition: all 0.3s;
+}

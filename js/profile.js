@@ -1,63 +1,133 @@
-import {getDataByIndex, openDb, updateUserPrivateData} from "./indexedDb.js";
+// profile.js
+document.addEventListener('DOMContentLoaded', () => {
+    // 编辑个人资料按钮
+    const editProfileBtn = document.getElementById('editProfileBtn');
 
-document.addEventListener('DOMContentLoaded', async () =>
-{
-    const currentUser = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
-    const db = await openDb();
-    const tx = db.transaction('userObjectStore', 'readwrite');
-    const store = tx.objectStore('userObjectStore');
-    const index = store.index('usernameIndex');
-    const currentUserData = await index.get(currentUser[0].currentUser);
-    console.log(currentUserData);
+    // 编辑各部分的按钮
+    const editSectionBtns = document.querySelectorAll('.edit-section-btn');
 
-    const nameText = document.getElementById("NameText");
-    const genderText = document.getElementById("GenderText");
-    const addressText = document.getElementById("AddressText");
-    const phoneText = document.getElementById("PhoneText");
+    // 模拟用户数据
+    const userData = {
+        fullName: "John Michael Smith",
+        major: "Computer Science",
+        enrollment: "2022",
+        location: "Kuala Lumpur, Malaysia",
+        bio: "Passionate about AI and machine learning. Currently working on a research project about neural networks. Love hiking and photography in my free time.",
+        email: "john.smith@student.apu.edu.my",
+        phone: "+60 12 345 6789",
+        website: "johnsmith-portfolio.com"
+    };
 
-    nameText.value = currentUserData.name;
-    genderText.value = currentUserData.gender;
-    addressText.value = currentUserData.address;
-    phoneText.value = currentUserData.phone;
-});
+    // 初始化个人资料
+    function initializeProfile() {
+        // 填充用户数据
+        document.getElementById('fullName').textContent = userData.fullName;
+        document.getElementById('major').textContent = userData.major;
+        document.getElementById('enrollment').textContent = userData.enrollment;
+        document.getElementById('location').textContent = userData.location;
+        document.getElementById('email').textContent = userData.email;
+        document.getElementById('phone').textContent = userData.phone;
+        document.getElementById('website').textContent = userData.website;
 
-
-async function edited() {
-    const currentUser = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
-
-    const name = document.getElementById("NameText");
-    const gender = document.getElementById("GenderText");
-    const address = document.getElementById("AddressText");
-    const phone = document.getElementById("PhoneText");
-
-
-    if (name.value !== "" && gender.value !== "" && address.value !== "" && phone.value !== "") {
-        updateUserPrivateData(currentUser[0].currentUser, name.value, gender.value, address.value, phone.value).then(r => {
-            console.log(r);
-            window.location.reload();
-            document.getElementById("NameText").disabled = true;
-            document.getElementById("GenderText").disabled = true;
-            document.getElementById("AddressText").disabled = true;
-            document.getElementById("PhoneText").disabled = true;
-            document.getElementById("profile-edit-button").outerHTML = "<button id=\"profile-edit-button\" onclick=\"edit()\">Edit Details</button>";
-        });
-    } else {
-        alert("Please fill in all the fields!");
+        // 填充个人简介
+        document.querySelector('.bio p').textContent = userData.bio;
     }
-}
 
+    // 编辑个人资料
+    function editProfile() {
+        // 显示编辑模式
+        document.querySelectorAll('.value').forEach(element => {
+            element.contentEditable = true;
+            element.classList.add('editing');
+            element.focus();
+        });
 
-function edit()
-{
-    document.getElementById("NameText").disabled = false;
-    document.getElementById("GenderText").disabled = false;
-    document.getElementById("AddressText").disabled = false;
-    document.getElementById("PhoneText").disabled = false;
-    document.getElementById("profile-edit-button").outerHTML = "<button id=\"profile-edit-button\" onclick=\"edited()\">Save Details</button>";
-}
+        document.querySelector('.bio p').contentEditable = true;
+        document.querySelector('.bio p').classList.add('editing');
 
-// Export functions
-window.edit = edit;
-window.edited = edited;
+        // 改变按钮文本和功能
+        editProfileBtn.textContent = "Save Changes";
+        editProfileBtn.removeEventListener('click', editProfile);
+        editProfileBtn.addEventListener('click', saveProfileChanges);
+    }
 
-export {edit, edited};
+    // 保存个人资料更改
+    function saveProfileChanges() {
+        // 保存更改到用户数据对象
+        userData.fullName = document.getElementById('fullName').textContent;
+        userData.major = document.getElementById('major').textContent;
+        userData.enrollment = document.getElementById('enrollment').textContent;
+        userData.location = document.getElementById('location').textContent;
+        userData.email = document.getElementById('email').textContent;
+        userData.phone = document.getElementById('phone').textContent;
+        userData.website = document.getElementById('website').textContent;
+        userData.bio = document.querySelector('.bio p').textContent;
+
+        // 禁用编辑
+        document.querySelectorAll('.value').forEach(element => {
+            element.contentEditable = false;
+            element.classList.remove('editing');
+        });
+
+        document.querySelector('.bio p').contentEditable = false;
+        document.querySelector('.bio p').classList.remove('editing');
+
+        // 恢复按钮文本和功能
+        editProfileBtn.textContent = "Edit Profile";
+        editProfileBtn.removeEventListener('click', saveProfileChanges);
+        editProfileBtn.addEventListener('click', editProfile);
+
+        // 显示保存成功的消息
+        showSuccessMessage("Profile updated successfully!");
+
+        // 在实际应用中，这里会调用API或更新数据库
+        console.log("Profile data saved:", userData);
+    }
+
+    // 编辑特定部分
+    function editSection(section) {
+        const elements = document.querySelectorAll(`#${section}Section .value, #${section}Section .bio p`);
+
+        elements.forEach(element => {
+            element.contentEditable = true;
+            element.classList.add('editing');
+            element.focus();
+        });
+    }
+
+    // 显示成功消息
+    function showSuccessMessage(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification success';
+        notification.innerHTML = `
+      <i class='bx bx-check-circle'></i>
+      <span>${message}</span>
+    `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
+
+    // 事件监听器
+    editProfileBtn.addEventListener('click', editProfile);
+
+    editSectionBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            const section = button.getAttribute('data-section');
+            editSection(section);
+        });
+    });
+
+    // 初始化个人资料
+    initializeProfile();
+});

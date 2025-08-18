@@ -110,7 +110,74 @@ function enableImageModalPreview() {
     if (e.target === modal) modal.style.display = "none";
   });
 }
+function initializeBookmarks() {
+  const currentUser = localStorage.getItem('currentUser');
+  if (!currentUser) return;
 
+  // 获取当前用户的所有收藏
+  const bookmarks = JSON.parse(localStorage.getItem(`bookmarks_${currentUser}`)) || [];
+
+  // 初始化收藏按钮状态
+  document.querySelectorAll('.post-card').forEach(post => {
+    const postId = post.dataset.postId;
+    const bookmarkBtn = post.querySelector('.bookmark-action');
+
+    if (bookmarkBtn) {
+      // 如果帖子已收藏，设置激活状态
+      if (bookmarks.includes(postId)) {
+        bookmarkBtn.classList.add('active');
+        bookmarkBtn.innerHTML = `<i class='bx bxs-bookmark'></i><span>Saved</span>`;
+      }
+
+      // 添加点击事件
+      bookmarkBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleBookmark(postId, bookmarkBtn);
+      });
+    }
+  });
+}
+
+function toggleBookmark(postId, button) {
+  const currentUser = localStorage.getItem('currentUser');
+  let bookmarks = JSON.parse(localStorage.getItem(`bookmarks_${currentUser}`)) || [];
+
+  if (button.classList.contains('active')) {
+    // 取消收藏
+    bookmarks = bookmarks.filter(id => id !== postId);
+    button.innerHTML = `<i class='bx bx-bookmark'></i><span>Save</span>`;
+  } else {
+    // 添加收藏
+    bookmarks.push(postId);
+    button.innerHTML = `<i class='bx bxs-bookmark'></i><span>Saved</span>`;
+    showBookmarkNotification();
+  }
+
+  button.classList.toggle('active');
+  localStorage.setItem(`bookmarks_${currentUser}`, JSON.stringify(bookmarks));
+}
+
+function showBookmarkNotification() {
+  // 复用现有的通知样式（需确保post.css中有 .notification 类）
+  const notification = document.createElement('div');
+  notification.className = 'notification bookmark-notification';
+  notification.innerHTML = `
+      <i class='bx bxs-check-circle'></i>
+      <span>Post saved to bookmarks</span>
+      <a href="bookmark.html" class="view-link">View</a>
+    `;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.classList.add('fade-out');
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// 初始化收藏功能
+initializeBookmarks();
+enableImageModalPreview();
+setupPostInteractions(posts, currentUser)
 
 // Post interactions
 function setupPostInteractions(posts, currentUser) {
