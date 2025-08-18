@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bookmark</title>
+	<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="../css/bookmark.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="topbar">
+	<div class="logo">APCommunity</div>
+	<ul>
+		<li><a href="general.html" class="tab-link" data-category="general">General</a></li>
+		<li><a href="academic.html" class="tab-link" data-category="academic">Academic</a></li>
+		<li><a href="culture.html" class="tab-link" data-category="culture">Cultural</a></li>
+		<li><a href="art.html" class="tab-link" data-category="art">Art</a></li>
+		<li><a href="sport.html" class="tab-link" data-category="sport">Sport</a></li>
+	</ul>
+	<div class="profile-info" id="profileInfo">
+		<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+		<div class="profile-details">
+			<span class="profile-username" id="profileUsername">Loading...</span>
+			<span class="profile-email" id="profileEmail"></span>
+		</div>
+		<a class="logout-link" onclick="logout()">Log out</a>
+	</div>
+</nav>
+
+<!-- Main Container -->
+<div class="container">
+	<!-- Left Sidebar -->
+	<div class="sidebar-left">
+		<a href="general.html" class="menu-item">
+			<i class='bx bx-home'></i>
+			<span>Home</span>
+		</a>
+		<a href="explore.html" class="menu-item">
+			<i class='bx bx-compass'></i>
+			<span>Explore</span>
+		</a>
+		<a href="notification.html" class="menu-item">
+			<i class='bx bx-bell'></i>
+			<span>Notification</span>
+		</a>
+		<a href="posting.html" class="menu-item">
+			<i class='bx bx-plus-circle'></i>
+			<span>Add a post</span>
+		</a>
+		<a href="bookmark.html" class="menu-item active">
+			<i class='bx bx-bookmark'></i>
+			<span>Bookmark</span>
+		</a>
+		<a href="profile.html" class="menu-item">
+			<i class='bx bx-user'></i>
+			<span>Profile</span>
+		</a>
+		<a href="setting.html" class="menu-item">
+			<i class='bx bx-cog'></i>
+			<span>Setting</span>
+		</a>
+	</div>
+	
+	<!-- Main Content -->
+	<div class="main-feed">
+		<div class="bookmarks-header">
+			<h1><i class='bx bx-bookmark'></i> My Saved Bookmarks</h1>
+			<p>All your saved posts in one place</p>
+		</div>
+		
+		<div id="bookmarksFeed" class="bookmarks-feed">
+			<!-- Bookmarks will be rendered here -->
+			<div class="no-bookmarks">
+				<i class='bx bx-bookmark'></i>
+				<h3>No bookmarks yet</h3>
+				<p>Save interesting posts to see them here</p>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Right Sidebar -->
+	<div class="sidebar-right">
+		<h4>Suggested Users</h4>
+		<ul class="suggestions" id="suggestedUsers">
+			<!-- Suggested users will be rendered here -->
+		</ul>
+	</div>
+</div>
+
+<script type="module" src="../js/bookmark.js"></script>
+</body>
+</html>

@@ -19,6 +19,10 @@ async function openDb() {
                 userStore.createIndex('genderIndex', 'gender', { unique: false });
                 userStore.createIndex('addressIndex', 'address', { unique: false });
                 userStore.createIndex('phoneIndex', 'phone', { unique: false });
+                userStore.createIndex('majorIndex', 'major', { unique: false });
+                userStore.createIndex('enrollmentIndex', 'enrollment', { unique: false });
+                userStore.createIndex('bioIndex', 'bio', { unique: false });
+                userStore.createIndex('websiteIndex', 'website', { unique: false });
                 console.log('ObjectStore "userObjectStore" and index has been created.');
             }
         });
@@ -60,6 +64,11 @@ async function addUserAccountData(Username, Email, Password) {
         address: null,
         phone: null,
         gender: null,
+        major: null,
+        enrollment: null,
+        bio: null,
+        website: null,
+        location: null
     };
     const db = await openDb();
     const tx = db.transaction('userObjectStore', 'readwrite');
@@ -95,8 +104,12 @@ async function deleteUserData(indexName)
 * @param string gender
 * @param string address
 * @param string phone
+* @param string major
+* @param string enrollment
+* @param string bio
+* @param string website
  */
-async function updateUserPrivateData(currentUser, name, gender, address, phone)
+async function updateUserPrivateData(currentUser, name, gender, email, address, phone, major, enrollment, bio, website)
 {
     const db = await openDb();
     const tx = db.transaction('userObjectStore', 'readwrite');
@@ -105,8 +118,13 @@ async function updateUserPrivateData(currentUser, name, gender, address, phone)
     const user = await index.get(currentUser);
     user.name = name;
     user.gender = gender;
+    user.email = email;
     user.address = address;
     user.phone = phone;
+    user.major = major;
+    user.enrollment = enrollment;
+    user.bio = bio;
+    user.website = website;
     await store.put(user);
     await tx.done;
     console.log('Data updated successfully!');

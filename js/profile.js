@@ -1,90 +1,126 @@
-// profile.js
-document.addEventListener('DOMContentLoaded', () => {
-    // 编辑个人资料按钮
+import {
+    getDataByIndex,
+    getMatchingDataByIndex,
+    updateUserPrivateData
+} from './indexedDb.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // DOM
+    const profileUsername = document.getElementById('profileUsername');
+    const profileEmail = document.getElementById('profileEmail');
     const editProfileBtn = document.getElementById('editProfileBtn');
+    const editSectionBtn = document.querySelectorAll('.edit-section-btn');
 
-    // 编辑各部分的按钮
-    const editSectionBtns = document.querySelectorAll('.edit-section-btn');
+    // profile
+    const profileFullName = document.getElementById('profileFullName');
+    const fullNameEl = document.getElementById('fullName');
+    const majorEl = document.getElementById('major');
+    const enrollmentEl = document.getElementById('enrollment');
+    const locationEl = document.getElementById('location');
+    const bioEl = document.querySelector('.bio p');
+    const emailEl = document.getElementById('email');
+    const phoneEl = document.getElementById('phone');
+    const websiteEl = document.getElementById('website');
 
-    // 模拟用户数据
-    const userData = {
-        fullName: "John Michael Smith",
-        major: "Computer Science",
-        enrollment: "2022",
-        location: "Kuala Lumpur, Malaysia",
-        bio: "Passionate about AI and machine learning. Currently working on a research project about neural networks. Love hiking and photography in my free time.",
-        email: "john.smith@student.apu.edu.my",
-        phone: "+60 12 345 6789",
-        website: "johnsmith-portfolio.com"
-    };
+    // current user
+    let currentUserData = null;
 
-    // 初始化个人资料
-    function initializeProfile() {
-        // 填充用户数据
-        document.getElementById('fullName').textContent = userData.fullName;
-        document.getElementById('major').textContent = userData.major;
-        document.getElementById('enrollment').textContent = userData.enrollment;
-        document.getElementById('location').textContent = userData.location;
-        document.getElementById('email').textContent = userData.email;
-        document.getElementById('phone').textContent = userData.phone;
-        document.getElementById('website').textContent = userData.website;
+    // load current user
+    async function loadCurrentUser() {
+        try {
+            const currentUserDataFromDB = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
 
-        // 填充个人简介
-        document.querySelector('.bio p').textContent = userData.bio;
+            if (currentUserDataFromDB && currentUserDataFromDB.length > 0) {
+                const currentUsername = currentUserDataFromDB[0].currentUser;
+
+                if (currentUsername) {
+                    const userData = await getMatchingDataByIndex(
+                        "userDB",
+                        "userObjectStore",
+                        "usernameIndex",
+                        currentUsername
+                    );
+
+                    if (userData) {
+                        currentUserData = userData;
+
+                        profileFullName.textContent = userData.name || currentUsername;
+
+                        profileUsername.textContent = userData.name || currentUsername;
+                        profileEmail.textContent = userData.email || 'null';
+
+                        fullNameEl.textContent = userData.name || 'null';
+                        majorEl.textContent = userData.major || 'null';
+                        enrollmentEl.textContent = userData.enrollment || 'null';
+                        locationEl.textContent = userData.address || 'null';
+                        bioEl.textContent = userData.bio || 'null';
+                        emailEl.textContent = userData.email || 'null';
+                        phoneEl.textContent = userData.phone || 'null';
+                        websiteEl.textContent = userData.website || 'null';
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error loading current user:", error);
+        }
     }
 
-    // 编辑个人资料
+
     function editProfile() {
-        // 显示编辑模式
-        document.querySelectorAll('.value').forEach(element => {
+        document.querySelectorAll('.value, .bio p').forEach(element => {
             element.contentEditable = true;
             element.classList.add('editing');
-            element.focus();
         });
 
-        document.querySelector('.bio p').contentEditable = true;
-        document.querySelector('.bio p').classList.add('editing');
-
-        // 改变按钮文本和功能
         editProfileBtn.textContent = "Save Changes";
         editProfileBtn.removeEventListener('click', editProfile);
         editProfileBtn.addEventListener('click', saveProfileChanges);
     }
 
-    // 保存个人资料更改
-    function saveProfileChanges() {
-        // 保存更改到用户数据对象
-        userData.fullName = document.getElementById('fullName').textContent;
-        userData.major = document.getElementById('major').textContent;
-        userData.enrollment = document.getElementById('enrollment').textContent;
-        userData.location = document.getElementById('location').textContent;
-        userData.email = document.getElementById('email').textContent;
-        userData.phone = document.getElementById('phone').textContent;
-        userData.website = document.getElementById('website').textContent;
-        userData.bio = document.querySelector('.bio p').textContent;
 
-        // 禁用编辑
-        document.querySelectorAll('.value').forEach(element => {
-            element.contentEditable = false;
-            element.classList.remove('editing');
-        });
+    async function saveProfileChanges() {
+        const name = fullNameEl.textContent;
+        const major = majorEl.textContent;
+        const enrollment = enrollmentEl.textContent;
+        const address = locationEl.textContent;
+        const bio = bioEl.textContent;
+        const email = emailEl.textContent;
+        const phone = phoneEl.textContent;
+        const website = websiteEl.textContent;
 
-        document.querySelector('.bio p').contentEditable = false;
-        document.querySelector('.bio p').classList.remove('editing');
+        try {
+            await updateUserPrivateData(
+                currentUserData.username,
+                name,
+                null,
+                email,
+                address,
+                phone,
+                major,
+                enrollment,
+                bio,
+                website,
+            );
 
-        // 恢复按钮文本和功能
-        editProfileBtn.textContent = "Edit Profile";
-        editProfileBtn.removeEventListener('click', saveProfileChanges);
-        editProfileBtn.addEventListener('click', editProfile);
+            showSuccessMessage("Profile updated successfully!");
 
-        // 显示保存成功的消息
-        showSuccessMessage("Profile updated successfully!");
+            // 恢复编辑状态
+            document.querySelectorAll('.value, .bio p').forEach(element => {
+                element.contentEditable = false;
+                element.classList.remove('editing');
+            });
 
-        // 在实际应用中，这里会调用API或更新数据库
-        console.log("Profile data saved:", userData);
+            editProfileBtn.textContent = "Edit Profile";
+            editProfileBtn.removeEventListener('click', saveProfileChanges);
+            editProfileBtn.addEventListener('click', editProfile);
+            await loadCurrentUser();
+        } catch (error) {
+            console.error("Error updating profile:", error);
+            alert("Failed to update profile.");
+        }
     }
 
-    // 编辑特定部分
+
     function editSection(section) {
         const elements = document.querySelectorAll(`#${section}Section .value, #${section}Section .bio p`);
 
@@ -93,16 +129,20 @@ document.addEventListener('DOMContentLoaded', () => {
             element.classList.add('editing');
             element.focus();
         });
+
+        editProfileBtn.textContent = "Save Changes";
+        editProfileBtn.removeEventListener('click', editProfile);
+        editProfileBtn.addEventListener('click', saveProfileChanges);
     }
 
-    // 显示成功消息
+
     function showSuccessMessage(message) {
         const notification = document.createElement('div');
         notification.className = 'notification success';
         notification.innerHTML = `
-      <i class='bx bx-check-circle'></i>
-      <span>${message}</span>
-    `;
+            <i class='bx bx-check-circle'></i>
+            <span>${message}</span>
+        `;
 
         document.body.appendChild(notification);
 
@@ -118,16 +158,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // 事件监听器
+
+    window.logout = async function() {
+        if (confirm("Are you sure you want to log out?")) {
+            try {
+                await updateCurrentUser(null);
+                localStorage.removeItem("isLoggedIn");
+                window.location.href = "register_login.html";
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("An error occurred during logout. Please try again.");
+            }
+        }
+    }
+
+
+    await loadCurrentUser();
+
+
     editProfileBtn.addEventListener('click', editProfile);
 
-    editSectionBtns.forEach(button => {
+    editSectionBtn.forEach(button => {
         button.addEventListener('click', () => {
             const section = button.getAttribute('data-section');
             editSection(section);
         });
     });
-
-    // 初始化个人资料
-    initializeProfile();
 });

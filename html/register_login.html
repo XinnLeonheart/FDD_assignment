@@ -1,80 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register and Log In</title>
-    <link rel="stylesheet" href="../css/register_login.css">
-	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Register and Log In - APCommunity</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link href="../css/register_login.css" rel="stylesheet">
 </head>
-
 <body>
-  <div class="container">
-    <div class="form-box login">
-      <form action = "">
-        <h1>Log In</h1>
-        <div class = "input-box">
-	        <label>
-		        <input type="text" placeholder="Email/Username" required>
-	        </label>
-        </div>
-        <div class = "input-box">
-	        <label>
-		        <input type="password" placeholder="Password" required>
-	        </label>
-        </div>
-        <div class = "forgot-link">
-            <a href="#">Forgot Password?</a>
-        </div>
-        <button type="submit" class="btn">Log In</button>
-    </form>
-    </div>
+<div class="notification-logo">APCommunity</div>
 
-    <div class="form-box register">
-      <form action = "">
-        <h1>Register</h1>
-        <div class = "input-box">
-	        <label>
-		        <input type="text" placeholder="Email" required>
-	        </label>
-        </div> 
+<div class="container" id="container">
+	<!-- Login Form -->
+	<div class="form-box login">
+		<form id="loginForm">
+			<i class='bx bx-user-circle form-icon'></i>
+			<h1>Log In</h1>
+			
+			<div class="input-group">
+				<input type="text" id="loginEmail" placeholder="Email or Username" required>
+				<div class="error-message" id="loginEmailError"></div>
+			</div>
+			
+			<div class="input-group">
+				<input type="password" id="loginPassword" placeholder="Password" required>
+				<div class="error-message" id="loginPasswordError"></div>
+			</div>
+			
+			<div class="forgot-link">
+				<a href="#" id="forgotPasswordLink">Forgot Password?</a>
+			</div>
+			
+			<button type="submit" class="btn">Log In</button>
+		</form>
+	</div>
+	
+	<!-- Register Form -->
+	<div class="form-box register">
+		<form id="registerForm">
+			<i class='bx bx-user-plus form-icon'></i>
+			<h1>Register</h1>
+			
+			<div class="input-group">
+				<input type="text" id="registerName" placeholder="Full Name" required>
+				<div class="error-message" id="registerNameError"></div>
+			</div>
+			
+			<div class="input-group">
+				<input type="text" id="registerUsername" placeholder="Username" required>
+				<div class="error-message" id="registerUsernameError"></div>
+			</div>
+			
+			<div class="input-group">
+				<input type="email" id="registerEmail" placeholder="Email" required>
+				<div class="error-message" id="registerEmailError"></div>
+			</div>
+			
+			<div class="input-group">
+				<input type="password" id="registerPassword" placeholder="Password" required>
+				<div class="error-message" id="registerPasswordError"></div>
+			</div>
+			
+			<div class="input-group">
+				<input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+				<div class="error-message" id="registerConfirmPasswordError"></div>
+			</div>
+			
+			<button type="submit" class="btn">Register</button>
+		</form>
+	</div>
+	
+	<!-- Toggle Box -->
+	<div class="toggle-box">
+		<div class="toggle-panel toggle-left">
+			<i class='bx bx-user-plus toggle-icon'></i>
+			<h2>New Here?</h2>
+			<p>Create an account to join our community</p>
+			<button class="btn register-btn" id="registerBtn">Register</button>
+		</div>
+		
+		<div class="toggle-panel toggle-right">
+			<i class='bx bx-log-in toggle-icon'></i>
+			<h2>Welcome Back!</h2>
+			<p>Already have an account? Sign in to continue</p>
+			<button class="btn login-btn" id="loginBtn">Login</button>
+		</div>
+	</div>
+</div>
 
-        <div class = "input-box">
-	        <label>
-		        <input type="text" placeholder="Username" required>
-	        </label>
-        </div>
+<!-- 安全问题和答案模态框 -->
+<div id="securityModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+	<div class="modal-content" style="background-color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px;">
+		<h2 style="margin-bottom: 20px;">Security Question</h2>
+		<p id="securityQuestionText" style="margin-bottom: 15px; font-weight: 500;"></p>
+		<div class="input-group">
+			<input type="text" id="securityAnswer" placeholder="Your answer" required>
+			<div class="error-message" id="securityAnswerError"></div>
+		</div>
+		<div class="input-group">
+			<input type="password" id="newPassword" placeholder="New Password" required>
+			<div class="error-message" id="newPasswordError"></div>
+		</div>
+		<div class="input-group">
+			<input type="password" id="confirmNewPassword" placeholder="Confirm New Password" required>
+			<div class="error-message" id="confirmNewPasswordError"></div>
+		</div>
+		<div style="display: flex; gap: 10px; margin-top: 20px;">
+			<button id="cancelReset" class="btn" style="background-color: #6c757d;">Cancel</button>
+			<button id="submitReset" class="btn">Reset Password</button>
+		</div>
+	</div>
+</div>
 
-        <div class = "input-box">
-	        <label>
-		        <input type="password" placeholder="Password" required>
-	        </label>
-        </div>
-
-        <div class = "forgot-link">
-            <a href="#">Forgot Password?</a>
-        </div>
-        
-        <button type="submit" class="btn" >Register</button>
-      </form>
-    </div>
-    
-    <div class="toggle-box">
-      <div class="toggle-panel toggle-left">
-        <h1>Welcome back!</h1>
-        <p>Don't have an account?</p>
-        <button type="button" class="btn register-btn">Register</button>
-      </div>
-      <div class="toggle-panel toggle-right">
-        <h1>Welcome!</h1>
-        <p>Already have an account?</p>
-        <button type="button" class="btn login-btn">Login</button>
-      </div>
-    </div>
-  </div>
-  
-  <script type="module" src="../js/indexedDb.js"></script>
-  <script type="module" src="../js/register_login.js"></script>
-  
+<script type="module" src="../js/indexedDb.js"></script>
+<script src="../js/register_login.js"></script>
 </body>
 </html>

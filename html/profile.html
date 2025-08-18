@@ -4,13 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Profile - APCommunity</title>
-	<link rel="stylesheet" href="../css/post.css">
-	<link rel="stylesheet" href="../css/profile.css">
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/general.css">
+	<link rel="stylesheet" href="../css/profile.css">
 </head>
-
 <body data-category="profile">
-<!-- Top Navigation Bar -->
+<!-- Navigation -->
 <nav class="topbar">
 	<div class="logo">APCommunity</div>
 	<ul>
@@ -23,8 +22,8 @@
 	<div class="profile-info" id="profileInfo">
 		<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
 		<div class="profile-details">
-			<span class="profile-username">John Smith</span>
-			<span class="profile-desc">Computer Science</span>
+			<span class="profile-username" id="profileUsername">Loading...</span>
+			<span class="profile-email" id="profileEmail"></span>
 		</div>
 		<a class="logout-link" onclick="logout()">Log out</a>
 	</div>
@@ -44,13 +43,12 @@
 		<a href="notification.html" class="menu-item">
 			<i class='bx bx-bell'></i>
 			<span>Notification</span>
-			<span class="notification-count">3</span>
 		</a>
 		<a href="posting.html" class="menu-item">
 			<i class='bx bx-plus-circle'></i>
 			<span>Add a Post</span>
 		</a>
-		<a href="favorite.html" class="menu-item">
+		<a href="bookmark.html" class="menu-item">
 			<i class='bx bx-bookmark'></i>
 			<span>Bookmark</span>
 		</a>
@@ -63,7 +61,7 @@
 			<span>Setting</span>
 		</a>
 	</aside>
-
+	
 	<!-- Main Content -->
 	<main class="main-feed">
 		<!-- Profile Header -->
@@ -76,25 +74,25 @@
 			</div>
 			<div class="profile-info-section">
 				<div class="profile-avatar">
-					<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Profile" class="avatar" />
+					<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="avatar" />
 					<button class="edit-avatar">
 						<i class='bx bx-camera'></i>
 					</button>
 				</div>
 				<div class="profile-details">
-					<h1>John Smith</h1>
-					<p>Computer Science Major</p>
+					<h1 id="profileFullName">Loading...</h1>
+					<p id="profileMajor"></p>
 					<div class="stats">
 						<div>
-							<strong>128</strong>
+							<strong>0</strong>
 							<span>Posts</span>
 						</div>
 						<div>
-							<strong>542</strong>
+							<strong>0</strong>
 							<span>Followers</span>
 						</div>
 						<div>
-							<strong>327</strong>
+							<strong>0</strong>
 							<span>Following</span>
 						</div>
 					</div>
@@ -102,7 +100,7 @@
 				<button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
 			</div>
 		</div>
-
+		
 		<!-- Profile Content -->
 		<div class="profile-content">
 			<!-- About Section -->
@@ -118,36 +116,36 @@
 						<i class='bx bx-user'></i>
 						<div>
 							<span class="label">Full Name</span>
-							<span class="value" id="fullName">John Michael Smith</span>
+							<span class="value" id="fullName">Loading...</span>
 						</div>
 					</div>
 					<div class="info-item">
 						<i class='bx bx-book'></i>
 						<div>
 							<span class="label">Major</span>
-							<span class="value" id="major">Computer Science</span>
+							<span class="value" id="major">Loading...</span>
 						</div>
 					</div>
 					<div class="info-item">
 						<i class='bx bx-calendar'></i>
 						<div>
 							<span class="label">Enrollment Year</span>
-							<span class="value" id="enrollment">2022</span>
+							<span class="value" id="enrollment">Loading...</span>
 						</div>
 					</div>
 					<div class="info-item">
 						<i class='bx bx-map'></i>
 						<div>
 							<span class="label">Location</span>
-							<span class="value" id="location">Kuala Lumpur, Malaysia</span>
+							<span class="value" id="location">Loading...</span>
 						</div>
 					</div>
 					<div class="bio">
-						<p>Passionate about AI and machine learning. Currently working on a research project about neural networks. Love hiking and photography in my free time.</p>
+						<p>Loading...</p>
 					</div>
 				</div>
 			</div>
-
+			
 			<!-- Contact Information -->
 			<div class="profile-card">
 				<div class="card-header">
@@ -161,26 +159,26 @@
 						<i class='bx bx-envelope'></i>
 						<div>
 							<span class="label">Email</span>
-							<span class="value" id="email">john.smith@student.apu.edu.my</span>
+							<span class="value" id="email">Loading...</span>
 						</div>
 					</div>
 					<div class="info-item">
 						<i class='bx bx-phone'></i>
 						<div>
 							<span class="label">Phone</span>
-							<span class="value" id="phone">+60 12 345 6789</span>
+							<span class="value" id="phone">Loading...</span>
 						</div>
 					</div>
 					<div class="info-item">
 						<i class='bx bx-link'></i>
 						<div>
 							<span class="label">Website</span>
-							<span class="value" id="website">johnsmith-portfolio.com</span>
+							<span class="value" id="website">Loading...</span>
 						</div>
 					</div>
 				</div>
 			</div>
-
+			
 			<!-- Quick Access -->
 			<div class="profile-card">
 				<div class="card-header">
@@ -199,23 +197,11 @@
 						</div>
 						<span>Moodle</span>
 					</div>
-					<div class="access-item" onclick="window.location.href='favorite.html'">
-						<div class="access-icon">
-							<i class='bx bx-bookmark'></i>
-						</div>
-						<span>Bookmarks</span>
-					</div>
-					<div class="access-item" onclick="window.location.href='academic.html'">
-						<div class="access-icon">
-							<i class='bx bxs-graduation'></i>
-						</div>
-						<span>Academic</span>
-					</div>
 				</div>
 			</div>
 		</div>
 	</main>
-
+	
 	<!-- Right Sidebar -->
 	<aside class="sidebar-right">
 		<h4>Suggested for you</h4>
@@ -235,13 +221,8 @@
 				<div class="suggestion-name">David Wilson</div>
 				<button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
 			</li>
-			<li>
-				<div class="suggestion-avatar">ET</div>
-				<div class="suggestion-name">Emma Thompson</div>
-				<button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-			</li>
 		</ul>
-
+		
 		<h4 style="margin-top: 2rem;">Upcoming Events</h4>
 		<div class="event">
 			<strong>Tech Fest 2023</strong>
@@ -257,49 +238,9 @@
 </div>
 
 <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-<script src="../js/profile.js"></script>
+<script type="module" src="../js/profile.js"></script>
 <script>
-	// Navigation functions
-	function navigateTo(pageId) {
-		document.querySelectorAll('.page').forEach(page => {
-			page.classList.remove('active');
-		});
-		document.getElementById(pageId).classList.add('active');
-
-		// Update active link
-		document.querySelectorAll('.tab-link').forEach(link => {
-			link.classList.remove('active');
-		});
-		document.querySelector(`.tab-link[data-category="${pageId}"]`).classList.add('active');
-
-		// Update active menu
-		document.querySelectorAll('.menu-item').forEach(item => {
-			item.classList.remove('active');
-		});
-		document.querySelector(`.menu-item[href="#${pageId}"]`).classList.add('active');
-	}
-
-	// Setup navigation
-	document.querySelectorAll('.tab-link').forEach(link => {
-		link.addEventListener('click', function(e) {
-			e.preventDefault();
-			const pageId = this.getAttribute('data-category');
-			navigateTo(pageId);
-		});
-	});
-
-	document.querySelectorAll('.menu-item').forEach(item => {
-		item.addEventListener('click', function(e) {
-			e.preventDefault();
-			const href = this.getAttribute('href');
-			if (href) {
-				const pageId = href.substring(1);
-				navigateTo(pageId);
-			}
-		});
-	});
-
-	// Follow functionality
+	// following
 	function toggleFollow(button) {
 		if (button.textContent === 'Follow') {
 			button.textContent = 'Following';
@@ -307,14 +248,6 @@
 		} else {
 			button.textContent = 'Follow';
 			button.style.backgroundColor = '';
-		}
-	}
-
-	// Logout function
-	function logout() {
-		if (confirm("Are you sure you want to log out?")) {
-			alert("You have been logged out. Redirecting to login page...");
-			// window.location.href = "login.html";
 		}
 	}
 </script>

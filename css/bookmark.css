@@ -1,0 +1,87 @@
+/* Reuse general.css styles */
+@import url('general.css');
+
+/* Bookmark specific styles */
+.bookmarks-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(63, 55, 201, 0.1));
+    border-radius: 12px;
+}
+
+.bookmarks-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bookmarks-header p {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+.bookmark-badge {
+    top: 15px;
+    right: 15px;
+    background-color: var(--warning);
+    color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.bookmark-badge.active {
+    background-color: var(--primary);
+}
+
+.bookmark-badge i {
+    font-size: 1.2rem;
+}
+
+.no-bookmarks {
+    text-align: center;
+    padding: 3rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.no-bookmarks i {
+    font-size: 4rem;
+    color: var(--gray);
+    margin-bottom: 1rem;
+}
+
+.no-bookmarks h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.no-bookmarks p {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+.bookmarks-feed {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+    .bookmarks-header {
+        margin-top: 1rem;
+    }
+}
