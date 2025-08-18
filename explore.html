@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore</title>
+    <link rel="stylesheet" href="../css/explore.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="topbar">
+        <div class="logo">APCommunity</div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar-left">
+            <a href="general.html" class="menu-item tab-link" data-category="general">
+                <i class="uil uil-home"></i> Home
+            </a>
+            <div class="menu-item active"><i class="uil uil-compass"></i> Explore</div>
+            <a href="notification.html" class="menu-item tab-link" data-category="notification">
+                <i class="uil uil-bell"></i> Notifications
+            </a>
+            <a href="posting.html" class="menu-item tab-link" data-category="posting">
+                <i class="uil uil-envelope-alt"></i> Add a Post
+            </a>
+            <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
+            <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
+        </aside>
+    
+        <main class="explore-section">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="exploreSearch" placeholder="Search posts, users, or categories...">
+                <button id="searchBtn">Search</button>
+            </div>
+    
+            <!-- Trending Posts -->
+            <section class="trending">
+                <h2>🔥 Trending Posts</h2>
+                <div class="post-card">
+                    <p><strong>Student Council</strong>: Join us for Sports Day! 🏅</p>
+                </div>
+                <div class="post-card">
+                    <p><strong>APU</strong>: Welcome to the new semester! 🎉</p>
+                </div>
+            </section>
+    
+            <!-- Recommended Users -->
+            <section class="recommended-users">
+                <h2>👥 Recommended Users</h2>
+                <ul>
+                    <li>Jane Smith <button class="follow-btn">Follow</button></li>
+                    <li>Michael Lee <button class="follow-btn">Follow</button></li>
+                    <li>John Doe <button class="follow-btn">Follow</button></li>
+                </ul>
+            </section>
+    
+            <!-- Recent Posts -->
+            <section class="recent-posts">
+                <h2>🆕 Recent Posts</h2>
+                <div class="post-card">
+                    <p><strong>Mary</strong>: Just finished my assignment ✅</p>
+                </div>
+                <div class="post-card">
+                    <p><strong>Sports Club</strong>: Training session tomorrow! ⚽</p>
+                </div>
+            </section>
+        </main>
+    
+    
+    </div>
+</body>
+</html>
