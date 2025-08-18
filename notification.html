@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="../css/notification.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="topbar">
+        <div class="logo">APCommunity</div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar-left">
+            <a href="general.html" class="menu-item tab-link" data-category="general">
+                <i class="uil uil-home"></i> Home
+            </a>
+            <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
+            <div class="menu-item active"><i class="uil uil-bell"></i> Notifications</div>
+            <a href="posting.html" class="menu-item tab-link" data-category="posting">
+                <i class="uil uil-envelope-alt"></i> Add a Post
+            </a>
+            <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
+            <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
+        </aside>
+
+        <!-- Notifications Section -->
+        <main class="notifications-section">
+            <h2>Notifications</h2>
+
+            <!-- Like Notification -->
+            <a href="general.html?id=1&type=like" class="notification-item like">
+                <i class='bx bxs-heart'></i>
+                <div>
+                    <strong>John Doe</strong> liked your post.
+                    <span class="time">5 mins ago</span>
+                </div>
+            </a>
+
+            <!-- Comment Notification -->
+            <a href="general.html?id=1&type=comment" class="notification-item comment">
+                <i class='bx bxs-comment-detail'></i>
+                <div>
+                    <strong>Jane Smith</strong> commented: “Great work!”
+                    <span class="time">12 mins ago</span>
+                </div>
+            </a>
+
+            <!-- Follow Notification (not linked to post) -->
+            <div class="notification-item follow">
+                <i class='bx bxs-user-plus'></i>
+                <div>
+                    <strong>Michael Lee</strong> started following you.
+                    <span class="time">30 mins ago</span>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="../js/notification.js"></script>
+
+</body>
+
+</html>

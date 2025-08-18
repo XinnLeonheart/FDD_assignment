@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: "1",
       user: "Asia Pacific University",
-      category: "news",
+      category: "general",
       text: "Welcome to the new semester!",
       imageURL: "image/sample1.jpg",
       pdfURL: "",
-      pdfName: "",
+      pdfName: "announcement.pdf",
       liked: false,
       comments: [
         { user: "John", text: "Excited!" },
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: "2",
       user: "Student Council",
-      category: "events",
+      category: "general",
       text: "Join us for the annual sports day!",
       imageURL: "",
       pdfURL: "files/sports-day.pdf",
@@ -194,3 +194,96 @@ function postComment(input, button, posts, currentUser) {
   input.value = '';
   button.disabled = true;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const postId = urlParams.get("id");
+  const type = urlParams.get("type"); // like or comment
+
+  // Inject comments for hard-coded posts if any
+  posts.forEach((post) => {
+    const hardcodedCard = document.querySelector(
+      `.post-card[data-post-id="${post.id}"]`
+    );
+    if (hardcodedCard) {
+      const commentsContainer = hardcodedCard.querySelector(
+        ".comments-container"
+      );
+      if (commentsContainer && post.comments.length > 0) {
+        commentsContainer.innerHTML = post.comments
+          .map(
+            (c) =>
+              `<div class="comment"><strong>${c.user}</strong> ${c.text}</div>`
+          )
+          .join("");
+      }
+    }
+  });
+
+  if (postId) {
+    const targetPost = document.querySelector(
+      `.post-card[data-post-id="${postId}"]`
+    );
+    if (targetPost) {
+      // Scroll to post
+      targetPost.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      // Highlight post briefly
+      targetPost.style.boxShadow = "0 0 15px rgba(0, 162, 200, 0.8)";
+      setTimeout(() => {
+        targetPost.style.boxShadow = "";
+      }, 3000);
+
+      // If it's a comment notification, auto-open the comment box
+      if (type === "comment") {
+        const commentBox = targetPost.nextElementSibling;
+        const commentsContainer = targetPost.querySelector(
+          ".comments-container"
+        );
+
+        if (commentBox && commentsContainer) {
+          commentBox.style.display = "flex";
+          commentsContainer.style.display = "block";
+          const input = commentBox.querySelector(".comment-input");
+          if (input) input.focus(); // auto-focus the input
+        }
+      }
+    }
+  }
+});
+
+// Share button (copy link with tooltip)
+document.querySelectorAll('.share-icon').forEach((icon) => {
+  icon.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const postCard = icon.closest(".post-card");
+    const postId = postCard.dataset.postId;
+
+    const shareUrl = `${window.location.origin}${window.location.pathname}?id=${postId}`;
+
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      // Create tooltip
+      const tooltip = document.createElement("span");
+      tooltip.innerText = "Copied!";
+      tooltip.style.position = "absolute";
+      tooltip.style.background = "#333";
+      tooltip.style.color = "#fff";
+      tooltip.style.padding = "4px 8px";
+      tooltip.style.borderRadius = "6px";
+      tooltip.style.fontSize = "12px";
+      tooltip.style.top = `${icon.getBoundingClientRect().top - 30 + window.scrollY}px`;
+      tooltip.style.left = `${icon.getBoundingClientRect().left + window.scrollX}px`;
+      tooltip.style.zIndex = "9999";
+      tooltip.style.transition = "opacity 0.5s ease";
+      document.body.appendChild(tooltip);
+
+      // Fade out and remove tooltip
+      setTimeout(() => {
+        tooltip.style.opacity = "0";
+        setTimeout(() => tooltip.remove(), 500);
+      }, 1000);
+    }).catch(err => {
+      console.error("Failed to copy: ", err);
+    });
+  });
+});
