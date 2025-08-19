@@ -7,6 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const previewVideos = document.getElementById('previewVideos');
   const previewFiles = document.getElementById('previewFiles');
 
+  // Category selection
+  let selectedCategory = "general"; // default category
+  const categoryButtons = document.querySelectorAll(".category-btn");
+  categoryButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      // remove active class from all
+      categoryButtons.forEach(b => b.classList.remove("active"));
+      // add active to clicked
+      btn.classList.add("active");
+      // update selectedCategory
+      selectedCategory = btn.dataset.category;
+    });
+  });
+
+  // ---------- File Preview ----------
   function createPreviewItem(type, file) {
     const wrapper = document.createElement("div");
     wrapper.className = "file-item";
@@ -39,10 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentCount = container.children.length;
     const newFiles = Array.from(input.files);
 
-    // Check if adding the new files exceeds the limit
     if (currentCount + newFiles.length > maxCount) {
       alert(`You can only upload up to ${maxCount} ${type}${maxCount > 1 ? 's' : ''}.`);
-      input.value = ''; // Clear selection
+      input.value = '';
       return;
     }
 
@@ -52,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     input.value = '';
 
-    // Update label text
     if (type === "image") {
       document.querySelector("#imageLabel .label-text").textContent = "Add more image";
     } else if (type === "video") {
@@ -66,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   videoInput.addEventListener('change', () => handleFiles(videoInput, 'video', previewVideos, 10));
   fileInput.addEventListener('change', () => handleFiles(fileInput, 'file', previewFiles, 5));
 
+  // ---------- Handle Post Submission ----------
   const postForm = document.querySelector('.post-form');
   postForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -83,34 +97,30 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Prepare new post object
+    // New post object with category
     const newPost = {
-      id: Date.now().toString(), // unique ID
+      id: Date.now().toString(),
       user: currentUser,
       owner: currentUser,
-      category: "general",  // since posting.html is for general
+      category: selectedCategory,  
       text: text,
       imageURL: previewImages.querySelector("img") ? previewImages.querySelector("img").src : "",
-      pdfURL: "",   // for now only file attachments
+      pdfURL: "",
       pdfName: "",
       liked: false,
       comments: []
     };
 
-    // Handle file (if attached)
     const filePreview = previewFiles.querySelector(".file-name");
     if (filePreview) {
       newPost.pdfName = filePreview.textContent;
-      newPost.pdfURL = "#"; // or store as blob if you want real download
+      newPost.pdfURL = "#";
     }
 
-    // Save to localStorage
     let allPosts = JSON.parse(localStorage.getItem("allPosts")) || [];
     allPosts.push(newPost);
     localStorage.setItem("allPosts", JSON.stringify(allPosts));
 
-    // Redirect to general.html
     window.location.href = "general.html";
   });
-
 });

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
     </nav>
 
     <div class="container">
+
         <aside class="sidebar-left">
             <a href="general.html" class="menu-item tab-link" data-category="general">
                 <i class="uil uil-home"></i> Home
@@ -33,7 +35,45 @@
             <div class="menu-item active"><i class="uil uil-setting"></i> Settings</div>
         </aside>
 
-        
+        <main class="settings-section">
+            <h2>⚙️ Settings</h2>
+
+            <!-- Profile Settings -->
+            <section class="settings-group">
+                <h3>👤 Profile</h3>
+                <label>
+                    Display Name:
+                    <input type="text" id="displayName" value="Your Name">
+                </label>
+                <label>
+                    Email:
+                    <input type="email" id="email" value="you@example.com">
+                </label>
+                <button class="save-btn">Save Profile</button>
+            </section>
+
+            <!-- Security -->
+            <section class="settings-group">
+                <h3>🔒 Security</h3>
+                <label>
+                    Change Password:
+                    <input type="password" id="newPassword" placeholder="New Password">
+                </label>
+                <button class="save-btn">Update Password</button>
+            </section>
+
+            <!-- Logout -->
+            <section class="settings-group">
+                <h3>🚪 Logout</h3>
+                <button id="logoutBtn">Log Out</button>
+            </section>
+
+        </main>
+
+
     </div>
+    <script src="../js/setting.js"></script>
+
 </body>
+
 </html>
