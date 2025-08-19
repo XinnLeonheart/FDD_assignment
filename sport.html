@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Academic Posts</title>
@@ -29,43 +30,44 @@
   <div class="container">
     <!-- Left Sidebar -->
     <aside class="sidebar-left">
-      <!-- Put your sidebar content here -->
-      <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
+      <div class="menu-item active" class="menu-item"><box-icon name='home'></box-icon> Home</div>
       <a href="explore.html" class="menu-item tab-link" data-category="explore">
-        <i class="uil uil-compass"></i> Explore
+        <box-icon name='compass'></box-icon> Explore
       </a>
       <a href="notification.html" class="menu-item tab-link" data-category="notification">
-        <i class="uil uil-bell"></i> Notifications
+        <box-icon name='bell'></box-icon> Notifications
       </a>
       <a href="posting.html" class="menu-item tab-link" data-category="posting">
-        <i class="uil uil-envelope-alt"></i> Add a Post
+        <box-icon name='add-to-queue'></box-icon> Add a Post
       </a>
       <a href="myPost.html" class="menu-item tab-link" data-category="myPost">
-        <i class="uil uil-bookmark"></i> My Posts
+        <box-icon name='file-find'></box-icon> My Posts
       </a>
       <a href="setting.html" class="menu-item tab-link" data-category="setting">
-        <i class="uil uil-setting"></i> Settings
+        <box-icon name='cog'></box-icon> Settings
       </a>
     </aside>
 
     <!-- Post Feed -->
     <main class="main-feed" id="postFeed">
-      <!-- Firebase posts will be rendered here -->
     </main>
-  <script src="../js/general.js"></script> <!-- Shared loader -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const currentUser = localStorage.getItem("currentUser");
-      const profileUsername = document.getElementById("profileUsername");
 
-      if (currentUser) {
-        profileUsername.textContent = currentUser;
-        profileDesc.textContent = "Member"; // You can customize this
-      } else {
-        profileUsername.textContent = "Guest";
-        profileDesc.textContent = "Not logged in";
-      }
-    });
-  </script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="../js/general.js"></script> <!-- Shared loader -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const currentUser = localStorage.getItem("currentUser");
+        const profileUsername = document.getElementById("profileUsername");
+
+        if (currentUser) {
+          profileUsername.textContent = currentUser;
+          profileDesc.textContent = "Member"; // You can customize this
+        } else {
+          profileUsername.textContent = "Guest";
+          profileDesc.textContent = "Not logged in";
+        }
+      });
+    </script>
 </body>
+
 </html>

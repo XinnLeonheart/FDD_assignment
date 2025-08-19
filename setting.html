@@ -15,24 +15,24 @@
     </nav>
 
     <div class="container">
-
+        <!-- Left Sidebar -->
         <aside class="sidebar-left">
-            <a href="general.html" class="menu-item tab-link" data-category="general">
-                <i class="uil uil-home"></i> Home
-            </a>
+            <div class="menu-item tab-link" class="menu-item"><box-icon name='home'></box-icon> Home</div>
             <a href="explore.html" class="menu-item tab-link" data-category="explore">
-                <i class="uil uil-compass"></i> Explore
+                <box-icon name='compass'></box-icon> Explore
             </a>
             <a href="notification.html" class="menu-item tab-link" data-category="notification">
-                <i class="uil uil-bell"></i> Notifications
+                <box-icon name='bell'></box-icon> Notifications
             </a>
             <a href="posting.html" class="menu-item tab-link" data-category="posting">
-                <i class="uil uil-envelope-alt"></i> Add a Post
+                <box-icon name='add-to-queue'></box-icon> Add a Post
             </a>
             <a href="myPost.html" class="menu-item tab-link" data-category="myPost">
-                <i class="uil uil-bookmark"></i> My Posts
+                <box-icon name='file-find'></box-icon> My Posts
             </a>
-            <div class="menu-item active"><i class="uil uil-setting"></i> Settings</div>
+            <a href="setting.html" class="menu-item active" data-category="setting">
+                <box-icon name='cog'></box-icon> Settings
+            </a>
         </aside>
 
         <main class="settings-section">
@@ -40,7 +40,7 @@
 
             <!-- Profile Settings -->
             <section class="settings-group">
-                <h3>👤 Profile</h3>
+                <h3><box-icon name='user'></box-icon>Profile</h3>
                 <label>
                     Display Name:
                     <input type="text" id="displayName" value="Your Name">
@@ -54,7 +54,7 @@
 
             <!-- Security -->
             <section class="settings-group">
-                <h3>🔒 Security</h3>
+                <h3><box-icon name='lock'></box-icon>Security</h3>
                 <label>
                     Change Password:
                     <input type="password" id="newPassword" placeholder="New Password">
@@ -64,7 +64,7 @@
 
             <!-- Logout -->
             <section class="settings-group">
-                <h3>🚪 Logout</h3>
+                <h3><box-icon name='log-out'></box-icon>Logout</h3>
                 <button id="logoutBtn">Log Out</button>
             </section>
 
@@ -72,6 +72,7 @@
 
 
     </div>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="../js/setting.js"></script>
 
 </body>
