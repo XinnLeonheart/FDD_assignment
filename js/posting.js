@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newPost = {
       id: Date.now().toString(), // unique ID
       user: currentUser,
+      owner: currentUser,
       category: "general",  // since posting.html is for general
       text: text,
       imageURL: previewImages.querySelector("img") ? previewImages.querySelector("img").src : "",
@@ -104,9 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Save to localStorage
-    let posts = JSON.parse(localStorage.getItem(`posts_${currentUser}`)) || [];
-    posts.push(newPost);
-    localStorage.setItem(`posts_${currentUser}`, JSON.stringify(posts));
+    let allPosts = JSON.parse(localStorage.getItem("allPosts")) || [];
+    allPosts.push(newPost);
+    localStorage.setItem("allPosts", JSON.stringify(allPosts));
 
     // Redirect to general.html
     window.location.href = "general.html";
