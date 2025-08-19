@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../css/post.css">     
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/general.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body data-category="general">
@@ -20,95 +21,94 @@
       <li><a href="sport.html" class="tab-link" data-category="sport">Sports</a></li>
     </ul>
     <div class="profile-info" id="profileInfo">
-    <img src="image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
-    <div class="profile-details">
-      <span class="profile-username">Asia Pacific University</span>
-      <span class="profile-desc">APU</span>
+      <img src="image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+      <div class="profile-details">
+        <span class="profile-username" id="profileUsername"></span>
+      </div>
+      <a href="register_login.html" class="logout-link">Log out</a>
     </div>
-    <a href="register_login.html" class="logout-link">Log out</a>
-  </div>
   </nav>
-  
+
 
   <div class="container">
-  <!-- Left Sidebar -->
-  <aside class="sidebar-left">
-    <!-- Put your sidebar content here -->
-    <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
-    <a href="explore.html" class="menu-item tab-link" data-category="explore">
-      <i class="uil uil-compass"></i> Explore
-    </a>
-    <a href="notification.html" class="menu-item tab-link" data-category="notification">
-      <i class="uil uil-bell"></i> Notifications
-    </a>
-    <a href="posting.html" class="menu-item tab-link" data-category="posting">
-      <i class="uil uil-envelope-alt"></i> Add a Post
-    </a>
-    <a href="bookmark.html" class="menu-item tab-link" data-category="bookmark">
-      <i class="uil uil-bookmark"></i> Bookmarks
-    </a>
-    <a href="setting.html" class="menu-item tab-link" data-category="setting">
-      <i class="uil uil-setting"></i> Settings
-    </a>
-  </aside>
+    <!-- Left Sidebar -->
+    <aside class="sidebar-left">
+      <!-- Put your sidebar content here -->
+      <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
+      <a href="explore.html" class="menu-item tab-link" data-category="explore">
+        <i class="uil uil-compass"></i> Explore
+      </a>
+      <a href="notification.html" class="menu-item tab-link" data-category="notification">
+        <i class="uil uil-bell"></i> Notifications
+      </a>
+      <a href="posting.html" class="menu-item tab-link" data-category="posting">
+        <i class="uil uil-envelope-alt"></i> Add a Post
+      </a>
+      <a href="myPost.html" class="menu-item tab-link" data-category="myPost">
+        <i class="uil uil-bookmark"></i> My Posts
+      </a>
+      <a href="setting.html" class="menu-item tab-link" data-category="setting">
+        <i class="uil uil-setting"></i> Settings
+      </a>
+    </aside>
 
 
-  <!-- Main Feed -->
-  <main class="main-feed" id="postFeed">
-    <!-- Your existing post cards will go here -->
-    <!-- Post Card -->
-    <div class="post-card" data-post-id="1">
-      <div class="post-body">
-        <div class="post-img">
-          <img src="image/announcement.jpeg" alt="announcement" />
-        </div>
-        <div class="post-content">
-          <h4>Asia Pacific University <span class="badge">· official</span></h4>
-          <p>The Government had earlier this week issued announcements...</p>
-          <a class="file-download" href="#" download="announcement">announcement.pdf</a>
-  
-          <div class="post-actions">
-            <box-icon name="heart" class="like-icon"></box-icon>
-            <box-icon name="comment" class="comment-icon" type="solid"></box-icon>
-            <box-icon name='share-alt' class="share-icon" type="solid"></box-icon>
+    <!-- Main Feed -->
+    <main class="main-feed" id="postFeed">
+      <!-- Your existing post cards will go here -->
+      <!-- Post Card -->
+      <div class="post-card" data-post-id="1">
+        <div class="post-body">
+          <div class="post-img">
+            <img src="image/announcement.jpeg" alt="announcement" />
           </div>
-  
-          <!-- Comments area -->
-          <div class="comments-container" style="display:none;"></div>
+          <div class="post-content">
+            <h4>Asia Pacific University <span class="badge">· official</span></h4>
+            <p>The Government had earlier this week issued announcements...</p>
+            <a class="file-download" href="#" download="announcement">announcement.pdf</a>
+
+            <div class="post-actions">
+              <box-icon name="heart" class="like-icon"></box-icon>
+              <box-icon name="comment" class="comment-icon" type="solid"></box-icon>
+              <box-icon name='share-alt' class="share-icon" type="solid"></box-icon>
+            </div>
+
+            <!-- Comments area -->
+            <div class="comments-container" style="display:none;"></div>
+          </div>
         </div>
       </div>
-    </div>
-  
-    <!-- Comment box OUTSIDE post-card -->
-    <div class="comment-box" style="display:none;" data-post-id="1">
-      <input type="text" class="comment-input" placeholder="Add a comment...">
-      <button class="submit-comment" disabled>Post</button>
-    </div>
-    <!-- End of Post Card -->
-  </main>
 
-
-  <!-- Right Sidebar -->
-  <aside class="sidebar-right">
-    <h4>Suggested for you</h4>
-    <ul class="suggestions">
-      <li>User_1 <button class="follow-btn">Follow</button></li>
-      <li>User_2 <button class="follow-btn">Follow</button></li>
-      <li>User_3 <button class="follow-btn">Follow</button></li>
-    </ul>
-  </aside>
-
-
+      <!-- Comment box OUTSIDE post-card -->
+      <div class="comment-box" style="display:none;" data-post-id="1">
+        <input type="text" class="comment-input" placeholder="Add a comment...">
+        <button class="submit-comment" disabled>Post</button>
+      </div>
+      <!-- End of Post Card -->
+    </main>
   </div>
-    <div id="imageModal" class="image-modal" style="display:none;">
+  <div id="imageModal" class="image-modal" style="display:none;">
     <span class="close-modal">&times;</span>
     <img class="modal-content" id="modalImg" src="" alt="Full View">
   </div>
 
 
   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-  <script src="../js/post.js"></script>
+  <script src="../js/general.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentUser = localStorage.getItem("currentUser");
+      const profileUsername = document.getElementById("profileUsername");
 
-
+      if (currentUser) {
+        profileUsername.textContent = currentUser;
+        profileDesc.textContent = "Member"; // You can customize this
+      } else {
+        profileUsername.textContent = "Guest";
+        profileDesc.textContent = "Not logged in";
+      }
+    });
+  </script>
 </body>
+
 </html>

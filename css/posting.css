@@ -215,8 +215,8 @@ body {
   padding: 12px;
   margin-left: 100px;
   background-color: transparent;
-  border: 1px solid #007acc;
-  color: #007acc;
+  border: 1px solid #00A2C8;
+  color: #00A2C8;
   font-size: 16px;
   border-radius: 25px;
   cursor: pointer;
@@ -226,6 +226,6 @@ body {
 }
 
 .post-btn:hover {
-  background-color: #007acc;
+  background-color: #00A2C8;
   color: #fff;
 }
