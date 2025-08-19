@@ -36,3 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+document.querySelector(".sidebar-left .menu-item").addEventListener("click", () => {
+  window.location.href = "general.html";
+});
