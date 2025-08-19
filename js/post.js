@@ -1,296 +1,189 @@
+// [file name]: post.js
+import {
+    getDataByIndex,
+    getMatchingDataByIndex,
+    openDb
+} from './indexedDb.js';
 
+// DOM Elements
+const postForm = document.getElementById('postForm');
+const postCategory = document.getElementById('postCategory');
+const postContent = document.getElementById('postContent');
+const postImage = document.getElementById('postImage');
+const postFile = document.getElementById('postFile');
+const imageFileName = document.getElementById('imageFileName');
+const fileFileName = document.getElementById('fileFileName');
+const profileUsername = document.getElementById('profileUsername');
 
-// DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-  const postFeed = document.getElementById('postFeed');
-  const currentCategory = document.body.dataset.category;
+// Current user data
+let currentUser = null;
 
-  // Get current user
-  const currentUser = localStorage.getItem('currentUser');
-  if (!currentUser) {
-    window.location.href = 'register_login.html'; // force login
-    return;
-  }
-
-
-  // Save the last visited page for this user
-  localStorage.setItem(`lastVisitedPage_${currentUser}`, window.location.pathname);
-
-
-  // Default posts for new users
-  const defaultPosts = [
-    {
-      id: "1",
-      user: "Asia Pacific University",
-      category: "news",
-      text: "Welcome to the new semester!",
-      imageURL: "image/sample1.jpg",
-      pdfURL: "",
-      pdfName: "",
-      liked: false,
-      comments: [
-        { user: "John", text: "Excited!" },
-        { user: "Mary", text: "Can't wait!" }
-      ]
-    },
-    {
-      id: "2",
-      user: "Student Council",
-      category: "events",
-      text: "Join us for the annual sports day!",
-      imageURL: "",
-      pdfURL: "files/sports-day.pdf",
-      pdfName: "Sports Day Info.pdf",
-      liked: false,
-      comments: []
+// File change handlers
+postImage.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+        imageFileName.textContent = e.target.files[0].name;
+    } else {
+        imageFileName.textContent = 'No file selected';
     }
-  ];
-
-
-  // Load posts for this user
-  let posts = JSON.parse(localStorage.getItem(`posts_${currentUser}`)) || defaultPosts;
-
-
-  // Render-only posts in the current category
-  posts.forEach(post => {
-    if (post.category === currentCategory) {
-      const card = document.createElement('div');
-      card.className = 'post-card';
-      card.dataset.postId = post.id;
-
-      card.innerHTML = `
-        <div class="post-body">
-          <div class="post-img">
-            ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image">` : ''}
-          </div>
-          <div class="post-content">
-            <h4>${post.user} ${post.user === "Asia Pacific University" ? '<span class="badge">· official</span>' : ''}</h4>
-            <p>${post.text}</p>
-            ${post.pdfURL ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}">📎 ${post.pdfName}</a>` : ''}
-            <div class="post-actions">
-              <box-icon name="heart" class="like-icon" type="${post.liked ? 'solid' : 'regular'}" color="${post.liked ? 'red' : '#333'}"></box-icon>
-              <box-icon name="comment" class="comment-icon" type="regular" color="#333"></box-icon>
-              <box-icon name="share" class="share-icon" type="regular" color="#333"></box-icon>
-            </div>
-            <div class="comments-container">
-              ${post.comments.map(c => `<div class="comment"><strong>${c.user}</strong> ${c.text}</div>`).join('')}
-            </div>
-          </div>
-        </div>
-        <div class="comment-box" style="display: none;">
-          <input type="text" class="comment-input" placeholder="Add a comment...">
-          <button class="submit-comment" >Post</button>
-        </div>
-      `;
-      postFeed.appendChild(card);
-    }
-  });
-
-  enableImageModalPreview();
-  setupPostInteractions(posts, currentUser);
 });
 
-
-// Image modal
-function enableImageModalPreview() {
-  const modal = document.getElementById("imageModal");
-  const modalImg = document.getElementById("modalImg");
-  const closeBtn = document.querySelector(".close-modal");
-
-  document.querySelectorAll(".post-img img").forEach((img) => {
-    img.style.cursor = "pointer";
-    img.addEventListener("click", function () {
-      modalImg.src = this.src;
-      modal.style.display = "block";
-    });
-  });
-
-  closeBtn.addEventListener("click", () => modal.style.display = "none");
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  });
-}
-function initializeBookmarks() {
-  const currentUser = localStorage.getItem('currentUser');
-  if (!currentUser) return;
-
-  // 获取当前用户的所有收藏
-  const bookmarks = JSON.parse(localStorage.getItem(`bookmarks_${currentUser}`)) || [];
-
-  // 初始化收藏按钮状态
-  document.querySelectorAll('.post-card').forEach(post => {
-    const postId = post.dataset.postId;
-    const bookmarkBtn = post.querySelector('.bookmark-action');
-
-    if (bookmarkBtn) {
-      // 如果帖子已收藏，设置激活状态
-      if (bookmarks.includes(postId)) {
-        bookmarkBtn.classList.add('active');
-        bookmarkBtn.innerHTML = `<i class='bx bxs-bookmark'></i><span>Saved</span>`;
-      }
-
-      // 添加点击事件
-      bookmarkBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleBookmark(postId, bookmarkBtn);
-      });
+postFile.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+        fileFileName.textContent = e.target.files[0].name;
+    } else {
+        fileFileName.textContent = 'No file selected';
     }
-  });
+});
+
+// Load current user
+async function loadCurrentUser() {
+    try {
+        const currentUserData = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
+
+        if (currentUserData && currentUserData.length > 0) {
+            const currentUsername = currentUserData[0].currentUser;
+
+            if (currentUsername) {
+                const userData = await getMatchingDataByIndex(
+                    "userDB",
+                    "userObjectStore",
+                    "usernameIndex",
+                    currentUsername
+                );
+
+                if (userData) {
+                    currentUser = userData;
+                    profileUsername.textContent = userData.name || currentUsername;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error loading current user:", error);
+    }
 }
 
-function toggleBookmark(postId, button) {
-  const currentUser = localStorage.getItem('currentUser');
-  let bookmarks = JSON.parse(localStorage.getItem(`bookmarks_${currentUser}`)) || [];
+// Create post
+async function createPost(postData) {
+    try {
+        const db = await openDb();
+        const tx = db.transaction('postObjectStore', 'readwrite');
+        const store = tx.objectStore('postObjectStore');
 
-  if (button.classList.contains('active')) {
-    // 取消收藏
-    bookmarks = bookmarks.filter(id => id !== postId);
-    button.innerHTML = `<i class='bx bx-bookmark'></i><span>Save</span>`;
-  } else {
-    // 添加收藏
-    bookmarks.push(postId);
-    button.innerHTML = `<i class='bx bxs-bookmark'></i><span>Saved</span>`;
-    showBookmarkNotification();
-  }
+        // Add the new post
+        await store.add(postData);
+        await tx.done;
 
-  button.classList.toggle('active');
-  localStorage.setItem(`bookmarks_${currentUser}`, JSON.stringify(bookmarks));
+        console.log('Post created successfully:', postData);
+        return true;
+    } catch (error) {
+        console.error('Error creating post:', error);
+        return false;
+    }
 }
 
-function showBookmarkNotification() {
-  // 复用现有的通知样式（需确保post.css中有 .notification 类）
-  const notification = document.createElement('div');
-  notification.className = 'notification bookmark-notification';
-  notification.innerHTML = `
-      <i class='bx bxs-check-circle'></i>
-      <span>Post saved to bookmarks</span>
-      <a href="bookmark.html" class="view-link">View</a>
+// Helper: read a File as Data URL (base64)
+function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+    });
+}
+
+// Handle form submission
+postForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+        alert('Please log in to create a post');
+        return;
+    }
+
+    // Create a post-object
+    const newPost = {
+        userId: currentUser.id || Date.now(), // Use existing ID or generate a new one
+        username: currentUser.username,
+        avatar: currentUser.avatar || "../image/default_avatar.jpg",
+        content: postContent.value,
+        category: postCategory.value,
+        image: null,
+        file: null,
+        timestamp: new Date().toISOString(),
+        likes: 0,
+        comments: [],
+        liked: false,
+        bookmarked: false
+    };
+
+    // Handle image file
+    if (postImage.files.length > 0) {
+        const imageFile = postImage.files[0];
+        try {
+            newPost.image = await readFileAsDataURL(imageFile);
+            newPost.imageName = imageFile.name;
+            newPost.imageType = imageFile.type;
+        } catch (err) {
+            console.error('Failed to read image file:', err);
+        }
+    }
+
+    // Handle file attachment
+    if (postFile.files.length > 0) {
+        const file = postFile.files[0];
+        try {
+            newPost.file = await readFileAsDataURL(file);
+            newPost.fileName = file.name;
+            newPost.fileType = file.type;
+        } catch (err) {
+            console.error('Failed to read attachment file:', err);
+        }
+    }
+
+    // Save to IndexedDB
+    const success = await createPost(newPost);
+
+    if (success) {
+        // Show a success message
+        showSuccessMessage("Post created successfully!");
+
+        // Redirect after delay
+        setTimeout(() => {
+            window.location.href = `${postCategory.value}.html`;
+        }, 1500);
+    } else {
+        alert('Failed to create post. Please try again.');
+    }
+});
+
+// Show a success message
+function showSuccessMessage(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification success';
+    notification.innerHTML = `
+        <i class='bx bx-check-circle'></i>
+        <span>${message}</span>
     `;
-  document.body.appendChild(notification);
 
-  setTimeout(() => {
-    notification.classList.add('fade-out');
-    setTimeout(() => notification.remove(), 300);
-  }, 3000);
-}
+    document.body.appendChild(notification);
 
-// 初始化收藏功能
-initializeBookmarks();
-enableImageModalPreview();
-setupPostInteractions(posts, currentUser)
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
 
-// Post interactions
-function setupPostInteractions(posts, currentUser) {
-  // Likes with persistence
-  document.querySelectorAll('.like-icon').forEach((icon) => {
-    icon.addEventListener('click', () => {
-      const postCard = icon.closest('.post-card');
-      const postId = postCard.dataset.postId;
-      const post = posts.find(p => p.id === postId);
-
-      post.liked = !post.liked; // toggle like
-      icon.setAttribute('type', post.liked ? 'solid' : 'regular');
-      icon.setAttribute('color', post.liked ? 'red' : '#333');
-
-      localStorage.setItem(`posts_${currentUser}`, JSON.stringify(posts)); // save
-    });
-  });
-
-
-  // Show the comment box
-  document.querySelectorAll(".comment-icon").forEach((icon) => {
-    icon.addEventListener("click", () => {
-      const postCard = icon.closest(".post-card");
-      const commentBox = postCard.querySelector(".comment-box");
-      const commentsContainer = postCard.querySelector(".comments-container");
-      const isVisible = commentBox.style.display === "block";
-      commentBox.style.display = isVisible ? "none" : "block";
-      commentsContainer.style.display = isVisible ? "none" : "flex";
-      if (!isVisible) commentBox.querySelector(".comment-input").focus();
-    });
-  });
-
-
-  // Share
-  document.querySelectorAll(".share-icon").forEach((icon) => {
-    icon.addEventListener("click", () => {
-      const postCard = icon.closest(".post-card");
-      const postId = postCard.dataset.postId;
-      const postLink = `${window.location.origin}/post.html?id=${postId}`;
-      navigator.clipboard
-        .writeText(postLink)
-        .then(() => alert("Link copied to clipboard!"))
-        .catch(() => alert("Copy failed."));
-    });
-  });
-
-
-  // Comment posting
-  document.querySelectorAll('.comment-input').forEach((input) => {
-    const button = input.nextElementSibling;
-    input.addEventListener('input', () => {
-      button.disabled = !input.value.trim();
-      button.classList.toggle('active', input.value.trim() !== '');
-    });
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && input.value.trim()) postComment(input, button, posts, currentUser);
-    });
-    button.addEventListener('click', () => {
-      if (input.value.trim()) postComment(input, button, posts, currentUser);
-    });
-  });
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
 }
 
 
-// Post comment
-function postComment(input, button, posts, currentUser) {
-  const commentText = input.value.trim();
-  if (!commentText) return;
-
-  const postCard = input.closest('.post-card');
-  const postId = postCard.dataset.postId;
-  const commentsContainer = postCard.querySelector('.comments-container');
-
-
-  // DOM update
-  commentsContainer.style.display = 'flex';
-  const newComment = document.createElement('div');
-  newComment.className = 'comment';
-  newComment.innerHTML = `<strong>${currentUser}</strong> ${commentText}`;
-  commentsContainer.appendChild(newComment);
-
-
-  // Save to post data for this user
-  const postIndex = posts.findIndex(p => p.id === postId);
-  if (postIndex > -1) {
-    posts[postIndex].comments.push({ user: currentUser, text: commentText });
-    localStorage.setItem(`posts_${currentUser}`, JSON.stringify(posts));
-  }
-
-
-  // Reset input
-  input.value = '';
-  button.classList.remove('active');
-  button.disabled = true;
-  newComment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+// Initialize page
+async function init() {
+    await loadCurrentUser();
 }
 
-
-// abandoned
-// Logout
-// window.addEventListener("DOMContentLoaded", () => {
-//   const logoutLink = document.getElementsByClassName(".logout-link");
-//   if (logoutLink) {
-//     logoutLink.addEventListener("click", function (e) {
-//       e.preventDefault();
-//       if (confirm("Are you sure you want to log out?"))
-//       {
-//         localStorage.setItem("isLoggedIn", "false");
-//         deleteUserData("currentUserIndex").then(r => {
-//             console.log(r);
-//             window.location.href = "register_login.html";
-//         });
-//       }
-//     });
-//   }
-// });
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', init);

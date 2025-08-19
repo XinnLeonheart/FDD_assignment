@@ -1,3 +1,4 @@
+<!-- profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,32 +34,25 @@
 	<!-- Left Sidebar -->
 	<aside class="sidebar-left">
 		<a href="general.html" class="menu-item">
-			<i class='bx bx-home'></i>
-			<span>Home</span>
+			<i class='bx bx-home'></i> Home
 		</a>
 		<a href="explore.html" class="menu-item">
-			<i class='bx bx-compass'></i>
-			<span>Explore</span>
+			<i class='bx bx-compass'></i> Explore
 		</a>
 		<a href="notification.html" class="menu-item">
-			<i class='bx bx-bell'></i>
-			<span>Notification</span>
+			<i class='bx bx-bell'></i> Notification
 		</a>
-		<a href="posting.html" class="menu-item">
-			<i class='bx bx-plus-circle'></i>
-			<span>Add a Post</span>
+		<a href="post.html" class="menu-item">
+			<i class='bx bx-plus-circle'></i> Add a post
 		</a>
 		<a href="bookmark.html" class="menu-item">
-			<i class='bx bx-bookmark'></i>
-			<span>Bookmark</span>
+			<i class='bx bx-bookmark'></i> Bookmark
 		</a>
 		<a href="profile.html" class="menu-item active">
-			<i class='bx bx-user'></i>
-			<span>Profile</span>
+			<i class='bx bx-user'></i> Profile
 		</a>
 		<a href="setting.html" class="menu-item">
-			<i class='bx bx-cog'></i>
-			<span>Setting</span>
+			<i class='bx bx-cog'></i> Setting
 		</a>
 	</aside>
 	
@@ -66,136 +60,79 @@
 	<main class="main-feed">
 		<!-- Profile Header -->
 		<div class="profile-header">
-			<div class="cover-photo">
-				<div class="edit-cover">
-					<i class='bx bx-camera'></i>
-					<span>Edit Cover Photo</span>
-				</div>
-			</div>
-			<div class="profile-info-section">
-				<div class="profile-avatar">
-					<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="avatar" />
-					<button class="edit-avatar">
+			<div class="profile-banner">
+				<img src="../image/default_banner.jpg" alt="Banner" class="banner-img">
+				<div class="profile-avatar-container">
+					<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-avatar">
+					<button class="edit-avatar-btn" id="editAvatarBtn">
 						<i class='bx bx-camera'></i>
 					</button>
 				</div>
-				<div class="profile-details">
-					<h1 id="profileFullName">Loading...</h1>
-					<p id="profileMajor"></p>
-					<div class="stats">
-						<div>
-							<strong>0</strong>
-							<span>Posts</span>
+			</div>
+			
+			<div class="profile-info-container">
+				<div class="profile-details-main">
+					<h1 id="profileDisplayName">Loading...</h1>
+					<p class="profile-username" id="profileDisplayUsername">@username</p>
+					<p class="profile-bio" id="profileBio">This user hasn't added a bio yet.</p>
+					
+					<div class="profile-stats">
+						<div class="stat">
+							<span class="stat-number" id="postCount">0</span>
+							<span class="stat-label">Posts</span>
 						</div>
-						<div>
-							<strong>0</strong>
-							<span>Followers</span>
+						<div class="stat">
+							<span class="stat-number" id="followerCount">0</span>
+							<span class="stat-label">Followers</span>
 						</div>
-						<div>
-							<strong>0</strong>
-							<span>Following</span>
+						<div class="stat">
+							<span class="stat-number" id="followingCount">0</span>
+							<span class="stat-label">Following</span>
 						</div>
 					</div>
 				</div>
+				
 				<button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
 			</div>
 		</div>
 		
-		<!-- Profile Content -->
-		<div class="profile-content">
-			<!-- About Section -->
-			<div class="profile-card">
-				<div class="card-header">
-					<h2>About</h2>
-					<button class="edit-section-btn" data-section="about">
-						<i class='bx bx-edit'></i>
-					</button>
-				</div>
-				<div class="card-content" id="aboutSection">
-					<div class="info-item">
-						<i class='bx bx-user'></i>
-						<div>
-							<span class="label">Full Name</span>
-							<span class="value" id="fullName">Loading...</span>
-						</div>
-					</div>
-					<div class="info-item">
-						<i class='bx bx-book'></i>
-						<div>
-							<span class="label">Major</span>
-							<span class="value" id="major">Loading...</span>
-						</div>
-					</div>
-					<div class="info-item">
-						<i class='bx bx-calendar'></i>
-						<div>
-							<span class="label">Enrollment Year</span>
-							<span class="value" id="enrollment">Loading...</span>
-						</div>
-					</div>
-					<div class="info-item">
-						<i class='bx bx-map'></i>
-						<div>
-							<span class="label">Location</span>
-							<span class="value" id="location">Loading...</span>
-						</div>
-					</div>
-					<div class="bio">
-						<p>Loading...</p>
-					</div>
+		<!-- Profile Content Tabs -->
+		<div class="profile-tabs">
+			<button class="tab-btn active" data-tab="posts">Posts</button>
+			<button class="tab-btn" data-tab="about">About</button>
+		</div>
+		
+		<!-- Posts Section -->
+		<div class="tab-content active" id="postsTab">
+			<div class="user-posts" id="userPosts">
+				<!-- User's posts will be loaded here -->
+				<div class="loading-spinner">
+					<i class='bx bx-loader-circle bx-spin'></i>
+					<p>Loading posts...</p>
 				</div>
 			</div>
-			
-			<!-- Contact Information -->
-			<div class="profile-card">
-				<div class="card-header">
-					<h2>Contact Information</h2>
-					<button class="edit-section-btn" data-section="contact">
-						<i class='bx bx-edit'></i>
-					</button>
-				</div>
-				<div class="card-content" id="contactSection">
-					<div class="info-item">
+		</div>
+		
+		<!-- About Section -->
+		<div class="tab-content" id="aboutTab">
+			<div class="about-section">
+				<h3>About Me</h3>
+				<div class="about-details">
+					<div class="detail-item">
 						<i class='bx bx-envelope'></i>
-						<div>
-							<span class="label">Email</span>
-							<span class="value" id="email">Loading...</span>
-						</div>
+						<span id="aboutEmail">Loading...</span>
 					</div>
-					<div class="info-item">
-						<i class='bx bx-phone'></i>
-						<div>
-							<span class="label">Phone</span>
-							<span class="value" id="phone">Loading...</span>
-						</div>
+					<div class="detail-item">
+						<i class='bx bx-calendar'></i>
+						<span>Joined <span id="joinDate">Loading...</span></span>
 					</div>
-					<div class="info-item">
+					<div class="detail-item" id="locationItem" style="display: none;">
+						<i class='bx bx-map'></i>
+						<span id="locationText"></span>
+					</div>
+					<div class="detail-item" id="websiteItem" style="display: none;">
 						<i class='bx bx-link'></i>
-						<div>
-							<span class="label">Website</span>
-							<span class="value" id="website">Loading...</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<!-- Quick Access -->
-			<div class="profile-card">
-				<div class="card-header">
-					<h2>Quick Access</h2>
-				</div>
-				<div class="quick-access">
-					<div class="access-item" onclick="window.open('https://apspace.apu.edu.my/', '_blank')">
-						<div class="access-icon">
-							<i class='bx bx-laptop'></i>
-						</div>
-						<span>APSpace</span>
-					</div>
-					<div class="access-item" onclick="window.open('https://lms2.apiit.edu.my/', '_blank')">
-						<div class="access-icon">
-							<i class='bx bx-book'></i>
-						</div>
-						<span>Moodle</span>
+						<a href="#" id="websiteLink" target="_blank"></a>
 					</div>
 				</div>
 			</div>
@@ -205,51 +142,70 @@
 	<!-- Right Sidebar -->
 	<aside class="sidebar-right">
 		<h4>Suggested for you</h4>
-		<ul class="suggestions">
-			<li>
-				<div class="suggestion-avatar">SJ</div>
-				<div class="suggestion-name">Sarah Johnson</div>
-				<button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-			</li>
-			<li>
-				<div class="suggestion-avatar">MC</div>
-				<div class="suggestion-name">Michael Chen</div>
-				<button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-			</li>
-			<li>
-				<div class="suggestion-avatar">DW</div>
-				<div class="suggestion-name">David Wilson</div>
-				<button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-			</li>
+		<ul class="suggestions" id="suggestedUsers">
+			<!-- Suggested users will be loaded here -->
 		</ul>
 		
-		<h4 style="margin-top: 2rem;">Upcoming Events</h4>
-		<div class="event">
-			<strong>Tech Fest 2023</strong>
-			<p>Oct 15-17, 2023 | APU Auditorium</p>
-			<button class="follow-btn" style="background-color: #4cc9f0;">Register</button>
-		</div>
-		<div class="event">
-			<strong>Career Fair</strong>
-			<p>Nov 3, 2023 | Main Campus Hall</p>
-			<button class="follow-btn" style="background-color: #4cc9f0;">Register</button>
+		<div class="community-stats">
+			<h4>Community Stats</h4>
+			<div class="stat-item">
+				<i class='bx bx-group'></i>
+				<span>Online: <strong id="onlineUsers">1</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-chat'></i>
+				<span>Posts: <strong id="totalPosts">0</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-user'></i>
+				<span>Members: <strong id="totalMembers">0</strong></span>
+			</div>
 		</div>
 	</aside>
 </div>
 
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h2>Edit Profile</h2>
+			<button class="close-modal" id="closeModal">&times;</button>
+		</div>
+		<form id="editProfileForm">
+			<div class="form-group">
+				<label for="editName">Full Name</label>
+				<input type="text" id="editName" placeholder="Enter your full name">
+			</div>
+			
+			<div class="form-group">
+				<label for="editUsername">Username</label>
+				<input type="text" id="editUsername" placeholder="Enter your username" disabled>
+			</div>
+			
+			<div class="form-group">
+				<label for="editBio">Bio</label>
+				<textarea id="editBio" placeholder="Tell everyone about yourself" rows="3"></textarea>
+			</div>
+			
+			<div class="form-group">
+				<label for="editLocation">Location</label>
+				<input type="text" id="editLocation" placeholder="Where are you from?">
+			</div>
+			
+			<div class="form-group">
+				<label for="editWebsite">Website</label>
+				<input type="url" id="editWebsite" placeholder="https://example.com">
+			</div>
+			
+			<div class="form-actions">
+				<button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+				<button type="submit" class="btn btn-primary">Save Changes</button>
+			</div>
+		</form>
+	</div>
+</div>
+
 <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 <script type="module" src="../js/profile.js"></script>
-<script>
-	// following
-	function toggleFollow(button) {
-		if (button.textContent === 'Follow') {
-			button.textContent = 'Following';
-			button.style.backgroundColor = '#6c757d';
-		} else {
-			button.textContent = 'Follow';
-			button.style.backgroundColor = '';
-		}
-	}
-</script>
 </body>
 </html>

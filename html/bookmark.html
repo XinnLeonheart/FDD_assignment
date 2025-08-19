@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Bookmark</title>
-	<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+	<title>Bookmark - APCommunity</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/general.css">
 	<link rel="stylesheet" href="../css/bookmark.css">
 </head>
-<body>
+<body data-category="bookmark">
 <!-- Navigation -->
 <nav class="topbar">
 	<div class="logo">APCommunity</div>
@@ -28,66 +29,74 @@
 	</div>
 </nav>
 
-<!-- Main Container -->
 <div class="container">
 	<!-- Left Sidebar -->
-	<div class="sidebar-left">
+	<aside class="sidebar-left">
 		<a href="general.html" class="menu-item">
-			<i class='bx bx-home'></i>
-			<span>Home</span>
+			<i class='bx bx-home'></i> Home
 		</a>
 		<a href="explore.html" class="menu-item">
-			<i class='bx bx-compass'></i>
-			<span>Explore</span>
+			<i class='bx bx-compass'></i> Explore
 		</a>
 		<a href="notification.html" class="menu-item">
-			<i class='bx bx-bell'></i>
-			<span>Notification</span>
+			<i class='bx bx-bell'></i> Notification
 		</a>
-		<a href="posting.html" class="menu-item">
-			<i class='bx bx-plus-circle'></i>
-			<span>Add a post</span>
+		<a href="post.html" class="menu-item">
+			<i class='bx bx-plus-circle'></i> Add a post
 		</a>
 		<a href="bookmark.html" class="menu-item active">
-			<i class='bx bx-bookmark'></i>
-			<span>Bookmark</span>
+			<i class='bx bx-bookmark'></i> Bookmark
 		</a>
 		<a href="profile.html" class="menu-item">
-			<i class='bx bx-user'></i>
-			<span>Profile</span>
+			<i class='bx bx-user'></i> Profile
 		</a>
 		<a href="setting.html" class="menu-item">
-			<i class='bx bx-cog'></i>
-			<span>Setting</span>
+			<i class='bx bx-cog'></i> Setting
 		</a>
-	</div>
+	</aside>
 	
 	<!-- Main Content -->
-	<div class="main-feed">
+	<main class="main-feed">
 		<div class="bookmarks-header">
-			<h1><i class='bx bx-bookmark'></i> My Saved Bookmarks</h1>
-			<p>All your saved posts in one place</p>
+			<h1><i class='bx bx-bookmark'></i> Our Saved Bookmarks</h1>
+			<p>All our saved posts on this page</p>
 		</div>
 		
 		<div id="bookmarksFeed" class="bookmarks-feed">
-			<!-- Bookmarks will be rendered here -->
-			<div class="no-bookmarks">
-				<i class='bx bx-bookmark'></i>
-				<h3>No bookmarks yet</h3>
-				<p>Save interesting posts to see them here</p>
+			<!-- Bookmarks will be loaded dynamically here -->
+			<div class="loading-spinner">
+				<i class='bx bx-loader-circle bx-spin'></i>
+				<p>Loading bookmarks...</p>
 			</div>
 		</div>
-	</div>
+	</main>
 	
 	<!-- Right Sidebar -->
-	<div class="sidebar-right">
-		<h4>Suggested Users</h4>
+	<aside class="sidebar-right">
+		<h4>Suggested for you</h4>
 		<ul class="suggestions" id="suggestedUsers">
-			<!-- Suggested users will be rendered here -->
+			<!-- Suggested users will be loaded here -->
 		</ul>
-	</div>
+		
+		<div class="community-stats">
+			<h4>Community Stats</h4>
+			<div class="stat-item">
+				<i class='bx bx-group'></i>
+				<span>Online: <strong id="onlineUsers">1</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-chat'></i>
+				<span>Total Posts: <strong id="totalPosts">0</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-user'></i>
+				<span>Members: <strong id="totalMembers">0</strong></span>
+			</div>
+		</div>
+	</aside>
 </div>
 
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 <script type="module" src="../js/bookmark.js"></script>
 </body>
 </html>

@@ -234,6 +234,12 @@ body {
     font-weight: 600;
 }
 
+.post-category {
+    font-weight: 600;
+    margin-right: auto;
+    padding: 0.5rem;
+}
+
 .post-time {
     color: var(--gray);
     font-size: 0.8rem;
@@ -409,5 +415,106 @@ body {
 
     .profile-details {
         display: none;
+    }
+}
+
+/* Additional styles for General page */
+
+.category-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.category-filter h2 {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.filter-options {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-options select {
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 2rem;
+    color: var(--gray);
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.community-stats {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.community-stats h4 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.stat-item i {
+    color: var(--primary);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--gray);
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.empty-state p {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .category-filter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
 }

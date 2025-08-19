@@ -1,7 +1,13 @@
-import {getDataByIndex, openDb, updateBookmark, updateComment, updateLike} from './indexedDb.js';
+// art.js
+import {
+    addComment,
+    loadCurrentUser,
+    renderSuggestedUsers,
+    toggleLike
+} from "./general.js";
+import { openDb } from "./indexedDb.js";
 
 // DOM Elements
-const profileUsername = document.getElementById('profileUsername');
 const onlineUsers = document.getElementById('onlineUsers');
 const totalPosts = document.getElementById('totalPosts');
 const totalMembers = document.getElementById('totalMembers');
@@ -30,16 +36,16 @@ function formatTime(timestamp) {
     }
 }
 
-// Fetch posts from IndexedDB
-export async function fetchPostsFromDB() {
+// Fetch posts from IndexedDB for Art category
+async function fetchPostsFromDB() {
     try {
         const db = await openDb();
         const tx = db.transaction('postObjectStore', 'readonly');
         const store = tx.objectStore('postObjectStore');
         const categoryIndex = store.index('categoryIndex');
 
-        // Get posts for the general category
-        return await categoryIndex.getAll('general');
+        // Get posts for the art category
+        return await categoryIndex.getAll('art');
     } catch (error) {
         console.error('Error fetching posts from DB:', error);
         return [];
@@ -98,9 +104,9 @@ async function renderPosts() {
     if (sortedPosts.length === 0) {
         postFeed.innerHTML = `
             <div class="empty-state">
-                <i class='bx bx-message-rounded'></i>
-                <h3>No posts yet</h3>
-                <p>Be the first to share something in the category</p>
+                <i class='bx bx-palette'></i>
+                <h3>No art posts yet</h3>
+                <p>Be the first to share something in the Art category</p>
                 <a href="../html/post.html" class="btn" style="margin-top: 1rem;">Create a post</a>
             </div>
         `;
@@ -108,7 +114,7 @@ async function renderPosts() {
     }
 
     // Update post count
-    totalPosts.textContent = sortedPosts.length.toString();
+    totalPosts.textContent = sortedPosts.length;
 
     sortedPosts.forEach(post => {
         const postElement = document.createElement('div');
@@ -164,10 +170,10 @@ async function renderPosts() {
             <div class="comments-container">
                 ${post.comments.map(comment => `
                 <div class="comment">
-                    <img src="../image/default_avatar.jpg" alt="${post.username}" class="comment-avatar">
+                    <img src="../image/default_avatar.jpg" alt="${comment.username}" class="comment-avatar">
                     <div class="comment-content">
-                        <span class="comment-user">${post.username}</span>
-                        <p class="comment-text">${comment}</p>
+                        <span class="comment-user">${comment.username}</span>
+                        <p class="comment-text">${comment.comment}</p>
                     </div>
                 </div>
                 `).join('')}
@@ -196,6 +202,26 @@ async function renderPosts() {
     });
 }
 
+// Toggle bookmark on the post
+function toggleBookmark(e) {
+    const btn = e.currentTarget;
+    const postId = parseInt(btn.dataset.postId);
+    const post = posts.find(p => p.id === postId);
+
+    if (post) {
+        post.bookmarked = !post.bookmarked;
+        post.bookmarks = post.bookmarked ? (post.bookmarks || 0) + 1 : (post.bookmarks || 1) - 1;
+
+        const icon = btn.querySelector('i');
+
+        icon.className = post.bookmarked ? 'bx bxs-bookmark' : 'bx bx-bookmark';
+
+        btn.classList.toggle('bookmarked', post.bookmarked);
+
+        // Update in IndexedDB
+        updatePostInDB(post);
+    }
+}
 
 // Update post in IndexedDB
 async function updatePostInDB(updatedPost) {
@@ -236,190 +262,3 @@ async function init() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
-
-
-// Render suggested users
-export async function renderSuggestedUsers() {
-    const suggestedUsers = document.getElementById('suggestedUsers');
-    suggestedUsers.innerHTML = '';
-
-    // Get 3 random users (excluding current user)
-    const users = await getDataByIndex('userDB', 'userObjectStore', 'usernameIndex');
-    console.log(users);
-    const suggested = users
-        .filter(user => user.username !== profileUsername.textContent)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 2);
-
-    suggested.forEach(user => {
-        const userElement = document.createElement('li');
-        userElement.innerHTML = `
-            ${user.username} 
-            <button class="follow-btn">Follow</button>
-        `;
-
-        suggestedUsers.appendChild(userElement);
-    });
-
-    // Add follow button event listeners
-    document.querySelectorAll('.follow-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            if (this.textContent === 'Follow') {
-                this.textContent = 'Following';
-                this.classList.add('following');
-            } else {
-                this.textContent = 'Follow';
-                this.classList.remove('following');
-            }
-        });
-    });
-}
-
-// Toggle like on post
-export async function toggleLike(e) {
-    const btn = e.currentTarget;
-    const postId = parseInt(btn.dataset.postId);
-    const posts = await fetchPostsFromDB();
-    const post = posts.find(p => p.id === postId);
-    if (post) {
-        post.liked = !post.liked;
-        post.likes = post.liked ? post.likes + 1 : post.likes - 1;
-
-        const icon = btn.querySelector('i');
-        const count = btn.querySelector('span');
-
-        icon.className = post.liked ? 'bx bxs-heart' : 'bx bx-heart';
-        count.textContent = post.likes;
-
-        btn.classList.toggle('liked', post.liked);
-
-        await updateLike(postId);
-    }
-}
-
-// Toggle bookmark on the post
-export async function toggleBookmark(e) {
-    const btn = e.currentTarget;
-    const postId = parseInt(btn.dataset.postId);
-    const posts = await fetchPostsFromDB();
-    const post = posts.find(p => p.id === postId);
-
-
-    if (post) {
-        post.bookmarked = !post.bookmarked;
-        post.bookmarks = post.bookmarked ? post.bookmarks + 1 : post.bookmarks - 1;
-
-        const icon = btn.querySelector('i');
-
-        icon.className = post.bookmarked ? 'bx bxs-bookmark' : 'bx bx-bookmark';
-
-        btn.classList.toggle('bookmarked', post.bookmarked);
-
-        // update db
-        await updateBookmark(postId);
-    }
-}
-
-// Add comment to post
-export async function addComment(e) {
-    const btn = e.currentTarget;
-    const commentBox = btn.previousElementSibling;
-    const commentText = commentBox.value.trim();
-    const posts = await fetchPostsFromDB();
-
-    if (!commentText) return;
-
-    const postCard = btn.closest('.post-card');
-    const postId = parseInt(postCard.dataset.postId);
-    const post = posts.find(p => p.id === postId);
-
-    if (post) {
-        // Add new comment
-        const newComment = {
-            userId: 0, // Current user
-            username: profileUsername.textContent,
-            comment: commentText
-        };
-
-        post.comments.push(newComment);
-
-        // Update comments container
-        const commentsContainer = postCard.querySelector('.comments-container');
-        const commentElement = document.createElement('div');
-        commentElement.className = 'comment';
-        commentElement.innerHTML = `
-            <img src="../image/default_avatar.jpg" alt="${newComment.username}" class="comment-avatar">
-            <div class="comment-content">
-                <span class="comment-user">${newComment.username}</span>
-                <p class="comment-text">${newComment.comment}</p>
-            </div>
-        `;
-
-        commentsContainer.appendChild(commentElement);
-
-        // Update comment count
-        const commentBtn = postCard.querySelector('.comment-btn');
-        const count = commentBtn.querySelector('span');
-        count.textContent = post.comments.length;
-
-        // Clear input
-        commentBox.value = '';
-
-        updateComment(postId, commentText);
-    }
-}
-
-// Logout function
-async function logout() {
-    if (confirm("Are you sure you want to log out?")) {
-        try {
-            // Clear the current user in IndexedDB
-            await deleteUserData('currentUserIndex');
-
-            // Clear local storage
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("currentUser");
-
-            // Redirect to login page
-            window.location.href = "register_login.html";
-        } catch (error) {
-            console.error("Logout error:", error);
-            alert("An error occurred during logout. Please try again.");
-        }
-    }
-}
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', init);
-
-// Load current user
-export async function loadCurrentUser() {
-    try {
-        const profileUsername = document.querySelector('#profileUsername');
-        const profileEmail = document.querySelector('#profileEmail');
-        const currentUserData = await getDataByIndex("userDB", "userObjectStore", "currentUserIndex");
-
-        if (currentUserData && currentUserData.length > 0) {
-            const currentUser = currentUserData[0].currentUser;
-
-            if (currentUser) {
-                const userData = await getMatchingDataByIndex(
-                    "userDB",
-                    "userObjectStore",
-                    "usernameIndex",
-                    currentUser
-                );
-
-                if (userData) {
-                    profileUsername.textContent = userData.name || currentUser;
-                    profileEmail.textContent = userData.email;
-                }
-            }
-        }
-    } catch (error) {
-        console.error("Error loading current user:", error);
-    }
-}
-
-// Make logout function available globally
-window.logout = logout;

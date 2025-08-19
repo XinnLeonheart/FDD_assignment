@@ -1,0 +1,94 @@
+/* Reuse general.css styles */
+@import url('general.css');
+
+/* Explore specific styles */
+.explore-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(63, 55, 201, 0.1));
+    border-radius: 12px;
+    position: relative;
+}
+
+.explore-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.explore-header p {
+    color: var(--gray);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.refresh-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto;
+    transition: all 0.3s;
+}
+
+.refresh-btn:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+.explore-feed {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 3rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.no-posts i {
+    font-size: 4rem;
+    color: var(--gray);
+    margin-bottom: 1rem;
+}
+
+.no-posts h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.no-posts p {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .explore-header {
+        margin-top: 1rem;
+    }
+
+    .explore-header h1 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,22 @@
+/* sport.css */
+@import url('general.css');
+
+.category-filter h2 {
+    color: #4caf50; /* sport theme color */
+}
+
+.stat-item i {
+    color: #4caf50;
+}
+
+.action-btn:hover, .action-btn.active {
+    color: #4caf50;
+}
+
+.submit-comment {
+    background-color: #4caf50;
+}
+
+.submit-comment:hover {
+    background-color: #7b1fa2;
+}

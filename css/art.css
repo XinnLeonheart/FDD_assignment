@@ -1,0 +1,22 @@
+/* art.css */
+@import url('general.css');
+
+.category-filter h2 {
+    color: #9c27b0; /* Art theme color */
+}
+
+.stat-item i {
+    color: #9c27b0;
+}
+
+.action-btn:hover, .action-btn.active {
+    color: #9c27b0;
+}
+
+.submit-comment {
+    background-color: #9c27b0;
+}
+
+.submit-comment:hover {
+    background-color: #7b1fa2;
+}

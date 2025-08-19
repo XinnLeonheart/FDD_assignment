@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Settings - APCommunity</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/general.css">
+	<link rel="stylesheet" href="../css/setting.css">
+</head>
+<body data-category="setting">
+<!-- Navigation -->
+<nav class="topbar">
+	<div class="logo">APCommunity</div>
+	<ul>
+		<li><a href="general.html" class="tab-link" data-category="general">General</a></li>
+		<li><a href="academic.html" class="tab-link" data-category="academic">Academic</a></li>
+		<li><a href="culture.html" class="tab-link" data-category="culture">Cultural</a></li>
+		<li><a href="art.html" class="tab-link" data-category="art">Art</a></li>
+		<li><a href="sport.html" class="tab-link" data-category="sport">Sport</a></li>
+	</ul>
+	<div class="profile-info" id="profileInfo">
+		<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+		<div class="profile-details">
+			<span class="profile-username" id="profileUsername">Loading...</span>
+			<span class="profile-email" id="profileEmail"></span>
+		</div>
+		<a class="logout-link" onclick="logout()">Log out</a>
+	</div>
+</nav>
+
+<div class="container">
+	<!-- Left Sidebar -->
+	<aside class="sidebar-left">
+		<a href="general.html" class="menu-item" id="menu-item-home">
+			<i class='bx bx-home'></i>
+			<span>Home</span>
+		</a>
+		<a href="explore.html" class="menu-item" id="menu-item-explore">
+			<i class='bx bx-compass'></i>
+			<span>Explore</span>
+		</a>
+		<a href="notification.html" class="menu-item" id="menu-item-notification">
+			<i class='bx bx-bell'></i>
+			<span>Notification</span>
+		</a>
+		<a href="post.html" class="menu-item" id="menu-item-post">
+			<i class='bx bx-plus-circle'></i>
+			<span>Add a post</span>
+		</a>
+		<a href="bookmark.html" class="menu-item" id="menu-item-bookmark">
+			<i class='bx bx-bookmark'></i>
+			<span>Bookmark</span>
+		</a>
+		<a href="profile.html" class="menu-item" id="menu-item-profile">
+			<i class='bx bx-user'></i>
+			<span>Profile</span>
+		</a>
+		<a href="setting.html" class="menu-item active">
+			<i class='bx bx-cog'></i>
+			<span>Setting</span>
+		</a>
+	</aside>
+	
+	<!-- Main Content -->
+	<main class="main-feed">
+		<div class="settings-container">
+			<!-- Account Security Section -->
+			<div class="setting-card">
+				<div class="card-header" id="AccountSecurity">
+					<h2><i class='bx bx-lock-alt'></i> Account Security</h2>
+				</div>
+				<div class="card-content">
+					<div class="setting-section">
+						<h3>Change Password</h3>
+						<form id="changePasswordForm">
+							<div class="input-group">
+								<label for="currentPassword">Current Password</label>
+								<input type="password" id="currentPassword" required>
+								<div class="error-message" id="currentPasswordError"></div>
+							</div>
+							<div class="input-group">
+								<label for="newPassword">New Password</label>
+								<input type="password" id="newPassword" required>
+								<div class="error-message" id="newPasswordError"></div>
+							</div>
+							<div class="input-group">
+								<label for="confirmPassword">Confirm New Password</label>
+								<input type="password" id="confirmPassword" required>
+								<div class="error-message" id="confirmPasswordError"></div>
+							</div>
+							<button type="submit" class="btn">Update Password</button>
+						</form>
+					</div>
+					
+					<div class="setting-section">
+						<h3>Security Question</h3>
+						<div class="info-display">
+							<p><strong>Question:</strong> <span id="securityQuestionDisplay">What city were you born in?</span></p>
+							<p><strong>Answer:</strong> <span id="securityAnswerDisplay">••••••••</span></p>
+						</div>
+						<button class="btn-outline" id="changeSecurityBtn">Change Security Question</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Appearance Section -->
+			<div class="setting-card">
+				<div class="card-header">
+					<h2><i class='bx bx-palette'></i> Appearance</h2>
+				</div>
+				<div class="card-content">
+					<div class="setting-section">
+						<h3>Theme Preference</h3>
+						<div class="theme-toggle">
+							<span>Light Mode</span>
+							<label class="switch">
+								<input type="checkbox" id="themeToggle">
+								<span class="slider round"></span>
+							</label>
+							<span>Dark Mode</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>
+
+<!-- Security Question Modal -->
+<div id="securityModal" class="modal">
+	<div class="modal-content">
+		<h2>Change Security Question</h2>
+		<form id="securityQuestionForm">
+			<div class="input-group">
+				<label for="securityQuestion">Security Question</label>
+				<select id="securityQuestion" required>
+					<option value="What city were you born in?">What city were you born in?</option>
+					<option value="What is your mother's maiden name?">What is your mother's birth name?</option>
+					<option value="What was the name of your first pet?">What was the name of your first pet?</option>
+					<option value="What elementary school did you attend?">What elementary school did you attend?</option>
+					<option value="What was your childhood nickname?">What was your childhood nickname?</option>
+				</select>
+			</div>
+			<div class="input-group">
+				<label for="newSecurityAnswer">Your Answer</label>
+				<input type="text" id="newSecurityAnswer" required>
+				<div class="error-message" id="securityAnswerError"></div>
+			</div>
+			<div class="button-group">
+				<button type="button" class="btn cancel-btn" id="cancelSecurityChange">Cancel</button>
+				<button type="submit" class="btn">Save Changes</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+<script type="module" src="../js/setting.js"></script>
+<script type="module" src="../js/general.js"></script>
+</body>
+</html>

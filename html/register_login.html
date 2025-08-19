@@ -5,7 +5,406 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Register and Log In - APCommunity</title>
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-	<link href="../css/register_login.css" rel="stylesheet">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		
+		:root {
+			--primary: #4361ee;
+			--secondary: #3f37c9;
+			--light: #f8f9fa;
+			--dark: #212529;
+			--gray: #6c757d;
+			--success: #4cc9f0;
+			--danger: #f72585;
+			--warning: #ffb703;
+			--sidebar-width: 250px;
+			--topbar-height: 70px;
+		}
+		
+		body {
+			background-color: #f0f2f5;
+			color: var(--dark);
+			overflow-x: hidden;
+			min-height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 20px;
+		}
+		
+		.notification-logo {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			font-size: 1.8rem;
+			font-weight: 700;
+			color: var(--primary);
+		}
+		
+		.container {
+			width: 100%;
+			max-width: 850px;
+			height: 550px;
+			background-color: white;
+			border-radius: 12px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			overflow: hidden;
+			display: flex;
+			position: relative;
+		}
+		
+		.form-box {
+			position: absolute;
+			top: 0;
+			width: 50%;
+			height: 100%;
+			background: white;
+			color: var(--dark);
+			display: flex;
+			align-items: center;
+			text-align: center;
+			padding: 40px;
+			z-index: 1;
+			transition: transform 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+		}
+		
+		.form-box.login {
+			left: 50%;
+			transform: translateX(0);
+		}
+		
+		.form-box.register {
+			left: 0;
+			transform: translateX(0);
+		}
+		
+		.container.active .form-box.login {
+			transform: translateX(100%);
+		}
+		
+		.container.active .form-box.register {
+			transform: translateX(0%);
+		}
+		
+		form {
+			width: 100%;
+		}
+		
+		.container h1 {
+			font-size: 1.8rem;
+			margin: 0 0 1.5rem;
+			color: var(--dark);
+		}
+		
+		.input-group {
+			position: relative;
+			width: 100%;
+			margin: 1.2rem 0;
+		}
+		
+		.input-group input {
+			width: 100%;
+			padding: 14px 16px;
+			font-size: 1rem;
+			border: 1px solid #e0e0e0;
+			border-radius: 8px;
+			background-color: var(--light);
+			transition: all 0.3s;
+		}
+		
+		.input-group input:focus {
+			border-color: var(--primary);
+			outline: none;
+			box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+		}
+		
+		.input-group input::placeholder {
+			color: #a0a0a0;
+		}
+		
+		.password-toggle {
+			position: absolute;
+			right: 12px;
+			top: 50%;
+			transform: translateY(-50%);
+			background: none;
+			border: none;
+			color: var(--gray);
+			cursor: pointer;
+			font-size: 1.2rem;
+		}
+		
+		.forgot-link {
+			text-align: right;
+			margin: -0.5rem 0 1.5rem;
+		}
+		
+		.forgot-link a {
+			font-size: 0.9rem;
+			color: var(--primary);
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+		
+		.forgot-link a:hover {
+			text-decoration: underline;
+		}
+		
+		.btn {
+			width: 100%;
+			padding: 14px;
+			background-color: var(--primary);
+			border: none;
+			border-radius: 8px;
+			color: white;
+			font-size: 1rem;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.3s;
+			box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
+		}
+		
+		.btn:hover {
+			background-color: var(--secondary);
+			transform: translateY(-2px);
+		}
+		
+		.btn:active {
+			transform: translateY(0);
+		}
+		
+		.toggle-box {
+			position: absolute;
+			width: 50%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			z-index: 2;
+			overflow: hidden;
+			transition: transform 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+			background: linear-gradient(135deg, var(--primary), var(--secondary));
+		}
+		
+		.toggle-panel {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			padding: 40px;
+			text-align: center;
+			color: white;
+		}
+		
+		.toggle-panel.toggle-left {
+			left: 0;
+		}
+		
+		.toggle-panel.toggle-right {
+			right: 0;
+			transform: translateX(100%);
+		}
+		
+		.container.active .toggle-box {
+			transform: translateX(100%);
+		}
+		
+		.container.active .toggle-panel.toggle-right {
+			transform: translateX(0);
+		}
+		
+		.toggle-panel h2 {
+			font-size: 1.8rem;
+			margin-bottom: 1rem;
+		}
+		
+		.toggle-panel p {
+			margin-bottom: 1.5rem;
+			font-size: 1rem;
+			line-height: 1.6;
+		}
+		
+		.toggle-panel .btn {
+			background: transparent;
+			border: 2px solid white;
+			color: white;
+			box-shadow: none;
+		}
+		
+		.toggle-panel .btn:hover {
+			background: rgba(255, 255, 255, 0.1);
+			transform: translateY(-2px);
+		}
+		
+		.form-icon {
+			margin-bottom: 1rem;
+			font-size: 3rem;
+			color: var(--primary);
+		}
+		
+		.toggle-icon {
+			margin-bottom: 1rem;
+			font-size: 3rem;
+			color: white;
+		}
+		
+		@media screen and (max-width: 768px) {
+			.container {
+				height: auto;
+				min-height: 600px;
+				flex-direction: column;
+			}
+			
+			.form-box {
+				width: 100%;
+				position: relative;
+				height: auto;
+				padding: 30px;
+			}
+			
+			.form-box.login {
+				transform: translateX(0);
+			}
+			
+			.form-box.register {
+				transform: translateX(100%);
+			}
+			
+			.container.active .toggle-box {
+				transform: translateX(100%);
+			}
+			
+			.container.active .toggle-panel.toggle-right {
+				transform: translateX(0);
+			}
+			
+			.container.active .toggle-panel.toggle-left {
+				transform: translateX(-100%);
+			}
+			
+			.toggle-box {
+				width: 100%;
+				height: 150px;
+				top: auto;
+				bottom: 0;
+				transform: translateY(0);
+			}
+			
+			.toggle-panel {
+				flex-direction: row;
+				justify-content: space-around;
+				align-items: center;
+				padding: 20px;
+			}
+			
+			.toggle-panel.toggle-right {
+				transform: translateY(100%);
+			}
+			
+			.container.active .toggle-panel.toggle-right {
+				transform: translateY(0);
+			}
+			
+			.toggle-panel h2 {
+				font-size: 1.5rem;
+				margin-bottom: 10px;
+			}
+			
+			.toggle-panel p {
+				margin-bottom: 15px;
+				font-size: 0.9rem;
+			}
+		}
+		
+		.error-message {
+			color: var(--danger);
+			font-size: 0.9rem;
+			text-align: left;
+			margin-top: 0.3rem;
+			display: none;
+		}
+		
+		/* Modal Styles */
+		.modal {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+			z-index: 1000;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		.modal-content {
+			background-color: white;
+			padding: 30px;
+			border-radius: 12px;
+			width: 90%;
+			max-width: 500px;
+			box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+		}
+		
+		.modal h2 {
+			margin-bottom: 20px;
+			color: var(--dark);
+		}
+		
+		.modal .btn {
+			flex: 1;
+		}
+		
+		.modal-actions {
+			display: flex;
+			gap: 10px;
+			margin-top: 20px;
+		}
+		
+		/* Notification Styles */
+		.notification {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			padding: 15px 20px;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+			opacity: 0;
+			transform: translateY(20px);
+			transition: all 0.3s ease;
+			z-index: 1000;
+		}
+		
+		.notification.success {
+			background-color: #4ade80;
+			color: white;
+		}
+		
+		.notification.error {
+			background-color: #f72585;
+			color: white;
+		}
+		
+		.notification.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		.notification i {
+			font-size: 1.5rem;
+		}
+	</style>
 </head>
 <body>
 <div class="notification-logo">APCommunity</div>
@@ -24,6 +423,9 @@
 			
 			<div class="input-group">
 				<input type="password" id="loginPassword" placeholder="Password" required>
+				<button type="button" class="password-toggle" id="loginPasswordToggle">
+					<i class='bx bx-hide'></i>
+				</button>
 				<div class="error-message" id="loginPasswordError"></div>
 			</div>
 			
@@ -58,11 +460,17 @@
 			
 			<div class="input-group">
 				<input type="password" id="registerPassword" placeholder="Password" required>
+				<button type="button" class="password-toggle" id="registerPasswordToggle">
+					<i class='bx bx-hide'></i>
+				</button>
 				<div class="error-message" id="registerPasswordError"></div>
 			</div>
 			
 			<div class="input-group">
 				<input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+				<button type="button" class="password-toggle" id="registerConfirmPasswordToggle">
+					<i class='bx bx-hide'></i>
+				</button>
 				<div class="error-message" id="registerConfirmPasswordError"></div>
 			</div>
 			
@@ -88,10 +496,10 @@
 	</div>
 </div>
 
-<!-- 安全问题和答案模态框 -->
-<div id="securityModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-	<div class="modal-content" style="background-color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px;">
-		<h2 style="margin-bottom: 20px;">Security Question</h2>
+<!-- Security Question Modal -->
+<div id="securityModal" class="modal">
+	<div class="modal-content">
+		<h2>Security Question</h2>
 		<p id="securityQuestionText" style="margin-bottom: 15px; font-weight: 500;"></p>
 		<div class="input-group">
 			<input type="text" id="securityAnswer" placeholder="Your answer" required>
@@ -99,20 +507,416 @@
 		</div>
 		<div class="input-group">
 			<input type="password" id="newPassword" placeholder="New Password" required>
+			<button type="button" class="password-toggle" id="newPasswordToggle">
+				<i class='bx bx-hide'></i>
+			</button>
 			<div class="error-message" id="newPasswordError"></div>
 		</div>
 		<div class="input-group">
 			<input type="password" id="confirmNewPassword" placeholder="Confirm New Password" required>
+			<button type="button" class="password-toggle" id="confirmNewPasswordToggle">
+				<i class='bx bx-hide'></i>
+			</button>
 			<div class="error-message" id="confirmNewPasswordError"></div>
 		</div>
-		<div style="display: flex; gap: 10px; margin-top: 20px;">
+		<div class="modal-actions">
 			<button id="cancelReset" class="btn" style="background-color: #6c757d;">Cancel</button>
 			<button id="submitReset" class="btn">Reset Password</button>
 		</div>
 	</div>
 </div>
 
-<script type="module" src="../js/indexedDb.js"></script>
-<script src="../js/register_login.js"></script>
+<script type="module">
+	// Import IndexedDB functions
+	import {
+		addUserAccountData,
+		updateCurrentUser,
+		check,
+		updateUserPassword,
+		openDb
+	} from '../js/indexedDb.js';
+	
+	// DOM Elements
+	const container = document.getElementById('container');
+	const registerBtn = document.getElementById('registerBtn');
+	const loginBtn = document.getElementById('loginBtn');
+	const loginForm = document.getElementById('loginForm');
+	const registerForm = document.getElementById('registerForm');
+	const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+	const securityModal = document.getElementById('securityModal');
+	const securityQuestionText = document.getElementById('securityQuestionText');
+	const submitReset = document.getElementById('submitReset');
+	const cancelReset = document.getElementById('cancelReset');
+	const toggleLeft = document.querySelector('.toggle-left');
+	
+	// Password toggle buttons
+	const passwordToggles = document.querySelectorAll('.password-toggle');
+	
+	// Security question and password reset elements
+	const securityAnswer = document.getElementById('securityAnswer');
+	const newPassword = document.getElementById('newPassword');
+	const confirmNewPassword = document.getElementById('confirmNewPassword');
+	
+	// Store current reset user info
+	let resetUser = null;
+	
+	// Event Listeners
+	registerBtn.addEventListener('click', () => {
+		container.classList.add('active');
+		toggleLeft.style.display = 'none';
+	});
+	
+	loginBtn.addEventListener('click', () => {
+		container.classList.remove('active');
+		toggleLeft.style.display = '';
+	});
+	
+	// Toggle password visibility
+	passwordToggles.forEach(toggle => {
+		toggle.addEventListener('click', () => {
+			const input = toggle.parentElement.querySelector('input');
+			const icon = toggle.querySelector('i');
+			
+			if (input.type === 'password') {
+				input.type = 'text';
+				icon.classList.remove('bx-hide');
+				icon.classList.add('bx-show');
+			} else {
+				input.type = 'password';
+				icon.classList.remove('bx-show');
+				icon.classList.add('bx-hide');
+			}
+		});
+	});
+	
+	// Show security question modal for password reset
+	forgotPasswordLink.addEventListener('click', async (e) => {
+		e.preventDefault();
+		
+		const emailOrUsername = prompt("Please enter your email or username:");
+		if (!emailOrUsername) return;
+		
+		try {
+			const user = await check(emailOrUsername);
+			if (user) {
+				resetUser = user;
+				securityQuestionText.textContent = user.securityQuestion || "What city were you born in?";
+				securityModal.style.display = "flex";
+			} else {
+				showNotification("User not found. Please check your email or username.", "error");
+			}
+		} catch (error) {
+			console.error("Error retrieving user:", error);
+			showNotification("An error occurred. Please try again later.", "error");
+		}
+	});
+	
+	// Close security modal
+	cancelReset.addEventListener('click', () => {
+		securityModal.style.display = "none";
+		resetUser = null;
+		securityAnswer.value = "";
+		newPassword.value = "";
+		confirmNewPassword.value = "";
+	});
+	
+	// Submit password reset
+	submitReset.addEventListener('click', async () => {
+		// Validate answer
+		if (!securityAnswer.value) {
+			document.getElementById('securityAnswerError').textContent = 'Answer is required';
+			document.getElementById('securityAnswerError').style.display = 'block';
+			return;
+		} else {
+			document.getElementById('securityAnswerError').style.display = 'none';
+		}
+		
+		// Validate new password
+		if (!newPassword.value) {
+			document.getElementById('newPasswordError').textContent = 'New password is required';
+			document.getElementById('newPasswordError').style.display = 'block';
+			return;
+		} else if (newPassword.value.length < 6) {
+			document.getElementById('newPasswordError').textContent = 'Password must be at least 6 characters';
+			document.getElementById('newPasswordError').style.display = 'block';
+			return;
+		} else {
+			document.getElementById('newPasswordError').style.display = 'none';
+		}
+		
+		// Validate confirm password
+		if (!confirmNewPassword.value) {
+			document.getElementById('confirmNewPasswordError').textContent = 'Please confirm your new password';
+			document.getElementById('confirmNewPasswordError').style.display = 'block';
+			return;
+		} else if (newPassword.value !== confirmNewPassword.value) {
+			document.getElementById('confirmNewPasswordError').textContent = 'Passwords do not match';
+			document.getElementById('confirmNewPasswordError').style.display = 'block';
+			return;
+		} else {
+			document.getElementById('confirmNewPasswordError').style.display = 'none';
+		}
+		
+		// Check security answer
+		const correctAnswer = resetUser.answer ? resetUser.answer.toLowerCase() : "new york";
+		if (securityAnswer.value.toLowerCase() !== correctAnswer) {
+			document.getElementById('securityAnswerError').textContent = 'Incorrect answer';
+			document.getElementById('securityAnswerError').style.display = 'block';
+			return;
+		}
+		
+		try {
+			// Update password
+			await updateUserPassword(
+					resetUser.username,
+					newPassword.value,
+					resetUser.securityQuestion,
+					resetUser.answer
+			);
+			
+			showNotification("Password reset successfully! You can now log in with your new password.", "success");
+			
+			// Close modal and reset fields
+			securityModal.style.display = "none";
+			resetUser = null;
+			securityAnswer.value = "";
+			newPassword.value = "";
+			confirmNewPassword.value = "";
+		} catch (error) {
+			console.error("Error resetting password:", error);
+			showNotification("Failed to reset password. Please try again.", "error");
+		}
+	});
+	
+	// Form validation functions
+	function validateEmail(email) {
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return re.test(String(email).toLowerCase());
+	}
+	
+	function validatePassword(password) {
+		return password.length >= 6;
+	}
+	
+	// Show notification
+	function showNotification(message, type) {
+		const notification = document.createElement('div');
+		notification.className = `notification ${type}`;
+		notification.innerHTML = `
+            <i class='bx ${type === 'success' ? 'bx-check-circle' : 'bx-error-circle'}'></i>
+            <span>${message}</span>
+        `;
+		
+		document.body.appendChild(notification);
+		
+		setTimeout(() => {
+			notification.classList.add('show');
+		}, 10);
+		
+		setTimeout(() => {
+			notification.classList.remove('show');
+			setTimeout(() => {
+				notification.remove();
+			}, 300);
+		}, 3000);
+	}
+	
+	// Login form submission
+	loginForm.addEventListener('submit', async function(e) {
+		e.preventDefault();
+		let isValid = true;
+		
+		// Reset errors
+		document.querySelectorAll('#loginForm .error-message').forEach(el => {
+			el.style.display = 'none';
+			el.textContent = '';
+		});
+		
+		// Get form values
+		const emailOrUsername = document.getElementById('loginEmail').value.trim();
+		const password = document.getElementById('loginPassword').value;
+		
+		// Validate email/username
+		if (!emailOrUsername) {
+			document.getElementById('loginEmailError').textContent = 'Email or username is required';
+			document.getElementById('loginEmailError').style.display = 'block';
+			isValid = false;
+		}
+		
+		// Validate password
+		if (!password) {
+			document.getElementById('loginPasswordError').textContent = 'Password is required';
+			document.getElementById('loginPasswordError').style.display = 'block';
+			isValid = false;
+		} else if (!validatePassword(password)) {
+			document.getElementById('loginPasswordError').textContent = 'Password must be at least 6 characters';
+			document.getElementById('loginPasswordError').style.display = 'block';
+			isValid = false;
+		}
+		
+		if (!isValid) return;
+		
+		try {
+			// Check user in IndexedDB
+			const user = await check(emailOrUsername);
+			
+			if (!user) {
+				document.getElementById('loginEmailError').textContent = 'User not found';
+				document.getElementById('loginEmailError').style.display = 'block';
+				return;
+			}
+			
+			if (user.password !== password) {
+				document.getElementById('loginPasswordError').textContent = 'Incorrect password';
+				document.getElementById('loginPasswordError').style.display = 'block';
+				return;
+			}
+			
+			// Login successful
+			showNotification('Login successful! Redirecting to dashboard...', 'success');
+			
+			// Save user session
+			localStorage.setItem('isLoggedIn', 'true');
+			localStorage.setItem('currentUser', user.username);
+			localStorage.setItem('currentUserEmail', user.email);
+			
+			// Update current user in IndexedDB
+			await updateCurrentUser(user.username);
+			
+			// Redirect to home page
+			setTimeout(() => {
+				window.location.href = 'general.html';
+			}, 1000);
+		} catch (error) {
+			console.error("Login error:", error);
+			showNotification('An error occurred during login. Please try again.', 'error');
+		}
+	});
+	
+	// Register form submission
+	registerForm.addEventListener('submit', async function(e) {
+		e.preventDefault();
+		let isValid = true;
+		
+		// Reset errors
+		document.querySelectorAll('#registerForm .error-message').forEach(el => {
+			el.style.display = 'none';
+			el.textContent = '';
+		});
+		
+		// Get form values
+		const name = document.getElementById('registerName').value.trim();
+		const username = document.getElementById('registerUsername').value.trim();
+		const email = document.getElementById('registerEmail').value.trim();
+		const password = document.getElementById('registerPassword').value;
+		const confirmPassword = document.getElementById('registerConfirmPassword').value;
+		
+		// Validate name
+		if (!name) {
+			document.getElementById('registerNameError').textContent = 'Full name is required';
+			document.getElementById('registerNameError').style.display = 'block';
+			isValid = false;
+		}
+		
+		// Validate username
+		if (!username) {
+			document.getElementById('registerUsernameError').textContent = 'Username is required';
+			document.getElementById('registerUsernameError').style.display = 'block';
+			isValid = false;
+		} else if (username.length < 3) {
+			document.getElementById('registerUsernameError').textContent = 'Username must be at least 3 characters';
+			document.getElementById('registerUsernameError').style.display = 'block';
+			isValid = false;
+		}
+		
+		// Validate email
+		if (!email) {
+			document.getElementById('registerEmailError').textContent = 'Email is required';
+			document.getElementById('registerEmailError').style.display = 'block';
+			isValid = false;
+		} else if (!validateEmail(email)) {
+			document.getElementById('registerEmailError').textContent = 'Please enter a valid email';
+			document.getElementById('registerEmailError').style.display = 'block';
+			isValid = false;
+		}
+		
+		// Validate password
+		if (!password) {
+			document.getElementById('registerPasswordError').textContent = 'Password is required';
+			document.getElementById('registerPasswordError').style.display = 'block';
+			isValid = false;
+		} else if (!validatePassword(password)) {
+			document.getElementById('registerPasswordError').textContent = 'Password must be at least 6 characters';
+			document.getElementById('registerPasswordError').style.display = 'block';
+			isValid = false;
+		}
+		
+		// Validate confirm password
+		if (!confirmPassword) {
+			document.getElementById('registerConfirmPasswordError').textContent = 'Please confirm your password';
+			document.getElementById('registerConfirmPasswordError').style.display = 'block';
+			isValid = false;
+		} else if (password !== confirmPassword) {
+			document.getElementById('registerConfirmPasswordError').textContent = 'Passwords do not match';
+			document.getElementById('registerConfirmPasswordError').style.display = 'block';
+			isValid = false;
+		}
+		
+		if (!isValid) return;
+		
+		try {
+			// Check if username already exists
+			const usernameCheck = await check(username);
+			if (usernameCheck) {
+				document.getElementById('registerUsernameError').textContent = 'Username already exists';
+				document.getElementById('registerUsernameError').style.display = 'block';
+				return;
+			}
+			
+			// Check if email already exists
+			const emailCheck = await check(email);
+			if (emailCheck) {
+				document.getElementById('registerEmailError').textContent = 'Email already registered';
+				document.getElementById('registerEmailError').style.display = 'block';
+				return;
+			}
+			
+			// Add user to IndexedDB
+			await addUserAccountData(
+					username,
+					email,
+					password,
+					name
+			);
+			
+			// Registration successful
+			showNotification('Registration successful! You can now log in.', 'success');
+			
+			// Switch to login form
+			container.classList.remove('active');
+			toggleLeft.style.display = '';
+			
+			// Clear form
+			registerForm.reset();
+		} catch (error) {
+			console.error("Registration error:", error);
+			showNotification('An error occurred during registration. Please try again.', 'error');
+		}
+	});
+	
+	// Check if user is already logged in
+	window.addEventListener('DOMContentLoaded', async () => {
+		// Ensure no user is logged in when accessing this page
+		localStorage.setItem('isLoggedIn', 'false');
+		
+		try {
+			const db = await openDb();
+			console.log('IndexedDB initialized successfully');
+		} catch (error) {
+			console.error('Failed to initialize IndexedDB:', error);
+			showNotification('Failed to initialize database. Please refresh the page.', 'error');
+		}
+	});
+</script>
 </body>
 </html>

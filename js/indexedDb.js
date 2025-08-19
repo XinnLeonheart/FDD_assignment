@@ -4,25 +4,34 @@ import {deleteDB, openDB} from "https://unpkg.com/idb@7.1.1/build/index.js";
 // open db
 async function openDb() {
     try {
-        const db = await openDB('userDB', 1, {
-            upgrade(db)
+        const db = await openDB('userDB', 3, {
+            upgrade(db, oldVersion)
             {
                 console.log('userDB firstly created or upgraded.');
-                const userStore = db.createObjectStore('userObjectStore', { keyPath: 'id', autoIncrement: true });
-                userStore.createIndex('usernameIndex', 'username', { unique: true });
-                userStore.createIndex('emailIndex', 'email', { unique: true });
-                userStore.createIndex('passwordIndex', 'password', { unique: false });
-                userStore.createIndex('securityQuestionIndex', 'securityQuestion', { unique: false });
-                userStore.createIndex('answerIndex', 'answer', { unique: false });
-                userStore.createIndex('currentUserIndex', 'currentUser', { unique: true });
-                userStore.createIndex('nameIndex', 'name', { unique: false });
-                userStore.createIndex('genderIndex', 'gender', { unique: false });
-                userStore.createIndex('addressIndex', 'address', { unique: false });
-                userStore.createIndex('phoneIndex', 'phone', { unique: false });
-                userStore.createIndex('majorIndex', 'major', { unique: false });
-                userStore.createIndex('enrollmentIndex', 'enrollment', { unique: false });
-                userStore.createIndex('bioIndex', 'bio', { unique: false });
-                userStore.createIndex('websiteIndex', 'website', { unique: false });
+                if (!db.objectStoreNames.contains('userObjectStore'))
+                {
+                    const userStore = db.createObjectStore('userObjectStore', { keyPath: 'id', autoIncrement: true });
+                    userStore.createIndex('usernameIndex', 'username', { unique: true });
+                    userStore.createIndex('emailIndex', 'email', { unique: true });
+                    userStore.createIndex('passwordIndex', 'password', { unique: false });
+                    userStore.createIndex('securityQuestionIndex', 'securityQuestion', { unique: false });
+                    userStore.createIndex('answerIndex', 'answer', { unique: false });
+                    userStore.createIndex('currentUserIndex', 'currentUser', { unique: true });
+                    userStore.createIndex('nameIndex', 'name', { unique: false });
+                    userStore.createIndex('genderIndex', 'gender', { unique: false });
+                    userStore.createIndex('addressIndex', 'address', { unique: false });
+                    userStore.createIndex('phoneIndex', 'phone', { unique: false });
+                    userStore.createIndex('majorIndex', 'major', { unique: false });
+                    userStore.createIndex('enrollmentIndex', 'enrollment', { unique: false });
+                    userStore.createIndex('bioIndex', 'bio', { unique: false });
+                    userStore.createIndex('websiteIndex', 'website', { unique: false });
+                }
+                if (oldVersion < 3 && !db.objectStoreNames.contains('postObjectStore')) {
+                    const postStore = db.createObjectStore('postObjectStore', {keyPath: 'id', autoIncrement: true});
+                    postStore.createIndex('userIdIndex', 'userId');
+                    postStore.createIndex('categoryIndex', 'category');
+                    postStore.createIndex('timestampIndex', 'timestamp');
+                }
                 console.log('ObjectStore "userObjectStore" and index has been created.');
             }
         });
@@ -34,6 +43,55 @@ async function openDb() {
         console.error('failed to open a indexedDB:', error);
     }
 }
+
+
+// delete post
+async function deletePost(postId) {
+    const db = await openDb();
+    const tx = db.transaction('postObjectStore', 'readwrite');
+    const store = tx.objectStore('postObjectStore');
+    await store.delete(postId);
+    await tx.done;
+    console.log('Post deleted successfully!');
+}
+
+// update bookmark
+async function updateBookmark(postId) {
+    const db = await openDb();
+    const tx = db.transaction('postObjectStore', 'readwrite');
+    const store = tx.objectStore('postObjectStore');
+    const post = await store.get(postId);
+    post.bookmarked = !post.bookmarked;
+    await store.put(post);
+    await tx.done;
+    console.log('Updated bookmark successfully!');
+}
+
+// update like
+async function updateLike(postId) {
+    const db = await openDb();
+    const tx = db.transaction('postObjectStore', 'readwrite');
+    const store = tx.objectStore('postObjectStore');
+    const post = await store.get(postId);
+    post.liked = !post.liked;
+    post.likes = post.liked ? post.likes + 1 : post.likes - 1;
+    await store.put(post);
+    await tx.done;
+    console.log('Updated like successfully!');
+}
+
+// update comment
+async function updateComment(postId, comment) {
+    const db = await openDb();
+    const tx = db.transaction('postObjectStore', 'readwrite');
+    const store = tx.objectStore('postObjectStore');
+    const post = await store.get(postId);
+    post.comments.push(comment);
+    await store.put(post);
+    await tx.done;
+    console.log('Updated comment successfully!');
+}
+
 
 
 // delete db
@@ -68,7 +126,6 @@ async function addUserAccountData(Username, Email, Password) {
         enrollment: null,
         bio: null,
         website: null,
-        location: null
     };
     const db = await openDb();
     const tx = db.transaction('userObjectStore', 'readwrite');
@@ -174,7 +231,7 @@ async function updateCurrentUser(currentUser)
   */
 async function getMatchingDataByIndex(dbName, storeName, indexName, indexValue)
 {
-    const db = await openDB(dbName, 1);
+    const db = await openDB(dbName, 3);
 
     const tx = db.transaction(storeName, 'readonly');
     const store = tx.objectStore(storeName);
@@ -200,7 +257,7 @@ async function getMatchingDataByIndex(dbName, storeName, indexName, indexValue)
   */
 async function getDataByIndex(dbName, storeName, indexName)
 {
-    const db = await openDB(dbName, 1);
+    const db = await openDB(dbName, 3);
 
     const tx = db.transaction(storeName, 'readonly');
     const store = tx.objectStore(storeName);
@@ -288,7 +345,12 @@ export
     check,
     updateCurrentUser,
     getMatchingDataByIndex,
-    updateUserPassword
+    updateUserPassword,
+    deletePost,
+    updateBookmark,
+    updateLike,
+    updateComment
+
 }
 
 // window.export
@@ -303,6 +365,7 @@ window.check = check;
 window.updateCurrentUser = updateCurrentUser;
 window.getMatchingDataByIndex = getMatchingDataByIndex;
 window.updateUserPassword = updateUserPassword;
+window.deletePost = deletePost;
 
 // open database
 document.addEventListener('DOMContentLoaded', openDb);

@@ -1,0 +1,152 @@
+<!-- [file name]: post.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Create Post - APCommunity</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/post.css">
+</head>
+<body data-category="posting">
+<!-- Navigation -->
+<nav class="topbar">
+	<div class="logo">APCommunity</div>
+	<ul>
+		<li><a href="general.html" class="tab-link" data-category="general">General</a></li>
+		<li><a href="academic.html" class="tab-link" data-category="academic">Academic</a></li>
+		<li><a href="culture.html" class="tab-link" data-category="culture">Cultural</a></li>
+		<li><a href="art.html" class="tab-link" data-category="art">Art</a></li>
+		<li><a href="sport.html" class="tab-link" data-category="sport">Sport</a></li>
+	</ul>
+	<div class="profile-info" id="profileInfo">
+		<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+		<div class="profile-details">
+			<span class="profile-username" id="profileUsername">Loading...</span>
+			<span class="profile-email" id="profileEmail"></span>
+		</div>
+		<a class="logout-link" onclick="logout()">Log out</a>
+	</div>
+</nav>
+
+<div class="container">
+	<!-- Left Sidebar -->
+	<aside class="sidebar-left">
+		<a href="general.html" class="menu-item">
+			<i class='bx bx-home'></i>
+			<span>Home</span>
+		</a>
+		<a href="explore.html" class="menu-item">
+			<i class='bx bx-compass'></i>
+			<span>Explore</span>
+		</a>
+		<a href="notification.html" class="menu-item">
+			<i class='bx bx-bell'></i>
+			<span>Notification</span>
+		</a>
+		<a href="post.html" class="menu-item active">
+			<i class='bx bx-plus-circle'></i>
+			<span>Add a post</span>
+		</a>
+		<a href="bookmark.html" class="menu-item">
+			<i class='bx bx-bookmark'></i>
+			<span>Bookmark</span>
+		</a>
+		<a href="profile.html" class="menu-item">
+			<i class='bx bx-user'></i>
+			<span>Profile</span>
+		</a>
+		<a href="setting.html" class="menu-item">
+			<i class='bx bx-cog'></i>
+			<span>Setting</span>
+		</a>
+	</aside>
+	
+	<!-- Main Content -->
+	<main class="main-feed">
+		<div class="post-form-container">
+			<div class="form-header">
+				<h1><i class='bx bx-edit'></i> Create New Post</h1>
+				<p>Share your thoughts, announcements, or resources with the community</p>
+			</div>
+			
+			<form id="postForm">
+				<div class="input-group">
+					<label for="postCategory">Category</label>
+					<select id="postCategory" required>
+						<option value="general">General</option>
+						<option value="academic">Academic</option>
+						<option value="culture">Cultural</option>
+						<option value="art">Art</option>
+						<option value="sport">Sport</option>
+					</select>
+				</div>
+				
+				<div class="input-group">
+					<label for="postContent">Content</label>
+					<textarea id="postContent" placeholder="What's on your mind?" required rows="5"></textarea>
+				</div>
+				
+				<div class="input-group">
+					<label for="postImage">Upload Image (Optional)</label>
+					<div class="file-upload">
+						<input type="file" id="postImage" accept="image/*">
+						<label for="postImage" class="upload-btn">
+							<i class='bx bx-image-add'></i> Choose Image
+						</label>
+						<span class="file-name" id="imageFileName">No file selected</span>
+					</div>
+				</div>
+				
+				<div class="input-group">
+					<label for="postFile">Upload File (Optional)</label>
+					<div class="file-upload">
+						<input type="file" id="postFile">
+						<label for="postFile" class="upload-btn">
+							<i class='bx bx-file'></i> Choose File
+						</label>
+						<span class="file-name" id="fileFileName">No file selected</span>
+					</div>
+				</div>
+				
+				<div class="form-actions">
+					<button type="button" class="btn cancel-btn" onclick="window.history.back()">Cancel</button>
+					<button type="submit" class="btn submit-btn">Post</button>
+				</div>
+			</form>
+		</div>
+	</main>
+	
+	<!-- Right Sidebar -->
+	<aside class="sidebar-right">
+		<h4>Posting Tips</h4>
+		<ul class="tips-list">
+			<li>
+				<i class='bx bx-check-circle'></i>
+				<span>Be clear and concise</span>
+			</li>
+			<li>
+				<i class='bx bx-check-circle'></i>
+				<span>Use relevant categories</span>
+			</li>
+			<li>
+				<i class='bx bx-check-circle'></i>
+				<span>Add images for better engagement</span>
+			</li>
+			<li>
+				<i class='bx bx-check-circle'></i>
+				<span>Keep file sizes under 5MB</span>
+			</li>
+			<li>
+				<i class='bx bx-check-circle'></i>
+				<span>Respect community guidelines</span>
+			</li>
+		</ul>
+	</aside>
+</div>
+
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+<script type="module" src="../js/post.js"></script>
+<script type="module" src="../js/general.js"></script>
+</body>
+</html>

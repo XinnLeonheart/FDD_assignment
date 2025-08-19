@@ -1,58 +1,109 @@
+<!-- art.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Academic Posts</title>
-  <link rel="stylesheet" href="../css/post.css" />
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-<!--  <script src="../js/firebase-config.js"></script> &lt;!&ndash; Your Firebase config &ndash;&gt;-->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Art - APCommunity</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/general.css">
+	<link rel="stylesheet" href="../css/art.css">
 </head>
-
 <body data-category="art">
-  <nav class="topbar">
-    <div class="logo">APCommunity</div>
-    <ul>
-      <li><a href="general.html">General</a></li>
-      <li><a href="academic.html" class="active">Academic</a></li>
-      <li><a href="culture.html">Cultural</a></li>
-      <li><a href="art.html">Art</a></li>
-      <li><a href="sport.html">Sports</a></li>
-    </ul>
-  </nav>
+<!-- Navigation -->
+<nav class="topbar">
+	<div class="logo">APCommunity</div>
+	<ul>
+		<li><a href="general.html" class="tab-link" data-category="general">General</a></li>
+		<li><a href="academic.html" class="tab-link" data-category="academic">Academic</a></li>
+		<li><a href="culture.html" class="tab-link" data-category="culture">Cultural</a></li>
+		<li><a href="art.html" class="tab-link active" data-category="art">Art</a></li>
+		<li><a href="sport.html" class="tab-link" data-category="sport">Sport</a></li>
+	</ul>
+	<div class="profile-info" id="profileInfo">
+		<img src="../image/AsiaPacificUniversityOfTechnologyInnovation.webp" alt="Profile" class="profile-pic" />
+		<div class="profile-details">
+			<span class="profile-username" id="profileUsername">Loading...</span>
+			<span class="profile-email" id="profileEmail"></span>
+		</div>
+		<a class="logout-link" onclick="logout()">Log out</a>
+	</div>
+</nav>
 
-  <div class="container">
-    <!-- Sidebar Left -->
-    <aside class="sidebar-left">
-      <div class="menu-item active"><i class="uil uil-home"></i> Home</div>
-      <div class="menu-item"><i class="uil uil-compass"></i> Explore</div>
-      <div class="menu-item"><i class="uil uil-bell"></i> Notifications</div>
-      <a href="posting.html" class="menu-item tab-link" data-category="posting">
-        <i class="uil uil-envelope-alt"></i> Add a Post
-      </a>
-      <div class="menu-item"><i class="uil uil-bookmark"></i> Bookmarks</div>
-      <div class="menu-item"><i class="uil uil-setting"></i> Settings</div>
-    </aside>
+<div class="container">
+	<!-- Left Sidebar -->
+	<aside class="sidebar-left">
+		<a href="general.html" class="menu-item">
+			<i class='bx bx-home'></i> Home
+		</a>
+		<a href="explore.html" class="menu-item">
+			<i class='bx bx-compass'></i> Explore
+		</a>
+		<a href="notification.html" class="menu-item">
+			<i class='bx bx-bell'></i> Notification
+		</a>
+		<a href="post.html" class="menu-item">
+			<i class='bx bx-plus-circle'></i> Add a post
+		</a>
+		<a href="bookmark.html" class="menu-item">
+			<i class='bx bx-bookmark'></i> Bookmark
+		</a>
+		<a href="profile.html" class="menu-item">
+			<i class='bx bx-user'></i> Profile
+		</a>
+		<a href="setting.html" class="menu-item">
+			<i class='bx bx-cog'></i> Setting
+		</a>
+	</aside>
+	
+	<!-- Main Feed -->
+	<main class="main-feed" id="postFeed">
+		<!-- Category Filter -->
+		<div class="category-filter">
+			<h2>Art Community</h2>
+			<div class="filter-options">
+				<span>Sort by:</span>
+				<select id="sortOption">
+					<option value="newest">Newest</option>
+					<option value="oldest">Oldest</option>
+					<option value="most-liked">Most Liked</option>
+				</select>
+			</div>
+		</div>
+		
+		<!-- Posts will be loaded dynamically here -->
+		<div class="loading-spinner" id="loadingSpinner">
+			<i class='bx bx-loader-circle bx-spin'></i>
+			<p>Loading posts...</p>
+		</div>
+	</main>
+	
+	<!-- Right Sidebar -->
+	<aside class="sidebar-right">
+		<h4>Suggested for you</h4>
+		<ul class="suggestions" id="suggestedUsers">
+			<!-- Suggested users will be loaded here -->
+		</ul>
+		
+		<div class="community-stats">
+			<h4>Community Stats</h4>
+			<div class="stat-item">
+				<i class='bx bx-group'></i>
+				<span>Online: <strong id="onlineUsers">1</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-chat'></i>
+				<span>Posts: <strong id="totalPosts">1</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-user'></i>
+				<span>Members: <strong id="totalMembers">1</strong></span>
+			</div>
+		</div>
+	</aside>
+</div>
 
-    <!-- Post Feed -->
-    <main class="main-feed" id="postFeed">
-      <!-- Firebase posts will be rendered here -->
-    </main>
-
-    <!-- Sidebar Right -->
-    <aside class="sidebar-right">
-      <h4>Suggested for you</h4>
-      <ul class="suggestions">
-        <li>User_1 <button class="follow-btn">Follow</button></li>
-        <li>User_2 <button class="follow-btn">Follow</button></li>
-        <li>User_3 <button class="follow-btn">Follow</button></li>
-      </ul>
-    </aside>
-  </div>
-
-  <script src="../js/post.js"></script> <!-- Shared loader -->
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+<script type="module" src="../js/art.js"></script>
 </body>
 </html>

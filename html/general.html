@@ -31,13 +31,17 @@
 <div class="container">
 	<!-- Left Sidebar -->
 	<aside class="sidebar-left">
-		<div class="menu-item active"><i class='bx bx-home'></i> Home</div>
-		<div class="menu-item"><i class='bx bx-compass'></i> Explore</div>
+		<a href="general.html" class="menu-item active">
+			<i class='bx bx-home'></i> Home
+		</a>
+		<a href="explore.html" class="menu-item">
+			<i class='bx bx-compass'></i> Explore
+		</a>
 		<a href="notification.html" class="menu-item">
 			<i class='bx bx-bell'></i> Notification
 		</a>
-		<a href="posting.html" class="menu-item">
-			<i class='bx bx-plus-circle'></i> Add a Post
+		<a href="post.html" class="menu-item">
+			<i class='bx bx-plus-circle'></i> Add a post
 		</a>
 		<a href="bookmark.html" class="menu-item">
 			<i class='bx bx-bookmark'></i> Bookmark
@@ -52,7 +56,24 @@
 	
 	<!-- Main Feed -->
 	<main class="main-feed" id="postFeed">
+		<!-- Category Filter -->
+		<div class="category-filter">
+			<h2>General Discussions</h2>
+			<div class="filter-options">
+				<span>Sort by:</span>
+				<select id="sortOption">
+					<option value="newest">Newest</option>
+					<option value="oldest">Oldest</option>
+					<option value="most-liked">Most Liked</option>
+				</select>
+			</div>
+		</div>
+		
 		<!-- Posts will be loaded dynamically here -->
+		<div class="loading-spinner" id="loadingSpinner">
+			<i class='bx bx-loader-circle bx-spin'></i>
+			<p>Loading posts...</p>
+		</div>
 	</main>
 	
 	<!-- Right Sidebar -->
@@ -61,6 +82,22 @@
 		<ul class="suggestions" id="suggestedUsers">
 			<!-- Suggested users will be loaded here -->
 		</ul>
+		
+		<div class="community-stats">
+			<h4>Community Stats</h4>
+			<div class="stat-item">
+				<i class='bx bx-group'></i>
+				<span>Online: <strong id="onlineUsers">1</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-chat'></i>
+				<span>Posts: <strong id="totalPosts">1</strong></span>
+			</div>
+			<div class="stat-item">
+				<i class='bx bx-user'></i>
+				<span>Members: <strong id="totalMembers">1</strong></span>
+			</div>
+		</div>
 	</aside>
 </div>
 

@@ -26,6 +26,7 @@
 }
 
 .bookmark-badge {
+    position: absolute;
     top: 15px;
     right: 15px;
     background-color: var(--warning);
@@ -77,6 +78,10 @@
 .bookmarks-feed {
     display: grid;
     gap: 1.5rem;
+}
+
+.post-card {
+    position: relative;
 }
 
 /* Responsive adjustments */
