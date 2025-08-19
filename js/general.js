@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  let posts = JSON.parse(localStorage.getItem(`posts_${currentUser}`)) || defaultPosts;
+  let posts = JSON.parse(localStorage.getItem("allPosts")) || defaultPosts;
+
 
   posts.forEach(post => {
     if (post.category === currentCategory) {

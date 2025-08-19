@@ -1,47 +1,102 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const currentUser = localStorage.getItem("currentUser"); 
-  const postFeed = document.getElementById("my-posts");
+  renderPosts();
+});
 
-  if (!currentUser) {
-    postFeed.innerHTML = "<p>You must be logged in to see your posts.</p>";
-    return;
-  }
+function renderPosts() {
+  const postsContainer = document.getElementById("my-posts");
+  postsContainer.innerHTML = "";
 
   let allPosts = JSON.parse(localStorage.getItem("allPosts")) || [];
+  const currentUser = localStorage.getItem("currentUser");
 
-  // Filter only the posts by this user
-  let myPosts = allPosts.filter(p => p.owner === currentUser);
+  // Filter only current user's posts
+  const myPosts = allPosts.filter(post => post.owner === currentUser);
 
   if (myPosts.length === 0) {
-    postFeed.innerHTML = "<p>No posts yet.</p>";
+    postsContainer.innerHTML = "<p>No posts yet.</p>";
     return;
   }
 
   myPosts.forEach(post => {
-    const card = document.createElement("div");
-    card.className = "post-card";
-    card.dataset.postId = post.id;
+    const postCard = document.createElement("div");
+    postCard.className = "post-card";
+    postCard.dataset.postId = post.id;
 
-    card.innerHTML = `
+    postCard.innerHTML = `
       <div class="post-body">
-        ${post.imageURL ? `<img src="${post.imageURL}" alt="Post Image"/>` : ""}
-        <p>${post.text}</p>
-        ${post.pdfURL ? `<a href="${post.pdfURL}" download>${post.pdfName}</a>` : ""}
-        <div class="post-actions">
-          <button class="delete-btn">🗑️ Delete</button>
+        ${post.imageURL ? `<div class="post-img"><img src="${post.imageURL}" alt="post image"></div>` : ""}
+        <div class="post-content">
+          <h4>${post.owner} <span class="badge">· you</span></h4>
+          <p class="post-text">${post.text}</p>
+          ${post.pdfName ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}">${post.pdfName}</a>` : ""}
+          <div class="post-actions">
+            <button class="edit-btn">✏️ Edit</button>
+            <button class="delete-btn">🗑️ Delete</button>
+          </div>
         </div>
       </div>
     `;
 
-    postFeed.appendChild(card);
+    // --- Buttons ---
+    const editBtn = postCard.querySelector(".edit-btn");
+    const deleteBtn = postCard.querySelector(".delete-btn");
 
-    // Delete button
-    card.querySelector(".delete-btn").addEventListener("click", () => {
-      if (confirm("Delete this post?")) {
-        allPosts = allPosts.filter(p => p.id !== post.id);
-        localStorage.setItem("allPosts", JSON.stringify(allPosts));
-        card.remove();
+    // --- EDIT ---
+    editBtn.addEventListener("click", () => {
+      const textEl = postCard.querySelector(".post-text");
+
+      if (editBtn.textContent === "✏️ Edit") {
+        const textarea = document.createElement("textarea");
+        textarea.value = post.text;
+        textarea.className = "edit-area";
+        textEl.replaceWith(textarea);
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "❌ Cancel";
+        cancelBtn.className = "cancel-btn";
+        postCard.querySelector(".post-actions").insertBefore(cancelBtn, deleteBtn);
+
+        cancelBtn.addEventListener("click", () => {
+          const newTextEl = document.createElement("p");
+          newTextEl.className = "post-text";
+          newTextEl.textContent = post.text;
+          textarea.replaceWith(newTextEl);
+
+          editBtn.textContent = "✏️ Edit";
+          cancelBtn.remove();
+        });
+
+        editBtn.textContent = "💾 Save";
+      } else {
+        const textarea = postCard.querySelector(".edit-area");
+        const updatedText = textarea.value.trim();
+
+        if (updatedText) {
+          post.text = updatedText;
+          allPosts = allPosts.map(p => (p.id === post.id ? post : p));
+          localStorage.setItem("allPosts", JSON.stringify(allPosts));
+
+          const newTextEl = document.createElement("p");
+          newTextEl.className = "post-text";
+          newTextEl.textContent = updatedText;
+          textarea.replaceWith(newTextEl);
+
+          editBtn.textContent = "✏️ Edit";
+          const cancelBtn = postCard.querySelector(".cancel-btn");
+          if (cancelBtn) cancelBtn.remove();
+        }
       }
     });
+
+    // --- DELETE ---
+    deleteBtn.addEventListener("click", () => {
+      if (confirm("Are you sure you want to delete this post?")) {
+        allPosts = allPosts.filter(p => p.id !== post.id);
+        localStorage.setItem("allPosts", JSON.stringify(allPosts));
+        renderPosts();
+      }
+    });
+
+    postsContainer.appendChild(postCard);
   });
-});
+}
