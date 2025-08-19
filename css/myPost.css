@@ -68,11 +68,12 @@ body {
   text-decoration: none;
 }
 
-.sidebar-left .menu-item i {
+.sidebar-left .menu-item box-icon {
   font-size: 24px;
-  margin-right: 15px;
+  margin-right: 12px; 
   width: 24px;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .sidebar-left .menu-item:hover {
@@ -88,7 +89,6 @@ body {
 }
 
 /* Posts */
-/* Post Card - Bigger like General */
 .post-card {
   background-color: #fff;
   border-radius: 12px;

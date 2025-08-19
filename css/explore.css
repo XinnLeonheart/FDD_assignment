@@ -69,11 +69,12 @@ body {
   text-decoration: none;
 }
 
-.sidebar-left .menu-item i {
+.sidebar-left .menu-item box-icon {
   font-size: 24px;
-  margin-right: 15px;
+  margin-right: 12px; 
   width: 24px;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .sidebar-left .menu-item:hover {
@@ -157,12 +158,6 @@ body {
   color: #2d3e50;              /* darker heading */
 }
 
-/* Post + user list text color */
-.recommended-users li {
-  color: #444;                 /* more visible text */
-  font-size: 15px;
-}
-
 .post-card p {
     color: #333;
     font-size: 16px;
@@ -182,29 +177,4 @@ body {
   margin: 10px 0;
 }
 
-.recommended-users ul {
-  list-style: none;
-  padding: 0;
-}
 
-.recommended-users li {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-}
-
-.follow-btn {
-  background: #00A2C8;
-  color: #fff;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 18px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background 0.3s ease;
-}
-
-.follow-btn:hover {
-  background: #0089a6; /* Darker blue on hover */
-}

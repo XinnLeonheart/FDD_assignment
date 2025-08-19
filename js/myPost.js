@@ -30,14 +30,13 @@ function renderPosts() {
           <p class="post-text">${post.text}</p>
           ${post.pdfName ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}">${post.pdfName}</a>` : ""}
           <div class="post-actions">
-            <button class="edit-btn">✏️ Edit</button>
-            <button class="delete-btn">🗑️ Delete</button>
+            <button class="edit-btn"><box-icon name='edit'></box-icon> Edit</button>
+            <button class="delete-btn"><box-icon name='message-square-x'></box-icon> Delete</button>
           </div>
         </div>
       </div>
     `;
 
-    // --- Buttons ---
     const editBtn = postCard.querySelector(".edit-btn");
     const deleteBtn = postCard.querySelector(".delete-btn");
 
@@ -45,14 +44,17 @@ function renderPosts() {
     editBtn.addEventListener("click", () => {
       const textEl = postCard.querySelector(".post-text");
 
-      if (editBtn.textContent === "✏️ Edit") {
+      if (editBtn.dataset.mode !== "save") {
+        // Expand post card width
+        postCard.style.width = "700px"; // adjust as needed
+
         const textarea = document.createElement("textarea");
         textarea.value = post.text;
         textarea.className = "edit-area";
         textEl.replaceWith(textarea);
 
         const cancelBtn = document.createElement("button");
-        cancelBtn.textContent = "❌ Cancel";
+        cancelBtn.innerHTML = "<box-icon name='x'></box-icon> Cancel";
         cancelBtn.className = "cancel-btn";
         postCard.querySelector(".post-actions").insertBefore(cancelBtn, deleteBtn);
 
@@ -62,11 +64,16 @@ function renderPosts() {
           newTextEl.textContent = post.text;
           textarea.replaceWith(newTextEl);
 
-          editBtn.textContent = "✏️ Edit";
+          // Reset post card width
+          postCard.style.width = "";
+
+          editBtn.dataset.mode = "";
+          editBtn.innerHTML = "<box-icon name='edit'></box-icon> Edit";
           cancelBtn.remove();
         });
 
-        editBtn.textContent = "💾 Save";
+        editBtn.dataset.mode = "save";
+        editBtn.innerHTML = "<box-icon name='check'></box-icon> Save";
       } else {
         const textarea = postCard.querySelector(".edit-area");
         const updatedText = textarea.value.trim();
@@ -81,7 +88,11 @@ function renderPosts() {
           newTextEl.textContent = updatedText;
           textarea.replaceWith(newTextEl);
 
-          editBtn.textContent = "✏️ Edit";
+          // Reset post card width
+          postCard.style.width = "";
+
+          editBtn.dataset.mode = "";
+          editBtn.innerHTML = "<box-icon name='edit'></box-icon> Edit";
           const cancelBtn = postCard.querySelector(".cancel-btn");
           if (cancelBtn) cancelBtn.remove();
         }
