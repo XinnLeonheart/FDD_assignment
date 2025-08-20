@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="post-content">
             <h4>${post.user} ${post.user === "Asia Pacific University" ? '<span class="badge">· official</span>' : ''}</h4>
             <p>${post.text}</p>
-            ${post.pdfURL ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}">📎 ${post.pdfName}</a>` : ''}
+            ${post.pdfURL ? `<a class="file-download" href="${post.pdfURL}" download="${post.pdfName}"><box-icon name='paperclip'></box-icon>${post.pdfName}</a>` : ''}
             <div class="post-actions">
               <box-icon name="heart" class="like-icon" type="${post.liked ? 'solid' : 'regular'}" color="${post.liked ? 'red' : '#333'}"></box-icon>
               <box-icon name="comment" class="comment-icon" type="regular" color="#333"></box-icon>
