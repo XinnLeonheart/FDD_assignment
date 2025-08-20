@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
       owner: currentUser,
       category: selectedCategory,
       text: text,
-      images: [],     // array of image URLs
-      videos: [],     // array of video URLs
+      images: [],     
+      videos: [],     
       files: [],
       liked: false,
       comments: []

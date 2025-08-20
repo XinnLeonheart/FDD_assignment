@@ -143,10 +143,11 @@ function enableImageModalPreview() {
     thumb.addEventListener("click", function () {
       const postBody = thumb.closest('.post-body');
       currentMediaList = Array.from(postBody.querySelectorAll('.media-thumb')).map(el => ({
-        src: el.src,
+        src: el.tagName === 'VIDEO' ? el.src : el.src,
         isVideo: el.tagName === 'VIDEO'
       }));
       currentIdx = parseInt(thumb.dataset.idx);
+
       showMedia(currentIdx);
       modal.style.display = "flex";
     });
@@ -159,10 +160,14 @@ function enableImageModalPreview() {
       const video = document.createElement("video");
       video.src = media.src;
       video.controls = true;
+      video.style.maxWidth = "80vw";
+      video.style.maxHeight = "80vh";
       mediaContainer.appendChild(video);
     } else {
       const img = document.createElement("img");
       img.src = media.src;
+      img.style.maxWidth = "80vw";
+      img.style.maxHeight = "80vh";
       mediaContainer.appendChild(img);
     }
   }
@@ -389,3 +394,4 @@ function setupShareButtons() {
     });
   });
 }
+
