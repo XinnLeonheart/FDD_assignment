@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Update Password
-  document.querySelectorAll(".settings-group .save-btn")[2].addEventListener("click", () => {
+  document.querySelectorAll(".settings-group .save-btn")[1].addEventListener("click", () => {
     if (passwordInput.value.trim() !== "") {
       localStorage.setItem("password", passwordInput.value);
       alert("Password changed successfully!");
@@ -29,14 +29,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Logout functionality
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    if (confirm("Are you sure you want to log out?")) {
-      localStorage.clear(); // clear all saved data (profile, dark mode, etc.)
-      window.location.href = "register_login.html"; // redirect to login page
-    }
-  });
-});
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (confirm("Are you sure you want to log out?")) {
+        localStorage.clear();
+        window.location.href = "register_login.html";
+      }
+    });
+  }
 
-document.querySelector(".sidebar-left .menu-item").addEventListener("click", () => {
-  window.location.href = "general.html";
+  // Home menu item redirects to general.html
+  const homeMenuItem = document.querySelector('.sidebar-left .menu-item[data-category="general"]');
+  if (homeMenuItem) {
+    homeMenuItem.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "general.html";
+    });
+  }
 });
