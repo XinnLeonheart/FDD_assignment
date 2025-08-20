@@ -99,14 +99,32 @@ document.addEventListener('DOMContentLoaded', () => {
       id: Date.now().toString(),
       user: currentUser,
       owner: currentUser,
-      category: selectedCategory,  
+      category: selectedCategory,
       text: text,
-      imageURL: previewImages.querySelector("img") ? previewImages.querySelector("img").src : "",
-      pdfURL: "",
-      pdfName: "",
+      images: [],     // array of image URLs
+      videos: [],     // array of video URLs
+      files: [],
       liked: false,
       comments: []
     };
+
+    // Images
+    previewImages.querySelectorAll("img").forEach(img => {
+      newPost.images.push(img.src);
+    });
+
+    // Videos
+    previewVideos.querySelectorAll("video").forEach(video => {
+      newPost.videos.push(video.src);
+    });
+
+    // Files
+    previewFiles.querySelectorAll(".file-name").forEach(fileSpan => {
+      newPost.files.push({
+        name: fileSpan.textContent,
+        url: "#"
+      });
+    });
 
     const filePreview = previewFiles.querySelector(".file-name");
     if (filePreview) {

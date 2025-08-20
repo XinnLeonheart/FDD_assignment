@@ -610,3 +610,48 @@ body {
   display: block;
   margin: auto;
 }
+
+.comment-section {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.comment-section.hidden {
+  display: none;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 50px;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.comment-submit {
+  background: #5563de;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.comment-submit:hover {
+  background: #4350c4;
+}
+
+.comment-item {
+  margin-top: 5px;
+  padding: 6px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #eee;
+}
