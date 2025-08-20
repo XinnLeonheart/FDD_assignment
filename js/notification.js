@@ -71,16 +71,4 @@ document.addEventListener("DOMContentLoaded", () => {
       notificationsContainer.appendChild(notif);
     });
   });
-
-  // Example static follow notification
-  const followNotif = document.createElement("div");
-  followNotif.className = "notification-item follow";
-  followNotif.innerHTML = `
-    <i class='bx bxs-user-plus'></i>
-    <div>
-      <strong>Michael Lee</strong> started following you.
-      <span class="time">30 mins ago</span>
-    </div>
-  `;
-  notificationsContainer.appendChild(followNotif);
 });

@@ -12,11 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const categoryButtons = document.querySelectorAll(".category-btn");
   categoryButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      // remove active class from all
       categoryButtons.forEach(b => b.classList.remove("active"));
-      // add active to clicked
       btn.classList.add("active");
-      // update selectedCategory
       selectedCategory = btn.dataset.category;
     });
   });
@@ -124,3 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = "general.html";
   });
 });
+
+// Remove the second DOMContentLoaded block from posting.js.
+// Move the post rendering and category filtering logic to your main feed JS file (e.g., general.js).

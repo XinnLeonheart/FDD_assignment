@@ -9,7 +9,7 @@
 body {
   font-family: 'Ghibli', sans-serif;
   background-color: #F7F7F1;
-  color: #856969;
+  color: #111;
   line-height: 1.6;
 }
 
@@ -97,6 +97,7 @@ body {
   transition: all 0.3s;
   min-height: 300px;
   margin-bottom: 25px;
+  width: 1000px;
 }
 
 .post-card:hover {

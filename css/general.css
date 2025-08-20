@@ -588,3 +588,25 @@ body {
   cursor: pointer;
 }
 
+.image-modal .modal-nav {
+  position: absolute;
+  top: 50%;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2100;
+  padding: 0 20px;
+  transform: translateY(-50%);
+}
+.image-modal .modal-prev { left: 10px; }
+.image-modal .modal-next { right: 10px; }
+.image-modal .modal-media-container img,
+.image-modal .modal-media-container video {
+  max-width: 80vw;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  display: block;
+  margin: auto;
+}
