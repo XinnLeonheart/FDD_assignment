@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
       newPost.images.push(img.src);
     });
 
-    // ✅ Fixed Videos (convert to base64 before saving)
+    // Fixed Videos (convert to base64 before saving)
     const videoFiles = videoInput.files;
     if (videoFiles.length > 0) {
       let processed = 0;
