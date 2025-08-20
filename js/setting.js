@@ -2,27 +2,70 @@ document.addEventListener("DOMContentLoaded", () => {
   const displayNameInput = document.getElementById("displayName");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("newPassword");
+  const togglePassword = document.getElementById("togglePassword");
 
-  // Load saved settings
-  const savedName = localStorage.getItem("displayName");
-  const savedEmail = localStorage.getItem("email");
+  // Eye icon toggle
+  if (togglePassword && passwordInput) {
+    togglePassword.addEventListener("click", () => {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePassword.innerHTML = "<i class='bx bx-show'></i>";
+      } else {
+        passwordInput.type = "password";
+        togglePassword.innerHTML = "<i class='bx bx-hide'></i>";
+      }
+    });
+  }
 
-  if (savedName) displayNameInput.value = savedName;
-  if (savedEmail) emailInput.value = savedEmail;
+  // Display current account info
+  function showCurrentAccountInfo() {
+    const currentUser = localStorage.getItem("currentUser");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.username === currentUser);
 
-  // Save Profile
+    if (user) {
+      displayNameInput.value = user.username;
+      emailInput.value = user.email;
+      passwordInput.value = user.password;
+    }
+  }
+  showCurrentAccountInfo();
+
+  // Save Profile (update login credentials)
   document.querySelector(".settings-group .save-btn").addEventListener("click", () => {
-    localStorage.setItem("displayName", displayNameInput.value);
-    localStorage.setItem("email", emailInput.value);
-    alert("Profile updated!");
+    const newUsername = displayNameInput.value.trim();
+    const newEmail = emailInput.value.trim();
+
+    if (!newUsername || !newEmail) {
+      alert("Display name and email cannot be empty.");
+      return;
+    }
+
+    const currentUser = localStorage.getItem("currentUser");
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex(u => u.username === currentUser);
+
+    if (userIndex !== -1) {
+      users[userIndex].username = newUsername;
+      users[userIndex].email = newEmail;
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("currentUser", newUsername);
+      alert("Profile updated! Your login credentials have been changed.");
+    }
   });
 
-  // Update Password
+  // Update Password (also updates login credentials)
   document.querySelectorAll(".settings-group .save-btn")[1].addEventListener("click", () => {
     if (passwordInput.value.trim() !== "") {
-      localStorage.setItem("password", passwordInput.value);
-      alert("Password changed successfully!");
-      passwordInput.value = "";
+      const currentUser = localStorage.getItem("currentUser");
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const userIndex = users.findIndex(u => u.username === currentUser);
+      if (userIndex !== -1) {
+        users[userIndex].password = passwordInput.value;
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Password changed successfully! You can use the new password to log in.");
+        passwordInput.value = "";
+      }
     } else {
       alert("Please enter a new password!");
     }
@@ -34,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutBtn.addEventListener("click", (e) => {
       e.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
-        localStorage.clear();
+        localStorage.setItem("isLoggedIn", "false");
         window.location.href = "register_login.html";
       }
     });

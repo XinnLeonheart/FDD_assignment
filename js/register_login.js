@@ -48,13 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const username = registerForm.querySelector('input[placeholder="Username"]').value;
     const password = registerForm.querySelector('input[placeholder="Password"]').value;
 
-    // Save account info (demo only)
-    localStorage.setItem('userEmail', email);
-    localStorage.setItem('userUsername', username);
-    localStorage.setItem('userPassword', password);
+    // Get existing users or empty array
+    let users = JSON.parse(localStorage.getItem('users')) || [];
 
-    // Create a personal posts list for this new user
-    localStorage.setItem(`posts_${username}`, JSON.stringify(defaultPosts));
+    // Check if username or email already exists
+    const exists = users.some(u => u.email === email || u.username === username);
+    if (exists) {
+      alert('Account already exists. Please log in.');
+      return;
+    }
+
+    // Add new user
+    users.push({ email, username, password });
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Mark login session
     localStorage.setItem('isLoggedIn', 'true');
@@ -70,20 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailOrUsername = loginForm.querySelector('input[placeholder="Email/Username"]').value;
     const password = loginForm.querySelector('input[placeholder="Password"]').value;
 
-    const savedEmail = localStorage.getItem('userEmail');
-    const savedUsername = localStorage.getItem('userUsername');
-    const savedPassword = localStorage.getItem('userPassword');
+    // Use users array for authentication
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u =>
+      (u.email === emailOrUsername || u.username === emailOrUsername) &&
+      u.password === password
+    );
 
-    if (
-      (emailOrUsername === savedEmail || emailOrUsername === savedUsername) &&
-      password === savedPassword
-    ) {
+    if (user) {
       localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', savedUsername);
+      localStorage.setItem('currentUser', user.username);
 
       // If user has no personal posts yet, give them the default ones
-      if (!localStorage.getItem(`posts_${savedUsername}`)) {
-        localStorage.setItem(`posts_${savedUsername}`, JSON.stringify(defaultPosts));
+      if (!localStorage.getItem(`posts_${user.username}`)) {
+        localStorage.setItem(`posts_${user.username}`, JSON.stringify(defaultPosts));
       }
 
       alert('Login successful!');

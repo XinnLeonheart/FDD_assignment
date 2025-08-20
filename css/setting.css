@@ -168,6 +168,7 @@ body {
   color: #fff;
 }
 
+
 /* Logout Button */
 #logoutBtn {
   padding: 12px 28px;
@@ -184,4 +185,27 @@ body {
 
 #logoutBtn:hover {
   background: #c9184a;
+}
+
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input[type="password"],
+.input-group input[type="text"] {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  color: #888;
+  display: flex;
+  align-items: center;
 }

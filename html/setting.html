@@ -59,7 +59,12 @@
                 <h3><box-icon name='lock'></box-icon>Security</h3>
                 <label>
                     Change Password:
-                    <input type="password" id="newPassword" placeholder="New Password">
+                    <div class="input-group">
+                        <input type="password" id="newPassword" placeholder="New Password">
+                        <span id="togglePassword" class="eye-icon">
+                            <i class='bx bx-hide'></i>
+                        </span>
+                    </div>
                 </label>
                 <button class="save-btn">Update Password</button>
             </section>
