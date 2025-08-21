@@ -126,7 +126,7 @@ form {
 
 .btn {
   width: 220px;
-  margin: 0 auto;
+  margin: 50px auto 0 auto;
   display: block;
   height: 48px;
   background-color: #00aacd;
