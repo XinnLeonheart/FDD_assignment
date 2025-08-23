@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentCategory = document.body.dataset.category;
   const currentUser = localStorage.getItem('currentUser');
 
-  if (!currentUser) {
-    window.location.href = 'register_login.html';
-    return;
+  if (!currentUser || localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.replace("register_login.html");
   }
 
   localStorage.setItem(`lastVisitedPage_${currentUser}`, window.location.pathname);
@@ -111,10 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
         localStorage.setItem("isLoggedIn", "false");
-        window.location.href = "register_login.html";
+        localStorage.removeItem("currentUser");
+
+        window.location.replace("register_login.html");
       }
     });
   }
+
 
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".post-card") && !e.target.closest(".comment-box")) {

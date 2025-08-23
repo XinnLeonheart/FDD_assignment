@@ -1,3 +1,8 @@
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser || localStorage.getItem("isLoggedIn") !== "true") {
+  window.location.replace("register_login.html");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const displayNameInput = document.getElementById("displayName");
   const emailInput = document.getElementById("email");
@@ -78,7 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       if (confirm("Are you sure you want to log out?")) {
         localStorage.setItem("isLoggedIn", "false");
-        window.location.href = "register_login.html";
+        localStorage.removeItem("currentUser");
+
+        window.location.replace("register_login.html");
       }
     });
   }
