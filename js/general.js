@@ -143,11 +143,10 @@ function enableImageModalPreview() {
     thumb.addEventListener("click", function () {
       const postBody = thumb.closest('.post-body');
       currentMediaList = Array.from(postBody.querySelectorAll('.media-thumb')).map(el => ({
-        src: el.tagName === 'VIDEO' ? el.src : el.src,
+        src: el.src,
         isVideo: el.tagName === 'VIDEO'
       }));
       currentIdx = parseInt(thumb.dataset.idx);
-
       showMedia(currentIdx);
       modal.style.display = "flex";
     });
@@ -160,14 +159,10 @@ function enableImageModalPreview() {
       const video = document.createElement("video");
       video.src = media.src;
       video.controls = true;
-      video.style.maxWidth = "80vw";
-      video.style.maxHeight = "80vh";
       mediaContainer.appendChild(video);
     } else {
       const img = document.createElement("img");
       img.src = media.src;
-      img.style.maxWidth = "80vw";
-      img.style.maxHeight = "80vh";
       mediaContainer.appendChild(img);
     }
   }
@@ -204,80 +199,53 @@ function setupUploadPreviews() {
   const previewVideos = document.getElementById("previewVideos");
   const previewFiles = document.getElementById("previewFiles");
 
-  function readFileAsDataURL(file, callback) {
-    const reader = new FileReader();
-    reader.onload = () => callback(reader.result);
-    reader.readAsDataURL(file);
-  }
+  function createPreview(file, container) {
+    const url = URL.createObjectURL(file);
+    let el;
 
-  function createPreview(file, container, type) {
-    readFileAsDataURL(file, (dataURL) => {
-      let el;
-      if (type === "image") {
-        el = document.createElement("img");
-        el.src = dataURL;
-        el.width = 80;
-        el.classList.add("media-thumb");
-      } else if (type === "video") {
-        el = document.createElement("video");
-        el.src = dataURL;
-        el.width = 80;
-        el.controls = true;
-        el.classList.add("media-thumb");
-      } else {
-        el = document.createElement("div");
-        el.textContent = file.name;
-        el.classList.add("file-thumb");
+    if (file.type.startsWith("image/")) {
+      el = document.createElement("img");
+      el.src = url;
+      el.width = 80;
+      el.classList.add("media-thumb");
+    } else if (file.type.startsWith("video/")) {
+      el = document.createElement("video");
+      el.src = url;
+      el.width = 80;
+      el.controls = true;
+      el.classList.add("media-thumb");
+    } else {
+      el = document.createElement("div");
+      el.textContent = file.name;
+      el.classList.add("file-thumb");
+    }
+
+    el.style.cursor = "pointer";
+    container.appendChild(el);
+
+    // Click to preview modal for image/video
+    el.addEventListener("click", () => {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+        openMediaModal([file], 0);
       }
-
-      el.style.cursor = "pointer";
-      container.appendChild(el);
-
-      // Save into localStorage for persistence
-      let posts = JSON.parse(localStorage.getItem("allPosts")) || [];
-      const currentUser = localStorage.getItem("currentUser");
-
-      const newPost = {
-        id: Date.now().toString(),
-        user: currentUser || "Anonymous",
-        category: document.body.dataset.category,
-        text: "New upload",
-        images: type === "image" ? [dataURL] : [],
-        videos: type === "video" ? [dataURL] : [],
-        pdfURL: type === "file" ? dataURL : "",
-        pdfName: type === "file" ? file.name : "",
-        liked: false,
-        comments: []
-      };
-
-      posts.push(newPost);
-      localStorage.setItem("allPosts", JSON.stringify(posts));
-
-      // Modal preview
-      el.addEventListener("click", () => {
-        if (type === "image" || type === "video") {
-          openMediaModal([{ url: dataURL, isVideo: type === "video" }], 0);
-        }
-      });
     });
   }
 
   imageInput?.addEventListener("change", () => {
     previewImages.innerHTML = "";
-    Array.from(imageInput.files).forEach(file => createPreview(file, previewImages, "image"));
+    Array.from(imageInput.files).forEach(file => createPreview(file, previewImages));
   });
 
   videoInput?.addEventListener("change", () => {
     previewVideos.innerHTML = "";
-    Array.from(videoInput.files).forEach(file => createPreview(file, previewVideos, "video"));
+    Array.from(videoInput.files).forEach(file => createPreview(file, previewVideos));
   });
 
   fileInput?.addEventListener("change", () => {
     previewFiles.innerHTML = "";
-    Array.from(fileInput.files).forEach(file => createPreview(file, previewFiles, "file"));
+    Array.from(fileInput.files).forEach(file => createPreview(file, previewFiles));
   });
 }
-
 
 // ----- Open modal for uploaded files -----
 function openMediaModal(fileList, startIdx = 0) {

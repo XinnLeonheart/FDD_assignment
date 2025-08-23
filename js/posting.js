@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
       owner: currentUser,
       category: selectedCategory,
       text: text,
-      images: [],     
-      videos: [],     
+      images: [],     // array of image URLs
+      videos: [],     // array of video URLs
       files: [],
       liked: false,
       comments: []
@@ -113,27 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
       newPost.images.push(img.src);
     });
 
-    // Fixed Videos (convert to base64 before saving)
-    const videoFiles = videoInput.files;
-    if (videoFiles.length > 0) {
-      let processed = 0;
-      Array.from(videoFiles).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          newPost.videos.push(reader.result); // Save as base64 string
-          processed++;
-          if (processed === videoFiles.length) {
-            savePost(newPost);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    } else {
-      previewVideos.querySelectorAll("video").forEach(video => {
-        newPost.videos.push(video.src);
-      });
-      savePost(newPost);
-    }
+    // Videos
+    previewVideos.querySelectorAll("video").forEach(video => {
+      newPost.videos.push(video.src);
+    });
 
     // Files
     previewFiles.querySelectorAll(".file-name").forEach(fileSpan => {
@@ -148,13 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
       newPost.pdfName = filePreview.textContent;
       newPost.pdfURL = "#";
     }
-  });
 
-  function savePost(newPost) {
     let allPosts = JSON.parse(localStorage.getItem("allPosts")) || [];
     allPosts.push(newPost);
     localStorage.setItem("allPosts", JSON.stringify(allPosts));
+
     window.location.href = "general.html";
-  }
+  });
 });
 
