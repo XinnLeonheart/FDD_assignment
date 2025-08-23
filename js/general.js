@@ -204,53 +204,80 @@ function setupUploadPreviews() {
   const previewVideos = document.getElementById("previewVideos");
   const previewFiles = document.getElementById("previewFiles");
 
-  function createPreview(file, container) {
-    const url = URL.createObjectURL(file);
-    let el;
+  function readFileAsDataURL(file, callback) {
+    const reader = new FileReader();
+    reader.onload = () => callback(reader.result);
+    reader.readAsDataURL(file);
+  }
 
-    if (file.type.startsWith("image/")) {
-      el = document.createElement("img");
-      el.src = url;
-      el.width = 80;
-      el.classList.add("media-thumb");
-    } else if (file.type.startsWith("video/")) {
-      el = document.createElement("video");
-      el.src = url;
-      el.width = 80;
-      el.controls = true;
-      el.classList.add("media-thumb");
-    } else {
-      el = document.createElement("div");
-      el.textContent = file.name;
-      el.classList.add("file-thumb");
-    }
-
-    el.style.cursor = "pointer";
-    container.appendChild(el);
-
-    // Click to preview modal for image/video
-    el.addEventListener("click", () => {
-      if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
-        openMediaModal([file], 0);
+  function createPreview(file, container, type) {
+    readFileAsDataURL(file, (dataURL) => {
+      let el;
+      if (type === "image") {
+        el = document.createElement("img");
+        el.src = dataURL;
+        el.width = 80;
+        el.classList.add("media-thumb");
+      } else if (type === "video") {
+        el = document.createElement("video");
+        el.src = dataURL;
+        el.width = 80;
+        el.controls = true;
+        el.classList.add("media-thumb");
+      } else {
+        el = document.createElement("div");
+        el.textContent = file.name;
+        el.classList.add("file-thumb");
       }
+
+      el.style.cursor = "pointer";
+      container.appendChild(el);
+
+      // Save into localStorage for persistence
+      let posts = JSON.parse(localStorage.getItem("allPosts")) || [];
+      const currentUser = localStorage.getItem("currentUser");
+
+      const newPost = {
+        id: Date.now().toString(),
+        user: currentUser || "Anonymous",
+        category: document.body.dataset.category,
+        text: "New upload",
+        images: type === "image" ? [dataURL] : [],
+        videos: type === "video" ? [dataURL] : [],
+        pdfURL: type === "file" ? dataURL : "",
+        pdfName: type === "file" ? file.name : "",
+        liked: false,
+        comments: []
+      };
+
+      posts.push(newPost);
+      localStorage.setItem("allPosts", JSON.stringify(posts));
+
+      // Modal preview
+      el.addEventListener("click", () => {
+        if (type === "image" || type === "video") {
+          openMediaModal([{ url: dataURL, isVideo: type === "video" }], 0);
+        }
+      });
     });
   }
 
   imageInput?.addEventListener("change", () => {
     previewImages.innerHTML = "";
-    Array.from(imageInput.files).forEach(file => createPreview(file, previewImages));
+    Array.from(imageInput.files).forEach(file => createPreview(file, previewImages, "image"));
   });
 
   videoInput?.addEventListener("change", () => {
     previewVideos.innerHTML = "";
-    Array.from(videoInput.files).forEach(file => createPreview(file, previewVideos));
+    Array.from(videoInput.files).forEach(file => createPreview(file, previewVideos, "video"));
   });
 
   fileInput?.addEventListener("change", () => {
     previewFiles.innerHTML = "";
-    Array.from(fileInput.files).forEach(file => createPreview(file, previewFiles));
+    Array.from(fileInput.files).forEach(file => createPreview(file, previewFiles, "file"));
   });
 }
+
 
 // ----- Open modal for uploaded files -----
 function openMediaModal(fileList, startIdx = 0) {
